@@ -1,0 +1,65 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Arial.TTF",
+      "sha1": "94ed380f23abc185b81be96b94001368e79164ae"
+    },
+    {
+      "path": "src/assets/fonts/Assistant-SemiBold.ttf",
+      "sha1": "318b02078143b40f7ec5f9cf85c288105e194fbd"
+    },
+    {
+      "path": "src/assets/fonts/Inter-Regular.ttf",
+      "sha1": "cfa780d0b50b2bb7eacb82984f1b18a95aaa40c5"
+    },
+    {
+      "path": "src/assets/fonts/Lato-Regular.ttf",
+      "sha1": "e923c72eda5e50a87e18ff5c71e9ef4b3b6455a3"
+    },
+    {
+      "path": "src/assets/fonts/LondonBetween.ttf",
+      "sha1": "3675bceeb3d8c7b3f2d8a4c26a651ce265fa8d60"
+    },
+    {
+      "path": "src/assets/fonts/LondonTwo.ttf",
+      "sha1": "f1704e3b4f3ad7300a768a93a6d76568cec70d9c"
+    },
+    {
+      "path": "src/assets/fonts/MarkoOne-Regular.ttf",
+      "sha1": "5ae7759432e24edda586dbea371cae04ef47071b"
+    },
+    {
+      "path": "src/assets/fonts/NunitoSans_10pt-Bold.ttf",
+      "sha1": "1a43f6ab652eb0c71cd0d748bd8d4bf360903fe1"
+    },
+    {
+      "path": "src/assets/fonts/NunitoSans_10pt-Medium.ttf",
+      "sha1": "947e59a8d3586d17a5f8698ae2f371e580411cdb"
+    },
+    {
+      "path": "src/assets/fonts/NunitoSans_10pt-Regular.ttf",
+      "sha1": "c4bc36919dfa9ee086b71d7b2796fafc22249b97"
+    },
+    {
+      "path": "src/assets/fonts/NunitoSans_10pt-SemiBold.ttf",
+      "sha1": "0ec94b38226fe45cb85bad4cb5f884512bae6eb7"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    },
+    {
+      "path": "src/assets/fonts/Poppins-SemiBold.ttf",
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
+    },
+    {
+      "path": "src/assets/fonts/Rubik-Regular.ttf",
+      "sha1": "9d7091d63f35c9d28518b06566442a02b306980a"
+    },
+    {
+      "path": "src/assets/fonts/Segoe UI.ttf",
+      "sha1": "995e37cfba0e3df9a716891a4cf9a05b38b118f9"
+    }
+  ]
+}
