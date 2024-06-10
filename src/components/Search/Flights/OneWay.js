@@ -276,7 +276,6 @@ const styles = StyleSheet.create({
     travlOptnsWrap: {
         backgroundColor: white,
         width: 200,
-        // height: 146,
         position: 'absolute',
         zIndex: 99,
         top: 5,
@@ -296,7 +295,6 @@ const styles = StyleSheet.create({
     classOptnsWrap: {
         backgroundColor: white,
         width: 180,
-        // height: 146,
         position: 'absolute',
         zIndex: 99,
         top: 5,

@@ -1,10 +1,10 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, StatusBar } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Platform } from 'react-native'
 import React from 'react'
 import { b1, b3, gs1, white } from '../../config/colors';
 
 const SelectFair = ({ navigation }) => {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.Wrap}>
                 {/* nav */}
@@ -85,7 +85,7 @@ const SelectFair = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     Wrap: {
         flex: 1,
         marginHorizontal: 12,
-        marginTop: 30,
+        marginTop: Platform.OS === "ios" ? 60 : 50,
     },
     nav: {
         flexDirection: "row",

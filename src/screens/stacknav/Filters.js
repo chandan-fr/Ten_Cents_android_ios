@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, ScrollView, Dimensions, StatusBar } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Dimensions, StatusBar, Platform } from 'react-native'
 import React, { useState } from 'react'
-import { b1, b3, blue, green, white } from '../../config/colors';
+import { b1, b3, black, blue, green, white } from '../../config/colors';
 import ToggleSwitch from 'toggle-switch-react-native';
 
 const { width } = Dimensions.get("window");
@@ -12,7 +12,7 @@ const Filters = ({ navigation }) => {
     const [airType, setAirType] = useState("air");
 
     return (
-        <SafeAreaView style={styles.parent}>
+        <View style={styles.parent}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.Wrap}>
                 {/* nav */}
@@ -542,7 +542,7 @@ const Filters = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -553,7 +553,7 @@ const styles = StyleSheet.create({
     Wrap: {
         flex: 1,
         marginHorizontal: 12,
-        marginTop: 30,
+        marginTop: Platform.OS === "ios" ? 60 : 40,
     },
     nav: {
         flexDirection: "row",
@@ -588,7 +588,14 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         borderRadius: 3,
         elevation: 2,
-        backgroundColor: white
+        backgroundColor: white,
+        shadowColor: black,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
     },
     ns600: {
         fontFamily: "NunitoSans_10pt-Bold",
@@ -621,7 +628,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 10,
         marginBottom: 10,
     },
     tripBtnActive: {
@@ -630,14 +636,13 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderWidth: 0.9,
         paddingVertical: 6,
-        // paddingHorizontal: 30,
         alignItems: "center",
         justifyContent: "center",
-        minWidth: 140
+        minWidth: (width - 75) / 2,
     },
     tripTxtActive: {
         fontFamily: "Assistant-SemiBold",
-        fontSize: 18,
+        fontSize: Platform.OS === "ios" ? 18 : 16,
         color: blue,
     },
     tripBtn: {
@@ -646,14 +651,13 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderWidth: 0.9,
         paddingVertical: 6,
-        // paddingHorizontal: 30,
         alignItems: "center",
         justifyContent: "center",
-        minWidth: 140
+        minWidth: (width - 75) / 2,
     },
     tripTxt: {
         fontFamily: "Assistant-SemiBold",
-        fontSize: 18,
+        fontSize: Platform.OS === "ios" ? 18 : 16,
         color: b3,
     },
     timeWrap: {
@@ -665,7 +669,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         borderWidth: 1,
-        minWidth: 155,
+        minWidth: (width - 75) / 2,
         borderRadius: 4,
         paddingVertical: 3,
         borderColor: "#D8D8D8",

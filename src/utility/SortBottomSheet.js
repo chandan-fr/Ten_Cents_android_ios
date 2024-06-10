@@ -3,7 +3,8 @@ import React from 'react'
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { b1, b3, white } from '../config/colors';
 
-const SortBottomSheet = ({ sortRef }) => {
+const SortBottomSheet = ({ sortRef, sortBy, setSortBy }) => {
+
     return (
         <RBSheet
             ref={sortRef}
@@ -15,10 +16,9 @@ const SortBottomSheet = ({ sortRef }) => {
             customStyles={{
                 wrapper: {
                     backgroundColor: "#4C4C4C",
-                    opacity: 0.8,
+                    opacity: 0.9,
                 },
                 draggableIcon: {
-                    // backgroundColor: "#000",
                     display: "none",
                 },
                 container: {
@@ -44,28 +44,34 @@ const SortBottomSheet = ({ sortRef }) => {
 
                 {/* body */}
                 <View style={styles.body}>
-                    <TouchableOpacity style={styles.sortOptn}>
+                    <TouchableOpacity
+                        style={styles.sortOptn}
+                        onPress={() => setSortBy("htl")}
+                    >
                         <Text style={styles.ns400}>Price - High To Low</Text>
 
-                        {/* <View style={styles.check}>
+                        {sortBy === "htl" && <View style={styles.check}>
                             <Image
                                 style={{ width: 10, height: 10, tintColor: white }}
                                 source={require("../assets/icons/check.png")}
                             />
-                        </View> */}
+                        </View>}
                     </TouchableOpacity>
 
                     <View style={{ borderBottomWidth: 1, marginTop: 5, marginBottom: 13, borderColor: b3 }} />
 
-                    <TouchableOpacity style={styles.sortOptn}>
+                    <TouchableOpacity
+                        style={styles.sortOptn}
+                        onPress={() => setSortBy("lth")}
+                    >
                         <Text style={styles.ns400}>Price - Low To High</Text>
 
-                        <View style={styles.check}>
+                        {sortBy === "lth" && <View style={styles.check}>
                             <Image
                                 style={{ width: 10, height: 10, tintColor: white }}
                                 source={require("../assets/icons/check.png")}
                             />
-                        </View>
+                        </View>}
                     </TouchableOpacity>
 
                     <View style={{ borderBottomWidth: 1, marginTop: 5, marginBottom: 10, borderColor: b3 }} />

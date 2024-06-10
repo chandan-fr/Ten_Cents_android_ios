@@ -11,7 +11,7 @@ const Hotels = ({ navigation, data, width, height }) => {
     const [openTravel, setOpenTravel] = useState(false);
 
     return (
-        <TouchableWithoutFeedback onPress={()=> setOpenTravel(false)}>
+        <TouchableWithoutFeedback style={{flex: 1}} onPress={()=> setOpenTravel(false)}>
             <View style={{ flex: 1 }}>
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
                     {/* trip option nav bar */}
