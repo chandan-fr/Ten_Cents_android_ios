@@ -6,10 +6,12 @@ import ToggleSwitch from 'toggle-switch-react-native';
 const { width } = Dimensions.get("window");
 
 const Filters = ({ navigation }) => {
-    const [toggle1, setToggle1] = useState(false);
-    const [toggle2, setToggle2] = useState(false);
-    const [tripOptn, setTripOptn] = useState("o");
     const [airType, setAirType] = useState("air");
+    const [filterParams, setFilterParams] = useState({
+        stops: "direct", show_refundable_only: false, hide_multi_airline: false, trip_option: "one way",
+        trip_time: "morning", same_depart_return: false, depart_from: false, arriving_at: false
+    });
+
 
     return (
         <View style={styles.parent}>
@@ -33,16 +35,25 @@ const Filters = ({ navigation }) => {
                         <Text style={styles.stops}>Stops</Text>
 
                         <View style={styles.stopOptn}>
-                            <TouchableOpacity style={styles.optnBtn}>
-                                <Text style={styles.ns600}>Direct</Text>
+                            <TouchableOpacity
+                                style={filterParams.stops === "direct" ? styles.optnBtnActive : styles.optnBtn}
+                                onPress={() => setFilterParams({ ...filterParams, stops: "direct" })}
+                            >
+                                <Text style={filterParams.stops === "direct" ? styles.optnBtnTxtActive : styles.ns600}>Direct</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.optnBtn}>
-                                <Text style={styles.ns600}>1 Stop</Text>
+                            <TouchableOpacity
+                                style={filterParams.stops === "1 stop" ? styles.optnBtnActive : styles.optnBtn}
+                                onPress={() => setFilterParams({ ...filterParams, stops: "1 stop" })}
+                            >
+                                <Text style={filterParams.stops === "1 stop" ? styles.optnBtnTxtActive : styles.ns600}>1 Stop</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.optnBtn}>
-                                <Text style={styles.ns600}>2+ Stops</Text>
+                            <TouchableOpacity
+                                style={filterParams.stops === "2+ stop" ? styles.optnBtnActive : styles.optnBtn}
+                                onPress={() => setFilterParams({ ...filterParams, stops: "2+ stop" })}
+                            >
+                                <Text style={filterParams.stops === "2+ stop" ? styles.optnBtnTxtActive : styles.ns600}>2+ Stops</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -53,11 +64,11 @@ const Filters = ({ navigation }) => {
                             <Text style={[styles.lbB1, { fontSize: 18 }]}>Show refundable only</Text>
 
                             <ToggleSwitch
-                                isOn={toggle1}
+                                isOn={filterParams.show_refundable_only}
                                 onColor={green}
                                 offColor={b3}
                                 size="small"
-                                onToggle={isOn => setToggle1(isOn)}
+                                onToggle={isOn => setFilterParams({ ...filterParams, show_refundable_only: isOn })}
                             />
                         </View>
 
@@ -65,11 +76,11 @@ const Filters = ({ navigation }) => {
                             <Text style={[styles.lbB1, { fontSize: 18 }]}>Hide multi airline</Text>
 
                             <ToggleSwitch
-                                isOn={toggle2}
+                                isOn={filterParams.hide_multi_airline}
                                 onColor={green}
                                 offColor={b3}
                                 size="small"
-                                onToggle={isOn => setToggle2(isOn)}
+                                onToggle={isOn => setFilterParams({ ...filterParams, hide_multi_airline: isOn })}
                             />
                         </View>
                     </View>
@@ -79,58 +90,72 @@ const Filters = ({ navigation }) => {
                         {/* trip */}
                         <View style={styles.tripCont}>
                             <TouchableOpacity
-                                style={tripOptn === "o" ? styles.tripBtnActive : styles.tripBtn}
-                                onPress={() => setTripOptn("o")}
+                                style={filterParams.trip_option === "one way" ? styles.tripBtnActive : styles.tripBtn}
+                                onPress={() => setFilterParams({ ...filterParams, trip_option: "one way" })}
                             >
-                                <Text style={tripOptn === "o" ? styles.tripTxtActive : styles.tripTxt}>
+                                <Text style={filterParams.trip_option === "one way" ? styles.tripTxtActive : styles.tripTxt}>
                                     One-Way
                                 </Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                style={tripOptn === "r" ? styles.tripBtnActive : styles.tripBtn}
-                                onPress={() => setTripOptn("r")}
+                                style={filterParams.trip_option === "round trip" ? styles.tripBtnActive : styles.tripBtn}
+                                onPress={() => setFilterParams({ ...filterParams, trip_option: "round trip" })}
                             >
-                                <Text style={tripOptn === "r" ? styles.tripTxtActive : styles.tripTxt}>
+                                <Text style={filterParams.trip_option === "round trip" ? styles.tripTxtActive : styles.tripTxt}>
                                     Round-trip
                                 </Text>
                             </TouchableOpacity>
                         </View>
 
                         {/* time */}
-                        <View style={[styles.timeWrap, { marginTop: 30 }]}>
-                            <TouchableOpacity style={styles.timeBtn}>
-                                <Image style={styles.timeImg} source={require("../../assets/icons/morning.png")} />
-                                <Text style={styles.timeTxt}>Morning 6 AM - 12</Text>
-                            </TouchableOpacity>
+                        <View>
+                            <View style={[styles.timeWrap, { marginTop: 30 }]}>
+                                <TouchableOpacity
+                                    style={filterParams.trip_time === "morning" ? styles.timeBtnActive : styles.timeBtn}
+                                    onPress={() => setFilterParams({ ...filterParams, trip_time: "morning" })}
+                                >
+                                    <Image style={styles.timeImg} source={require("../../assets/icons/morning.png")} />
+                                    <Text style={styles.timeTxt}>Morning 6 AM - 12</Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.timeBtn}>
-                                <Image style={styles.timeImg} source={require("../../assets/icons/noon.png")} />
-                                <Text style={styles.timeTxt}>Noon 12 PM - 6</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <TouchableOpacity
+                                    style={filterParams.trip_time === "noon" ? styles.timeBtnActive : styles.timeBtn}
+                                    onPress={() => setFilterParams({ ...filterParams, trip_time: "noon" })}
+                                >
+                                    <Image style={styles.timeImg} source={require("../../assets/icons/noon.png")} />
+                                    <Text style={styles.timeTxt}>Noon 12 PM - 6</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                        <View style={[styles.timeWrap, { marginTop: 20 }]}>
-                            <TouchableOpacity style={styles.timeBtn}>
-                                <Image style={styles.timeImg} source={require("../../assets/icons/evening.png")} />
-                                <Text style={styles.timeTxt}>Evening 6 PM - 12</Text>
-                            </TouchableOpacity>
+                            <View style={[styles.timeWrap, { marginTop: 20 }]}>
+                                <TouchableOpacity
+                                    style={filterParams.trip_time === "evening" ? styles.timeBtnActive : styles.timeBtn}
+                                    onPress={() => setFilterParams({ ...filterParams, trip_time: "evening" })}
+                                >
+                                    <Image style={styles.timeImg} source={require("../../assets/icons/evening.png")} />
+                                    <Text style={styles.timeTxt}>Evening 6 PM - 12</Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.timeBtn}>
-                                <Image style={styles.timeImg} source={require("../../assets/icons/night.png")} />
-                                <Text style={styles.timeTxt}>Night 12 AM - 6</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={filterParams.trip_time === "night" ? styles.timeBtnActive : styles.timeBtn}
+                                    onPress={() => setFilterParams({ ...filterParams, trip_time: "night" })}
+                                >
+                                    <Image style={styles.timeImg} source={require("../../assets/icons/night.png")} />
+                                    <Text style={styles.timeTxt}>Night 12 AM - 6</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
 
                     <View style={{ marginLeft: 5, width: width * 0.73, paddingBottom: 10 }}>
                         {/* flight times */}
                         <View style={{ marginTop: 20 }}>
-                            <Text style={[styles.ns600, { color: b1, fontSize: 18, }]}>Flight Times</Text>
+                            <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 18 : 17, }]}>Flight Times</Text>
 
                             {/* going */}
                             <View style={{ marginTop: 20 }}>
-                                <Text style={[styles.ns600, { color: b1, fontSize: 17 }]}>
+                                <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 17 : 16 }]}>
                                     Going<Text style={[styles.ns400, { color: b1 }]}> to Alberta (YYC)</Text>
                                 </Text>
 
@@ -147,7 +172,7 @@ const Filters = ({ navigation }) => {
 
                             {/* return */}
                             <View style={{ marginTop: 20 }}>
-                                <Text style={[styles.ns600, { color: b1, fontSize: 17 }]}>
+                                <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 17 : 16 }]}>
                                     Returning<Text style={[styles.ns400, { color: b1 }]}> to Dhaka (DAC)</Text>
                                 </Text>
 
@@ -168,21 +193,21 @@ const Filters = ({ navigation }) => {
                             style={{ flexDirection: 'row', alignItems: "center", marginTop: 20 }}
                         >
                             <Image
-                                style={{ width: 18, height: 18, transform: [{ rotate: "90deg" }], tintColor: blue }}
+                                style={{ width: 16, height: 16, transform: [{ rotate: "90deg" }], tintColor: blue }}
                                 source={require("../../assets/icons/right-arrow.png")}
                             />
-                            <Text style={[styles.ns600, { fontSize: 16, marginLeft: 10 }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 16 : 14, marginLeft: 10 }]}>
                                 Show Arrival Times
                             </Text>
                         </TouchableOpacity>
 
                         {/* duration */}
                         <View style={{ marginTop: 35 }}>
-                            <Text style={[styles.ns600, { color: b1, fontSize: 18, }]}>Duration</Text>
+                            <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 18 : 17, }]}>Duration</Text>
 
                             {/* going */}
                             <View style={{ marginTop: 20 }}>
-                                <Text style={[styles.ns600, { color: b1, fontSize: 17 }]}>
+                                <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 17 : 16 }]}>
                                     Going<Text style={[styles.ns400, { color: b1 }]}> to Alberta (YYC)</Text>
                                 </Text>
 
@@ -199,7 +224,7 @@ const Filters = ({ navigation }) => {
 
                             {/* return */}
                             <View style={{ marginTop: 20 }}>
-                                <Text style={[styles.ns600, { color: b1, fontSize: 17 }]}>
+                                <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 17 : 16 }]}>
                                     Returning<Text style={[styles.ns400, { color: b1 }]}> to Dhaka (DAC)</Text>
                                 </Text>
 
@@ -228,7 +253,7 @@ const Filters = ({ navigation }) => {
                                     marginLeft: 5,
                                 }}
                             />
-                            <Text style={[styles.ns600, { fontSize: 16, marginLeft: 10 }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 16 : 14, marginLeft: 10 }]}>
                                 Show Total Durations
                             </Text>
                         </TouchableOpacity>
@@ -238,20 +263,23 @@ const Filters = ({ navigation }) => {
                             <View style={{}}>
                                 <TouchableOpacity
                                     style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 3 }}
+                                    onPress={() => setFilterParams(prevState => (
+                                        { ...prevState, same_depart_return: !prevState.same_depart_return, depart_from: false, arriving_at: false }
+                                    ))}
                                 >
-                                    <View style={styles.dotOutline} />
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 18, marginRight: 40 }]}>
+                                    <View style={filterParams.same_depart_return ? styles.dotFill : styles.dotOutline} />
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 18 : 16, marginRight: 40 }]}>
                                         Same Depart/Return Airport
                                     </Text>
                                 </TouchableOpacity>
 
                                 <View style={{ alignSelf: "flex-end", paddingRight: 20 }}>
-                                    <Text style={[styles.ns600, { color: b1, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: b1, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 1,937
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -262,7 +290,7 @@ const Filters = ({ navigation }) => {
 
                         {/* depart */}
                         <View style={{ marginTop: 20 }}>
-                            <Text style={[styles.ns600, { fontSize: 18, color: b1, marginBottom: 10, }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 18 : 17, color: b1, marginBottom: 10, }]}>
                                 Departing from
                             </Text>
 
@@ -275,20 +303,22 @@ const Filters = ({ navigation }) => {
                             >
                                 <TouchableOpacity
                                     style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 3 }}
+                                    disabled={filterParams.same_depart_return}
+                                    onPress={() => setFilterParams(prevState => ({ ...prevState, depart_from: !prevState.depart_from }))}
                                 >
-                                    <View style={styles.dotOutline} />
-                                    <Text style={[styles.ns400, { color: b3, fontSize: 18 }]}>
+                                    <View style={filterParams.depart_from ? styles.dotFill : styles.dotOutline} />
+                                    <Text style={[styles.ns400, { color: filterParams.same_depart_return ? b3 : b1, fontSize: Platform.OS === "ios" ? 18 : 16 }]}>
                                         DAC - Dhaka
                                     </Text>
                                 </TouchableOpacity>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: filterParams.same_depart_return ? b3 : b1, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 1,937
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: filterParams.same_depart_return ? b3 : b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -299,7 +329,7 @@ const Filters = ({ navigation }) => {
 
                         {/* arriving */}
                         <View style={{ marginTop: 25 }}>
-                            <Text style={[styles.ns600, { fontSize: 18, color: b1, marginBottom: 10, }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 18 : 17, color: b1, marginBottom: 10, }]}>
                                 Arriving at
                             </Text>
 
@@ -312,20 +342,22 @@ const Filters = ({ navigation }) => {
                             >
                                 <TouchableOpacity
                                     style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 3 }}
+                                    disabled={filterParams.same_depart_return}
+                                    onPress={() => setFilterParams(prevState => ({ ...prevState, arriving_at: !prevState.arriving_at }))}
                                 >
-                                    <View style={styles.dotOutline} />
-                                    <Text style={[styles.ns400, { color: b3, fontSize: 18 }]}>
+                                    <View style={filterParams.arriving_at ? styles.dotFill : styles.dotOutline} />
+                                    <Text style={[styles.ns400, { color: filterParams.same_depart_return ? b3 : b1, fontSize: Platform.OS === "ios" ? 18 : 16 }]}>
                                         YYC - Calgary
                                     </Text>
                                 </TouchableOpacity>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: filterParams.same_depart_return ? b3 : b1, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 1,937
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: filterParams.same_depart_return ? b3 : b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -336,16 +368,16 @@ const Filters = ({ navigation }) => {
 
                         {/* connecting in */}
                         <View style={{ marginTop: 15, rowGap: 8 }}>
-                            <Text style={[styles.ns600, { fontSize: 18, color: "#313541" }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 18 : 17, color: "#313541" }]}>
                                 Connecting in
                             </Text>
-                            <Text style={[styles.ns400, { fontSize: 17, color: b3 }]}>
+                            <Text style={[styles.ns400, { fontSize: Platform.OS === "ios" ? 17 : 16, color: b3 }]}>
                                 BOM - Mumbai
                             </Text>
-                            <Text style={[styles.ns400, { fontSize: 17, color: b3 }]}>
+                            <Text style={[styles.ns400, { fontSize: Platform.OS === "ios" ? 17 : 16, color: b3 }]}>
                                 LHR - London Heathrow
                             </Text>
-                            <Text style={[styles.ns400, { fontSize: 17, color: b3 }]}>
+                            <Text style={[styles.ns400, { fontSize: Platform.OS === "ios" ? 17 : 16, color: b3 }]}>
                                 FRA - Frankfurt
                             </Text>
                         </View>
@@ -355,23 +387,23 @@ const Filters = ({ navigation }) => {
                             style={{ flexDirection: 'row', alignItems: "center", marginTop: 25 }}
                         >
                             <Image
-                                style={{ width: 18, height: 18, transform: [{ rotate: "90deg" }], tintColor: blue }}
+                                style={{ width: 16, height: 16, transform: [{ rotate: "90deg" }], tintColor: blue }}
                                 source={require("../../assets/icons/right-arrow.png")}
                             />
-                            <Text style={[styles.ns600, { fontSize: 16, marginLeft: 10 }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 16 : 14, marginLeft: 10 }]}>
                                 Show all connecting
                             </Text>
                         </TouchableOpacity>
 
                         {/* airlines */}
                         <View style={{ marginTop: 20 }}>
-                            <Text style={[styles.ns600, { fontSize: 20, color: b1, marginBottom: 10, }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 20 : 19, color: b1, marginBottom: 10, }]}>
                                 Airlines
                             </Text>
 
                             <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                                 <TouchableOpacity
-                                    style={airType === "air" ? styles.airBtnActive : styles.airBtn}
+                                    style={[airType === "air" ? styles.airBtnActive : styles.airBtn, { borderBottomLeftRadius: 4, borderTopLeftRadius: 4 }]}
                                     onPress={() => setAirType("air")}
                                 >
                                     <Text style={airType === "air" ? styles.airBtnTxtActive : styles.airBtnTxt}>
@@ -380,7 +412,7 @@ const Filters = ({ navigation }) => {
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    style={airType === "aln" ? styles.airBtnActive : styles.airBtn}
+                                    style={[airType === "aln" ? styles.airBtnActive : styles.airBtn, { borderBottomRightRadius: 4, borderTopRightRadius: 4 }]}
                                     onPress={() => setAirType("aln")}
                                 >
                                     <Text style={airType === "aln" ? styles.airBtnTxtActive : styles.airBtnTxt}>
@@ -395,21 +427,21 @@ const Filters = ({ navigation }) => {
                             {/* canada */}
                             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                                 <View>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 17 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 16 : 14 }]}>
                                         Air Canada
                                     </Text>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 13 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11 }]}>
                                         (with others)
                                     </Text>
                                 </View>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: b3, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 1,937
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -417,24 +449,26 @@ const Filters = ({ navigation }) => {
                                 </View>
                             </View>
 
+                            {/* ##########################---------------------------------------#################################### */}
+
                             {/* India/ Bharat */}
                             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                                 <View>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 17 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 16 : 14 }]}>
                                         Air India
                                     </Text>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 13 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11 }]}>
                                         (with others)
                                     </Text>
                                 </View>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: b3, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 2,937
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -445,21 +479,21 @@ const Filters = ({ navigation }) => {
                             {/* alaska */}
                             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                                 <View>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 17 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 16 : 14 }]}>
                                         Alaska Airlines
                                     </Text>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 13 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11 }]}>
                                         (with others)
                                     </Text>
                                 </View>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: b3, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 2,460
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -470,21 +504,21 @@ const Filters = ({ navigation }) => {
                             {/* american */}
                             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                                 <View>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 17 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 16 : 14 }]}>
                                         American Airlines
                                     </Text>
-                                    {/* <Text style={[styles.ns400, { color: b1, fontSize: 13 }]}>
+                                    {/* <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11 }]}>
                                         (with others)
                                     </Text> */}
                                 </View>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: b3, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 2,450
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -495,21 +529,21 @@ const Filters = ({ navigation }) => {
                             {/* american with others */}
                             <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
                                 <View>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 17 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 16 : 14 }]}>
                                         American Airlines
                                     </Text>
-                                    <Text style={[styles.ns400, { color: b1, fontSize: 13 }]}>
+                                    <Text style={[styles.ns400, { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11 }]}>
                                         (with others)
                                     </Text>
                                 </View>
 
                                 <View style={{ paddingRight: 20, position: 'relative' }}>
-                                    <Text style={[styles.ns600, { color: b3, fontSize: 17 }]}>
+                                    <Text style={[styles.ns600, { color: b3, fontSize: Platform.OS === "ios" ? 17 : 15 }]}>
                                         USD 2,101
                                     </Text>
                                     <Text
                                         style={[styles.ns400,
-                                        { color: b1, fontSize: 13, position: "absolute", right: 1 }
+                                        { color: b1, fontSize: Platform.OS === "ios" ? 13 : 11, position: "absolute", right: 1 }
                                         ]}
                                     >
                                         .99
@@ -523,10 +557,10 @@ const Filters = ({ navigation }) => {
                             style={{ flexDirection: 'row', alignItems: "center", marginTop: 25 }}
                         >
                             <Image
-                                style={{ width: 18, height: 18, transform: [{ rotate: "90deg" }], tintColor: blue }}
+                                style={{ width: 16, height: 16, transform: [{ rotate: "90deg" }], tintColor: blue }}
                                 source={require("../../assets/icons/right-arrow.png")}
                             />
-                            <Text style={[styles.ns600, { fontSize: 16, marginLeft: 10 }]}>
+                            <Text style={[styles.ns600, { fontSize: Platform.OS === "ios" ? 16 : 14, marginLeft: 10 }]}>
                                 Show All Airlines
                             </Text>
                         </TouchableOpacity>
@@ -534,15 +568,15 @@ const Filters = ({ navigation }) => {
                 </ScrollView>
 
                 {/* clear filter */}
-                <View style={{ marginTop: 10, alignItems: "flex-end", marginBottom: 10 }}>
+                <View style={{ marginTop: 10, alignItems: "flex-end", marginBottom: Platform.OS === "ios" ? 25 : 10 }}>
                     <TouchableOpacity style={styles.clearFilter}>
-                        <Text style={[styles.ns600, { color: white, fontSize: 16, textTransform: "uppercase" }]}>
+                        <Text style={[styles.ns600, { color: white, fontSize: Platform.OS === "ios" ? 16 : 14, textTransform: "uppercase" }]}>
                             Clear All Filters
                         </Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-        </View>
+            </View >
+        </View >
     )
 };
 
@@ -597,14 +631,35 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
     },
+    optnBtnActive: {
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 20,
+        paddingVertical: 6,
+        borderRadius: 3,
+        elevation: 2,
+        backgroundColor: blue,
+        shadowColor: black,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+    },
     ns600: {
         fontFamily: "NunitoSans_10pt-Bold",
         color: blue,
         fontSize: 15,
     },
+    optnBtnTxtActive: {
+        fontFamily: "NunitoSans_10pt-Bold",
+        color: white,
+        fontSize: 15,
+    },
     ns400: {
         fontFamily: "NunitoSans_10pt-Regular",
-        fontSize: 16,
+        fontSize: Platform.OS === "ios" ? 16 : 15,
     },
     toggleCont: {
         flexDirection: "row",
@@ -673,16 +728,29 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         paddingVertical: 3,
         borderColor: "#D8D8D8",
+        columnGap: 7,
+        paddingHorizontal: 3,
+    },
+    timeBtnActive: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderWidth: 0.9,
+        minWidth: (width - 75) / 2,
+        borderRadius: 4,
+        paddingVertical: 3,
+        borderColor: blue,
+        columnGap: 7,
+        paddingHorizontal: 3,
+        backgroundColor: "rgba(33, 180, 226, 0.1)",
     },
     timeTxt: {
         fontFamily: "Assistant-SemiBold",
-        fontSize: 15,
+        fontSize: Platform.OS === "ios" ? 14 : 13,
         color: blue,
     },
     timeImg: {
         width: 33,
         height: 33,
-        marginRight: 5,
     },
     destDot: {
         width: 16,
@@ -695,6 +763,13 @@ const styles = StyleSheet.create({
         height: 3,
         width: width * 0.6,
     },
+    dotFill: {
+        width: 20,
+        height: 20,
+        backgroundColor: blue,
+        borderRadius: 20,
+        marginRight: 10,
+    },
     dotOutline: {
         width: 20,
         height: 20,
@@ -705,7 +780,6 @@ const styles = StyleSheet.create({
     },
     airBtn: {
         backgroundColor: white,
-        borderRadius: 4,
         flex: 1,
         paddingVertical: 10,
         borderWidth: 1,
@@ -715,20 +789,19 @@ const styles = StyleSheet.create({
     },
     airBtnTxt: {
         fontFamily: "NunitoSans_10pt-Regular",
-        fontSize: 15,
+        fontSize: Platform.OS === "ios" ? 15 : 14,
         color: blue,
     },
     airBtnActive: {
         backgroundColor: blue,
-        borderRadius: 4,
         flex: 1,
-        paddingVertical: 10,
+        paddingVertical: 10.5,
         alignItems: "center",
         justifyContent: "center",
     },
     airBtnTxtActive: {
         fontFamily: "NunitoSans_10pt-Regular",
-        fontSize: 15,
+        fontSize: Platform.OS === "ios" ? 15 : 14,
         color: white,
     },
     clearFilter: {
