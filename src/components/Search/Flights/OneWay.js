@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     midTxt: {
         color: b1,
         fontFamily: 'NunitoSans_10pt-SemiBold',
-        fontSize: 18,
+        fontSize: 17,
         marginVertical: 8,
     },
     left: {
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
         color: blue,
         fontFamily: "NunitoSans_10pt-Bold",
         fontSize: 15,
-        letterSpacing: 15,
+        textAlign: "center",
     },
     btn: {
         flexDirection: "row",

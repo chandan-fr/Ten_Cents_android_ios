@@ -16,7 +16,7 @@ const FareBreakSheet = ({ fareRef }) => {
             customStyles={{
                 wrapper: {
                     backgroundColor: "#4C4C4C",
-                    opacity: 0.8,
+                    opacity: 0.9,
                 },
                 draggableIcon: {
                     display: "none",

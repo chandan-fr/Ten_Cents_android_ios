@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     tbTxt: {
         color: b3,
         fontFamily: 'NunitoSans_10pt-Regular',
-        fontSize: 12,
+        fontSize: 13,
     },
     midTxt: {
         color: b1,

@@ -1,15 +1,16 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, ScrollView, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, ScrollView, TextInput, Platform, Dimensions } from 'react-native'
 import React, { useRef } from 'react'
 import { b1, b2, b3, blue, gs1, gs2, white } from '../../config/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import FareBreakSheet from '../../utility/FareBreakSheet';
 
+const {width, height} = Dimensions.get("window");
 
 const FlightReview = ({ navigation }) => {
     const fareRef = useRef();
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.Wrap}>
                 {/* nav */}
@@ -204,10 +205,10 @@ const FlightReview = ({ navigation }) => {
                         {/* offers & promocode */}
                         <View style={styles.commonWrap}>
                             <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "space-between", marginTop: 10, marginHorizontal: 8 }}>
-                                <Text style={[styles.lbB1, { fontSize: 19, marginLeft: 15 }]}>Offers & Promocode</Text>
+                                <Text style={[styles.lbB1, { fontSize: 18, marginLeft: 15 }]}>Offers & Promocode</Text>
 
                                 <TouchableOpacity style={styles.viewAll}>
-                                    <Text style={{ fontFamily: "LondonTwo", fontSize: 15, color: white, textTransform: "uppercase" }}>
+                                    <Text style={{ fontFamily: "LondonTwo", fontSize: 13, color: white, textTransform: "uppercase" }}>
                                         view all
                                     </Text>
                                 </TouchableOpacity>
@@ -215,13 +216,13 @@ const FlightReview = ({ navigation }) => {
 
                             <View style={{ marginHorizontal: 10, marginTop: 15, borderWidth: 1, borderColor: "#D8D8D8", flexDirection: "row", alignItems: "center", borderRadius: 4 }}>
                                 <TextInput
-                                    style={{ flex: 1, height: 43 }}
+                                    style={{ flex: 1, height: 43, paddingLeft: 10 }}
                                     placeholder='Enter Promo Code'
                                     placeholderTextColor={b3}
                                 />
 
                                 <TouchableOpacity style={{ height: 43, paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={[styles.ns400, { fontSize: 16, color: b3, textTransform: "uppercase", }]}>apply</Text>
+                                    <Text style={[styles.ns400, { fontSize: 14, color: b3, textTransform: "uppercase", }]}>apply</Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -236,8 +237,8 @@ const FlightReview = ({ navigation }) => {
                                             />
                                         </View>
 
-                                        <View style={{ marginRight: 6, marginLeft: 35, flex: 1 }}>
-                                            <Text style={[styles.ns700, { fontSize: 16 }]}>CASUPER</Text>
+                                        <View style={{ marginRight: 6, marginLeft: 25, flex: 1 }}>
+                                            <Text style={[styles.ns700, { fontSize: 15 }]}>CASUPER</Text>
                                             <Text style={[styles.ns400, { color: b3 }]}>
                                                 Get $15 instant discount.
                                             </Text>
@@ -259,8 +260,8 @@ const FlightReview = ({ navigation }) => {
                                             />
                                         </View>
 
-                                        <View style={{ marginRight: 6, marginLeft: 35, flex: 1 }}>
-                                            <Text style={[styles.ns700, { fontSize: 16 }]}>CAINTL</Text>
+                                        <View style={{ marginRight: 6, marginLeft: 25, flex: 1 }}>
+                                            <Text style={[styles.ns700, { fontSize: 15 }]}>CAINTL</Text>
                                             <Text style={[styles.ns400, { color: b3 }]}>
                                                 Get $10 discount.
                                             </Text>
@@ -282,9 +283,9 @@ const FlightReview = ({ navigation }) => {
                                             />
                                         </View>
 
-                                        <View style={{ marginRight: 6, marginLeft: 35, flex: 1 }}>
-                                            <Text style={[styles.ns700, { fontSize: 16 }]}>CAYESINT</Text>
-                                            <Text style={[styles.ns400, { color: b3 }]}>
+                                        <View style={{ marginRight: 6, marginLeft: 25, flex: 1 }}>
+                                            <Text style={[styles.ns700, { fontSize: 15 }]}>CAYESINT</Text>
+                                            <Text style={[styles.ns400, { color: b3, width: width/1.8 }]}>
                                                 Get $50 OFF using YES Bank Credit & Debit Card Interest- Free EMI.
                                             </Text>
                                         </View>
@@ -305,14 +306,14 @@ const FlightReview = ({ navigation }) => {
                                 </Text>
 
                                 <View style={{ alignItems: "flex-end" }}>
-                                    <Text style={[styles.ns400, { fontSize: 18, color: blue }]}>$ 15.95</Text>
+                                    <Text style={[styles.ns400, { fontSize: 18, color: blue }]}>$15.95</Text>
                                     <Text style={[styles.ns400]}>per person</Text>
                                 </View>
                             </View>
 
                             <View style={{ marginTop: 20, flexDirection: "row", alignItems: 'center', marginHorizontal: 10, }}>
                                 <Image
-                                    style={{ width: 40, height: 40, tintColor: "#435970" }}
+                                    style={{ width: 35, height: 35, tintColor: "#435970" }}
                                     source={require("../../assets/icons/shield.png")}
                                 />
                                 <Text style={[styles.ns600, { fontSize: 16, marginLeft: 15, }]}>
@@ -389,7 +390,7 @@ const FlightReview = ({ navigation }) => {
                                 style={{ marginBottom: 30, flexDirection: "row", alignItems: 'center', marginHorizontal: 30, marginTop: 20 }}
                             >
                                 <View style={styles.circle} />
-                                <Text style={[styles.ns400, { marginLeft: 15, fontSize: 16 }]}>
+                                <Text style={[styles.ns400, { marginLeft: 15, fontSize: 13 }]}>
                                     Yes, I want travel protection for my trip.
                                 </Text>
                             </TouchableOpacity>
@@ -404,7 +405,7 @@ const FlightReview = ({ navigation }) => {
                                 </View>
 
                                 <TouchableOpacity style={styles.viewAll}>
-                                    <Text style={{ fontFamily: "LondonTwo", fontSize: 15, color: white }}>
+                                    <Text style={{ fontFamily: "LondonTwo", fontSize: 13, color: white }}>
                                         Add new +
                                     </Text>
                                 </TouchableOpacity>
@@ -462,34 +463,32 @@ const FlightReview = ({ navigation }) => {
                                     >
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                                             <View style={styles.circleSm} />
-                                            <Text style={[styles.ns700, { fontSize: 16, marginLeft: 10 }]}>STANDARD</Text>
+                                            <Text style={[styles.ns700, { fontSize: 15, marginLeft: 10 }]}>STANDARD</Text>
                                         </View>
-                                        <Text style={[styles.ns700, { fontSize: 16, color: blue }]}>$ 0.00</Text>
+                                        <Text style={[styles.ns700, { fontSize: 15, color: blue }]}>$ 0.00</Text>
                                     </TouchableOpacity>
 
-                                    <View
-                                        style={{ marginTop: 13, flexDirection: "row", marginHorizontal: 30 }}
-                                    >
-                                        <View style={{ rowGap: 6, marginRight: 40 }}>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                    <View style={{ marginTop: 13, flexDirection: "row", marginHorizontal: 30 }}>
+                                        <View style={{ rowGap: 6, marginRight: 30 }}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Cancellation Fee
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Response Time
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Rescheduling Help
                                             </Text>
                                         </View>
 
                                         <View style={{ rowGap: 6 }}>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Upto  $250 per ticket
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Standard
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Standard
                                             </Text>
                                         </View>
@@ -503,11 +502,11 @@ const FlightReview = ({ navigation }) => {
                                     >
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                                             <View style={styles.circleSm} />
-                                            <Text style={[styles.ns700, { fontSize: 16, marginLeft: 10 }]}>
+                                            <Text style={[styles.ns700, { fontSize: 15, marginLeft: 10 }]}>
                                                 PREMIUM
                                             </Text>
                                         </View>
-                                        <Text style={[styles.ns700, { fontSize: 16, color: blue }]}>
+                                        <Text style={[styles.ns700, { fontSize: 15, color: blue }]}>
                                             $ 14.95
                                         </Text>
                                     </TouchableOpacity>
@@ -519,25 +518,25 @@ const FlightReview = ({ navigation }) => {
                                         }}
                                     >
                                         <View style={{ rowGap: 6, marginRight: 40 }}>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Cancellation Fee
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Response Time
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Rescheduling Help
                                             </Text>
                                         </View>
 
                                         <View style={{ rowGap: 6 }}>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: gs1 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: gs1 }]}>
                                                 FREE
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: gs1 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: gs1 }]}>
                                                 FAST
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Priority
                                             </Text>
                                         </View>
@@ -551,36 +550,36 @@ const FlightReview = ({ navigation }) => {
                                     >
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                                             <View style={styles.circleSm} />
-                                            <Text style={[styles.ns700, { fontSize: 16, marginLeft: 10 }]}>
+                                            <Text style={[styles.ns700, { fontSize: 15, marginLeft: 10 }]}>
                                                 SUPREME
                                             </Text>
                                         </View>
-                                        <Text style={[styles.ns700, { fontSize: 16, color: blue }]}>$ 22.99</Text>
+                                        <Text style={[styles.ns700, { fontSize: 15, color: blue }]}>$ 22.99</Text>
                                     </TouchableOpacity>
 
                                     <View
                                         style={{ marginTop: 13, flexDirection: "row", marginHorizontal: 30 }}
                                     >
                                         <View style={{ rowGap: 6, marginRight: 40 }}>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Cancellation Fee
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Response Time
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 Rescheduling Help
                                             </Text>
                                         </View>
 
                                         <View style={{ rowGap: 6 }}>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: gs1 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: gs1 }]}>
                                                 FREE
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: gs1 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: gs1 }]}>
                                                 SUPER FAST
                                             </Text>
-                                            <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>
+                                            <Text style={[styles.lbB1, { fontSize: 13, color: b3 }]}>
                                                 High Priority
                                             </Text>
                                         </View>
@@ -596,7 +595,7 @@ const FlightReview = ({ navigation }) => {
                                     style={{ width: 35, height: 35, tintColor: b2 }}
                                     source={require("../../assets/icons/customer-service.png")}
                                 />
-                                <Text style={[styles.lbB1, { fontSize: 18, marginLeft: 15, }]}>
+                                <Text style={[styles.lbB1, { fontSize: 17, marginLeft: 15, }]}>
                                     Flexible Ticket
                                 </Text>
                             </View>
@@ -604,17 +603,17 @@ const FlightReview = ({ navigation }) => {
                             <View style={{ marginVertical: 10 }}>
                                 <View style={styles.supPack}>
                                     <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                                        <Text style={[styles.ns700, { fontSize: 16, color: blue }]}>$ 0.00</Text>
+                                        <Text style={[styles.ns700, { fontSize: 15, color: blue }]}>$ 0.00</Text>
                                     </View>
 
                                     <View style={{ rowGap: 6 }}>
                                         <View style={{ flexDirection: "row", alignItems: 'center' }}>
                                             <Image
-                                                style={{ width: 15, height: 15, tintColor: gs1 }}
+                                                style={{ width: 13, height: 13, tintColor: gs1 }}
                                                 source={require("../../assets/icons/check.png")}
                                             />
                                             <Text
-                                                style={[styles.lbB1, { color: b3, marginLeft: 12, fontSize: 14 }]}
+                                                style={[styles.lbB1, { color: b3, marginLeft: 10, fontSize: 13 }]}
                                             >
                                                 Rebooking included (subject to increase in fare)
                                             </Text>
@@ -622,11 +621,11 @@ const FlightReview = ({ navigation }) => {
 
                                         <View style={{ flexDirection: "row", alignItems: 'center' }}>
                                             <Image
-                                                style={{ width: 15, height: 15, tintColor: gs1 }}
+                                                style={{ width: 13, height: 13, tintColor: gs1 }}
                                                 source={require("../../assets/icons/check.png")}
                                             />
                                             <Text
-                                                style={[styles.lbB1, { color: b3, marginLeft: 12, fontSize: 14 }]}
+                                                style={[styles.lbB1, { color: b3, marginLeft: 10, fontSize: 13 }]}
                                             >
                                                 Name change included
                                             </Text>
@@ -634,11 +633,11 @@ const FlightReview = ({ navigation }) => {
 
                                         <View style={{ flexDirection: "row", alignItems: 'center' }}>
                                             <Image
-                                                style={{ width: 15, height: 15, tintColor: gs1 }}
+                                                style={{ width: 13, height: 13, tintColor: gs1 }}
                                                 source={require("../../assets/icons/check.png")}
                                             />
                                             <Text
-                                                style={[styles.lbB1, { color: b3, marginLeft: 12, fontSize: 14 }]}
+                                                style={[styles.lbB1, { color: b3, marginLeft: 10, fontSize: 13 }]}
                                             >
                                                 Cancellation within 24 hours
                                             </Text>
@@ -653,12 +652,12 @@ const FlightReview = ({ navigation }) => {
                             <View
                                 style={{ marginTop: 10, marginHorizontal: 10, flexDirection: 'row', alignItems: "center", justifyContent: 'space-between' }}
                             >
-                                <Text style={[styles.lbB1, { fontSize: 18, marginLeft: 10 }]}>
+                                <Text style={[styles.lbB1, { fontSize: 17, marginLeft: 10 }]}>
                                     Travel Assistance Classic
                                 </Text>
 
                                 <View style={{ alignItems: "flex-end" }}>
-                                    <Text style={[styles.ns400, { fontSize: 18, color: blue }]}>$ 9.95</Text>
+                                    <Text style={[styles.ns400, { fontSize: 17, color: blue }]}>$9.95</Text>
                                     <Text style={[styles.ns400]}>per person</Text>
                                 </View>
                             </View>
@@ -667,10 +666,10 @@ const FlightReview = ({ navigation }) => {
                                 style={{ marginTop: 20, flexDirection: "row", alignItems: 'center', marginHorizontal: 10, }}
                             >
                                 <Image
-                                    style={{ width: 40, height: 40, tintColor: "#435970" }}
+                                    style={{ width: 35, height: 35, tintColor: "#435970" }}
                                     source={require("../../assets/icons/shield.png")}
                                 />
-                                <Text style={[styles.ns600, { fontSize: 16, marginLeft: 15, }]}>
+                                <Text style={[styles.ns600, { fontSize: 15, marginLeft: 15, }]}>
                                     Hire you own personal concierge
                                 </Text>
                             </View>
@@ -724,7 +723,7 @@ const FlightReview = ({ navigation }) => {
                                 style={{ marginBottom: 30, flexDirection: "row", alignItems: 'center', marginHorizontal: 30, marginTop: 20 }}
                             >
                                 <View style={styles.circle} />
-                                <Text style={[styles.ns400, { marginLeft: 15, fontSize: 16 }]}>
+                                <Text style={[styles.ns400, { marginLeft: 12, fontSize: Platform.OS === "ios" ? 14: 12 }]}>
                                     Yes, I want travel assistance for my trip.
                                 </Text>
                             </TouchableOpacity>
@@ -801,7 +800,7 @@ const FlightReview = ({ navigation }) => {
                 {/* bottom sheet */}
                 <FareBreakSheet fareRef={fareRef} />
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -810,8 +809,7 @@ export default FlightReview;
 const styles = StyleSheet.create({
     Wrap: {
         flex: 1,
-        // marginHorizontal: 12,
-        marginTop: 30,
+        marginTop: Platform.OS === "ios" ? 70 : 50,
     },
     nav: {
         flexDirection: "row",
@@ -841,22 +839,23 @@ const styles = StyleSheet.create({
     ns700: {
         fontFamily: "NunitoSans_10pt-Bold",
         color: b1,
-        fontSize: 18,
+        fontSize: 17,
     },
     ns600: {
         fontFamily: "NunitoSans_10pt-SemiBold",
         color: b1,
-        fontSize: 18,
+        fontSize: 17,
     },
     ns400: {
         fontFamily: "NunitoSans_10pt-Regular",
         color: b1,
-        fontSize: 14,
+        fontSize: 11,
     },
     bottom: {
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
         backgroundColor: white,
+        paddingBottom: Platform.OS === "ios" ? 25 : 5,
     },
     wallet: {
         backgroundColor: "#EAE3FF",
@@ -874,6 +873,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 11,
         paddingHorizontal: 60,
+        marginRight: Platform.OS === "ios" && 10,
     },
     commonWrap: {
         marginHorizontal: 10,
@@ -888,7 +888,6 @@ const styles = StyleSheet.create({
         backgroundColor: blue,
         borderRadius: 4,
         paddingHorizontal: 25,
-        paddingVertical: 10,
         alignItems: "center",
         justifyContent: 'center',
     },
@@ -903,8 +902,8 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     circle: {
-        width: 25,
-        height: 25,
+        width: 22,
+        height: 22,
         borderWidth: 1,
         borderColor: b2,
         borderRadius: 25,

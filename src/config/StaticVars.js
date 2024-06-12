@@ -45,4 +45,6 @@ const hpData = [
     },
 ];
 
-module.exports = { hpData };
+const flightData = {originLocation: "", destinationLocation: "", departDate: "",  adults: 1, children: 0, infants: 0, class: "Economy"}
+
+module.exports = { hpData, flightData };
