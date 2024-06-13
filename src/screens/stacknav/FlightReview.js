@@ -397,7 +397,7 @@ const FlightReview = ({ navigation }) => {
                         </View>
 
                         {/* travellers */}
-                        <View style={[styles.commonWrap, { paddingLeft: 30 }]}>
+                        <View style={[styles.commonWrap, { paddingLeft: 20 }]}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 12, marginHorizontal: 8 }}>
                                 <View style={{}}>
                                     <Text style={[styles.lbB1, { fontSize: 18 }]}>Travellers</Text>
@@ -760,7 +760,7 @@ const FlightReview = ({ navigation }) => {
                             </View>
                         </TouchableOpacity>
 
-                        <Text style={[styles.ns600, { fontSize: 15, marginLeft: 15 }]}>
+                        <Text style={[styles.ns600, { fontSize: 13, marginLeft: 15 }]}>
                             Book and earn 156 points instantly
                         </Text>
                     </View>

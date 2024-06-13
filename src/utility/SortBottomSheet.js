@@ -14,10 +14,6 @@ const SortBottomSheet = ({ sortRef, sortBy, setSortBy }) => {
             closeOnDragDown={true}
             closeOnPressMask={false}
             customStyles={{
-                wrapper: {
-                    backgroundColor: "#4C4C4C",
-                    opacity: 0.9,
-                },
                 draggableIcon: {
                     display: "none",
                 },

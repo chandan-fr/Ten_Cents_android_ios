@@ -1,6 +1,6 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, Platform, ScrollView } from 'react-native'
 import React, { useRef, useState } from 'react'
-import { b1, b2, b3, blue, red, white } from '../../config/colors';
+import { b1, b2, b3, black, blue, red, white } from '../../config/colors';
 import DirectTab from '../../components/Search/Flights/DirectTab';
 import Meals from '../../components/Search/Flights/Meals';
 import Extras from '../../components/Search/Flights/Extras';
@@ -14,17 +14,17 @@ const AddOns = ({ navigation }) => {
     const addonFareRef = useRef();
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: white }}>
+        <View style={{ flex: 1, backgroundColor: white }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.Wrap}>
                 {/* nav */}
                 <View style={styles.navWrap}>
                     <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack()}>
                         <Image
-                            style={{ width: 23, height: 23, tintColor: b1 }}
+                            style={{ width: 20, height: 20, tintColor: b1 }}
                             source={require("../../assets/icons/next.png")}
                         />
-                        <Text style={[styles.lbB1, { fontSize: 19, marginLeft: 45 }]}>Add Ons</Text>
+                        <Text style={[styles.lbB1, { fontSize: 16, marginLeft: 35 }]}>Add Ons</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -80,29 +80,29 @@ const AddOns = ({ navigation }) => {
                     <TouchableOpacity
                         style={[
                             styles.flightSeat, { borderRightWidth: 0.4 },
-                            flight === "dac" && addOns !== "d" ? { borderBottomColor: blue, borderBottomWidth: 2 } : { borderBottomColor: white, borderBottomWidth: 2 },
+                            flight === "dac" ? { borderBottomColor: blue, borderBottomWidth: 2 } : { borderBottomColor: white, borderBottomWidth: 2 },
                             addOns === "m" || addOns === "e" ? { paddingBottom: 4 } : { paddingBottom: 4 }
                         ]}
                         onPress={() => setFlight("dac")}
                     >
                         <View style={{ flexDirection: 'row', alignItems: "center", marginLeft: 20 }}>
                             <Image
-                                style={{ width: 20, height: 20, marginRight: 5 }}
+                                style={{ width: 18, height: 18, marginRight: 5 }}
                                 source={require("../../assets/icons/indigo.png")}
                             />
-                            <Text style={[styles.ns600, { fontSize: 14, color: blue }]}>DAC - BOM</Text>
-                            {addOns === "d" && <Text style={[styles.ns600, { fontSize: 14, marginLeft: 20 }]}>
+                            <Text style={[styles.ns600, { fontSize: 13, color: blue }]}>DAC - BOM</Text>
+                            {addOns === "d" && <Text style={[styles.ns600, { fontSize: 13, marginLeft: 20 }]}>
                                 21A
                             </Text>}
                         </View>
 
                         {addOns === "d" && <View style={{ paddingBottom: 8 }} />}
 
-                        {addOns === "m" && <Text style={[styles.ns600, { fontSize: 13, marginLeft: 45, marginTop: 5 }]}>
+                        {addOns === "m" && <Text style={[styles.ns600, { fontSize: 12, marginLeft: 45, marginTop: 5 }]}>
                             <Text style={{ color: red }}>0</Text> of 1 meals selected
                         </Text>}
 
-                        {addOns === "e" && <Text style={[styles.ns600, { fontSize: 13, marginLeft: 45, marginTop: 5 }]}>
+                        {addOns === "e" && <Text style={[styles.ns600, { fontSize: 12, marginLeft: 45, marginTop: 5 }]}>
                             <Text style={{ color: red }}>0</Text> of 1 baggage selected
                         </Text>}
                     </TouchableOpacity>
@@ -110,28 +110,28 @@ const AddOns = ({ navigation }) => {
                     <TouchableOpacity
                         style={[
                             styles.flightSeat, { borderLeftWidth: 0.4 },
-                            flight === "dxc" && addOns !== "d" ? { borderBottomColor: blue, borderBottomWidth: 2 } : { borderBottomColor: white, borderBottomWidth: 2 },
+                            flight === "dxc" ? { borderBottomColor: blue, borderBottomWidth: 2 } : { borderBottomColor: white, borderBottomWidth: 2 },
                             addOns === "m" || addOns === "e" ? { paddingBottom: 4 } : { paddingBottom: 4 }
                         ]}
                         onPress={() => setFlight("dxc")}
                     >
                         <View style={{ flexDirection: 'row', alignItems: "center", marginLeft: 20 }}>
                             <Image
-                                style={{ width: 20, height: 20, marginRight: 5 }}
+                                style={{ width: 18, height: 18, marginRight: 5 }}
                                 source={require("../../assets/icons/indigo.png")}
                             />
-                            <Text style={[styles.ns600, { fontSize: 14, color: blue }]}>BOM - DXC</Text>
-                            {addOns === "d" && <Text style={[styles.ns600, { fontSize: 14, marginLeft: 20 }]}>
+                            <Text style={[styles.ns600, { fontSize: 13, color: blue }]}>BOM - DXC</Text>
+                            {addOns === "d" && <Text style={[styles.ns600, { fontSize: 13, marginLeft: 20 }]}>
                                 27D
                             </Text>}
                         </View>
 
                         {addOns === "d" && <View style={{ paddingBottom: 8 }} />}
 
-                        {addOns === "m" && <Text style={[styles.ns600, { fontSize: 13, marginLeft: 45, marginTop: 5 }]}>
+                        {addOns === "m" && <Text style={[styles.ns600, { fontSize: 12, marginLeft: 45, marginTop: 5 }]}>
                             <Text style={{ color: red }}>0</Text> of 1 meals selected
                         </Text>}
-                        {addOns === "e" && <Text style={[styles.ns600, { fontSize: 13, marginLeft: 45, marginTop: 5 }]}>
+                        {addOns === "e" && <Text style={[styles.ns600, { fontSize: 12, marginLeft: 45, marginTop: 5 }]}>
                             <Text style={{ color: red }}>0</Text> of 1 baggage selected
                         </Text>}
                     </TouchableOpacity>
@@ -149,39 +149,39 @@ const AddOns = ({ navigation }) => {
                     <View
                         style={{
                             flexDirection: 'row', alignItems: "center", justifyContent: "space-between",
-                            marginTop: 6, paddingBottom: 6, paddingHorizontal: 4,
+                            marginTop: 6, paddingBottom: 6, paddingHorizontal: 4, columnGap: 10,
                         }}
                     >
-                        <View style={{ alignItems: "flex-start", marginLeft: 15 }}>
-                            <View style={{ flexDirection: 'row', alignItems: "center", marginBottom: 5 }}>
+                        <View style={{ alignItems: "flex-start", marginLeft: 15, flex: 1 }}>
+                            <ScrollView horizontal={true} style={{ flexDirection: 'row', marginBottom: 5 }} showsHorizontalScrollIndicator={false}>
                                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
                                     <Image
-                                        style={{ width: 15, height: 15, }}
+                                        style={{ width: 12, height: 12, }}
                                         source={require("../../assets/icons/seat.png")}
                                     />
-                                    <Text style={[styles.ns400]}>$ 100</Text>
+                                    <Text style={[styles.ns400, {fontSize: 12}]}>$ 100</Text>
                                 </View>
 
                                 <Text style={[styles.ns400]}> + </Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
                                     <Image
-                                        style={{ width: 15, height: 15, }}
+                                        style={{ width: 12, height: 12, }}
                                         source={require("../../assets/icons/dinner.png")}
                                     />
-                                    <Text style={[styles.ns400]}>$ 180</Text>
+                                    <Text style={[styles.ns400, {fontSize: 12}]}>$ 180</Text>
                                 </View>
 
                                 <Text style={[styles.ns400]}> + </Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
                                     <Image
-                                        style={{ width: 15, height: 15, }}
+                                        style={{ width: 12, height: 12, }}
                                         source={require("../../assets/icons/diamond.png")}
                                     />
-                                    <Text style={[styles.ns400]}>$ 120</Text>
+                                    <Text style={[styles.ns400, {fontSize: 12}]}>$ 120</Text>
                                 </View>
-                            </View>
+                            </ScrollView>
 
                             {/* final price */}
                             <TouchableOpacity
@@ -200,7 +200,7 @@ const AddOns = ({ navigation }) => {
                             style={styles.next}
                             onPress={() => navigation.navigate("payments")}
                         >
-                            <Text style={{ color: white, fontSize: 18, fontFamily: "LondonTwo" }}>
+                            <Text style={{ color: white, fontSize: 16, fontFamily: "LondonTwo" }}>
                                 Next
                             </Text>
                         </TouchableOpacity>
@@ -210,7 +210,7 @@ const AddOns = ({ navigation }) => {
                 {/* bottom sheet */}
                 <FareBreakSheet fareRef={addonFareRef} />
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -219,7 +219,7 @@ export default AddOns;
 const styles = StyleSheet.create({
     Wrap: {
         flex: 1,
-        marginTop: 30,
+        marginTop: Platform.OS === "ios" ? 70 : 50,
     },
     lbB1: {
         fontFamily: "LondonBetween",
@@ -307,12 +307,28 @@ const styles = StyleSheet.create({
         paddingTop: 12,
         backgroundColor: white,
         elevation: 3,
+        shadowColor: black,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        borderColor: "#dedede"
     },
     bottom: {
         backgroundColor: white,
         borderTopColor: "#D8D8D8",
         borderTopWidth: 0.7,
         elevation: 3,
+        shadowColor: black,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        paddingBottom: Platform.OS === "ios" ? 20 : 5,
     },
     next: {
         borderRadius: 4,
@@ -321,6 +337,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 11,
         paddingHorizontal: 60,
+        marginRight: Platform.OS === "ios" ? 10 : 0,
     },
     square: {
         width: 25,
