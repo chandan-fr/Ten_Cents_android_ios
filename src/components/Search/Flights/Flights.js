@@ -15,6 +15,8 @@ const Flights = ({ navigation, data, width, height }) => {
     const [selectedMidMenu, setSelectedMidMenu] = useState("o");
     const [openTravel, setOpenTravel] = useState(false);
     const [multiFlightData, setMultiFlightData] = useState([flightData]);
+    const [formValue, setFormValue] = useState({ originLocationCode: "DAC", destinationLocationCode: "DXC", departureDate: "", returnDate: "", adults: 1, children: 0, infants: 0, travelClass: "Economy" });
+    const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
 
     const addFlight = () => {
         const data = [...multiFlightData];
@@ -22,10 +24,15 @@ const Flights = ({ navigation, data, width, height }) => {
         setMultiFlightData(data);
     };
 
+    const handleformValue = () => {
+        console.log(formValue);
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <FlatList
                 data={[1]}
+                scrollEnabled={outerScrollEnabled}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(_, i) => i}
                 renderItem={({ item, index }) => (
@@ -66,8 +73,21 @@ const Flights = ({ navigation, data, width, height }) => {
 
                             {/* trip option content */}
                             <View style={{ marginHorizontal: 10, marginTop: 0, }}>
-                                {selectedMidMenu === "o" && <OneWay navigation={navigation} openTravel={openTravel} setOpenTravel={setOpenTravel} />}
-                                {selectedMidMenu === "r" && <RoundTrip navigation={navigation} openTravel={openTravel} setOpenTravel={setOpenTravel} />}
+                                {selectedMidMenu === "o" && <OneWay
+                                    navigation={navigation}
+                                    openTravel={openTravel}
+                                    setOpenTravel={setOpenTravel}
+                                    formValue={formValue}
+                                    setFormValue={setFormValue}
+                                    setOuterScrollEnabled={setOuterScrollEnabled}
+                                />}
+                                {selectedMidMenu === "r" && <RoundTrip
+                                    navigation={navigation}
+                                    openTravel={openTravel}
+                                    setOpenTravel={setOpenTravel}
+                                    formValue={formValue}
+                                    setFormValue={setFormValue}
+                                />}
                                 {/* {selectedMidMenu === "m" && <MultiCity />} */}
                             </View>
                         </View>
@@ -110,7 +130,7 @@ const Flights = ({ navigation, data, width, height }) => {
                         }
 
                         {/* search button */}
-                        <SearchButton navigation={navigation} screenName={"flightsearch"} />
+                        <SearchButton onBtnPress={handleformValue} navigation={navigation} screenName={"flightsearch"} />
 
                         {/* prifile option */}
                         <View style={{ marginHorizontal: 15, marginTop: 18, zIndex: -1 }}>
@@ -125,7 +145,7 @@ const Flights = ({ navigation, data, width, height }) => {
                         </View>
 
                         {/* calling option */}
-                        <View style={{ marginHorizontal: 15, marginTop: 18, marginBottom: 10 }}>
+                        <View style={{ marginHorizontal: 15, marginTop: 18, marginBottom: 10, zIndex: -1 }}>
                             <View style={styles.addBarWrap}>
                                 <Image style={{ marginLeft: 7 }} source={icon.proimg} />
 

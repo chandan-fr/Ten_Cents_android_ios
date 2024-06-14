@@ -1,45 +1,83 @@
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Dimensions, Image, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useState } from 'react'
 import { b1, b3, black, blue, w1, white } from '../../../config/colors';
 import icon from '../../../config/IconAssets';
+import { airports } from '../../../config/StaticVars';
+import SearchPanel from './SearchPanel';
 
 const { width, height } = Dimensions.get("window");
 
-const OneWay = ({ navigation, dest, openTravel, setOpenTravel }) => {
+const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFormValue, setOuterScrollEnabled }) => {
     const [isClass, setIsClass] = useState(dest === "opt2" ? "1 Room" : "Economy");
-    const [isTravel, setIsTravel] = useState({ adult: 1, children: 0, infants: 0 });
+    const airportLocationURL = "http://127.0.0.1/api/airports?keyword=del";
+    const [origin, setOrigin] = useState("");
+    const [isShow, setIsShow] = useState(false);
+    const [destination, setDestination] = useState("");
+
     const [openClass, setOpenClass] = useState(false);
 
     const handleClass = (name) => {
         setIsClass(name);
+        setFormValue({ ...formValue, travelClass: name });
         setOpenClass(false);
     };
 
+    const handleOrigin = (value) => {
+        console.log(value);
+        setOrigin(value.toUpperCase());
+        setFormValue({ ...formValue, originLocationCode: value.toUpperCase() });
+    };
+
+    const handleDestination = (value) => {
+        console.log(value);
+        setDestination(value.toUpperCase());
+        setFormValue({ ...formValue, destinationLocationCode: value.toUpperCase() });
+    };
+
+    const swapDestinationOrigin = () => {
+        let temp = formValue.originLocationCode;
+        setOrigin(formValue.destinationLocationCode);
+        setDestination(formValue.originLocationCode);
+        setFormValue({ ...formValue, originLocationCode: formValue.destinationLocationCode, destinationLocationCode: temp });
+    };
+
     return (
-        <TouchableWithoutFeedback onPress={() => setOpenTravel(false)}>
+        <TouchableWithoutFeedback onPress={() => { setOpenTravel(false); Keyboard.dismiss() }}>
             <View style={styles.main}>
                 {/* top selection row */}
                 <View style={styles.topWrap}>
-                    <View style={styles.left}>
+                    <View style={[styles.left, { flex: 1 }]}>
                         <Text style={styles.tbTxt}>From</Text>
 
-                        <TouchableOpacity>
-                            <Text style={styles.midTxt}>Enter Location</Text>
-                        </TouchableOpacity>
+                        <TextInput
+                            style={[styles.inputSearch, { paddingLeft: 0 }]}
+                            placeholder='Enter Location'
+                            placeholderTextColor={b1}
+                            value={origin}
+                            onChangeText={handleOrigin}
+                            onFocus={() => setIsShow(true)}
+                        // onBlur={()=> setIsShow(false)}
+                        />
 
                         <Text style={styles.tbTxt}>Origin</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.imgWrap}>
+                    <TouchableOpacity style={styles.imgWrap} onPress={swapDestinationOrigin}>
                         <Image style={styles.img} source={icon.exchange} />
                     </TouchableOpacity>
 
-                    <View style={styles.right}>
+                    <View style={[styles.right, { flex: 1 }]}>
                         <Text style={styles.tbTxt}>Destination</Text>
 
-                        <TouchableOpacity>
-                            <Text style={styles.midTxt}>Enter Location</Text>
-                        </TouchableOpacity>
+                        <TextInput
+                            style={[styles.inputSearch, { textAlign: "right", paddingRight: 0 }]}
+                            placeholder='Enter Location'
+                            placeholderTextColor={b1}
+                            value={destination}
+                            onChangeText={handleDestination}
+                            onFocus={() => setIsShow(true)}
+                        // onBlur={()=> setIsShow(false)}
+                        />
 
                         <Text style={styles.tbTxt}>Destination</Text>
                     </View>
@@ -71,9 +109,9 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel }) => {
 
                             <TouchableOpacity onPress={() => setOpenTravel(true)}>
                                 <Text style={styles.midTxt}>
-                                    {isTravel.adult + " Adult"}
-                                    {isTravel.children ? ("\n" + `${isTravel.children} Children`) : ""}
-                                    {isTravel.infants ? ("\n" + isTravel.infants + " Infants") : ""}
+                                    {formValue.adults + " Adult"}
+                                    {formValue.children ? ("\n" + `${formValue.children} Children`) : ""}
+                                    {formValue.infants ? ("\n" + formValue.infants + " Infants") : ""}
                                 </Text>
                             </TouchableOpacity>
 
@@ -85,22 +123,22 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel }) => {
                                         <Text style={styles.travelSubHdTxt}>Aged 12+ years</Text>
                                     </View>
 
-                                    {isTravel.adult > 0 ?
+                                    {formValue.adults > 0 ?
                                         <View style={styles.btn}>
-                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, adult: prevState.adult - 1 }))}>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setFormValue(prevState => ({ ...prevState, adults: prevState.adults - 1 }))}>
                                                 <Text style={styles.btnTxt}>-</Text>
                                             </TouchableOpacity>
 
                                             <View style={{ paddingHorizontal: 4 }}>
-                                                <Text style={styles.btnTxt}>{isTravel.adult}</Text>
+                                                <Text style={styles.btnTxt}>{formValue.adults}</Text>
                                             </View>
 
-                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, adult: prevState.adult + 1 }))}>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setFormValue(prevState => ({ ...prevState, adults: prevState.adults + 1 }))}>
                                                 <Text style={styles.btnTxt}>+</Text>
                                             </TouchableOpacity>
                                         </View>
                                         :
-                                        <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(prevState => ({ ...prevState, adult: prevState.adult + 1 }))}>
+                                        <TouchableOpacity style={styles.addBtn} onPress={() => setFormValue(prevState => ({ ...prevState, adults: prevState.adults + 1 }))}>
                                             <Text style={styles.addBtnTxt}>Add</Text>
                                         </TouchableOpacity>
                                     }
@@ -113,22 +151,22 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel }) => {
                                         <Text style={styles.travelSubHdTxt}>Aged 2-12 years</Text>
                                     </View>
 
-                                    {isTravel.children ?
+                                    {formValue.children ?
                                         <View style={styles.btn}>
-                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, children: prevState.children - 1 }))}>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setFormValue(prevState => ({ ...prevState, children: prevState.children - 1 }))}>
                                                 <Text style={styles.btnTxt}>-</Text>
                                             </TouchableOpacity>
 
                                             <View style={{ paddingHorizontal: 4 }}>
-                                                <Text style={styles.btnTxt}>{isTravel.children}</Text>
+                                                <Text style={styles.btnTxt}>{formValue.children}</Text>
                                             </View>
 
-                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, children: prevState.children + 1 }))}>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setFormValue(prevState => ({ ...prevState, children: prevState.children + 1 }))}>
                                                 <Text style={styles.btnTxt}>+</Text>
                                             </TouchableOpacity>
                                         </View>
                                         :
-                                        <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(prevState => ({ ...prevState, children: prevState.children + 1 }))}>
+                                        <TouchableOpacity style={styles.addBtn} onPress={() => setFormValue(prevState => ({ ...prevState, children: prevState.children + 1 }))}>
                                             <Text style={styles.addBtnTxt}>Add</Text>
                                         </TouchableOpacity>
                                     }
@@ -141,22 +179,22 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel }) => {
                                         <Text style={styles.travelSubHdTxt}>Bellow 2 years</Text>
                                     </View>
 
-                                    {isTravel.infants ?
+                                    {formValue.infants ?
                                         <View style={styles.btn}>
-                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, infants: prevState.infants - 1 }))}>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setFormValue(prevState => ({ ...prevState, infants: prevState.infants - 1 }))}>
                                                 <Text style={styles.btnTxt}>-</Text>
                                             </TouchableOpacity>
 
                                             <View style={{ paddingHorizontal: 4 }}>
-                                                <Text style={styles.btnTxt}>{isTravel.infants}</Text>
+                                                <Text style={styles.btnTxt}>{formValue.infants}</Text>
                                             </View>
 
-                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, infants: prevState.infants + 1 }))}>
+                                            <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setFormValue(prevState => ({ ...prevState, infants: prevState.infants + 1 }))}>
                                                 <Text style={styles.btnTxt}>+</Text>
                                             </TouchableOpacity>
                                         </View>
                                         :
-                                        <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(prevState => ({ ...prevState, infants: prevState.infants + 1 }))}>
+                                        <TouchableOpacity style={styles.addBtn} onPress={() => setFormValue(prevState => ({ ...prevState, infants: prevState.infants + 1 }))}>
                                             <Text style={styles.addBtnTxt}>Add</Text>
                                         </TouchableOpacity>
                                     }
@@ -239,6 +277,11 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel }) => {
                         </View>
                     </View>
                 </View>
+
+                {/* search panel */}
+                {isShow && <View style={origin ? styles.searchPanel : destination ? [styles.searchPanel, { alignSelf: "flex-end" }] : {display: "none"}}>
+                    <SearchPanel data={airports} setOuterScrollEnabled={setOuterScrollEnabled} />
+                </View>}
             </View>
         </TouchableWithoutFeedback>
     )
@@ -250,11 +293,13 @@ const styles = StyleSheet.create({
     main: {
         marginTop: 10,
         marginBottom: 10,
+        flex: 1,
     },
     topWrap: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        columnGap: 20,
     },
     img: {
         width: 20,
@@ -280,12 +325,40 @@ const styles = StyleSheet.create({
         fontSize: 17,
         marginVertical: 8,
     },
+    inputSearch: {
+        color: b1,
+        fontFamily: 'NunitoSans_10pt-SemiBold',
+        fontSize: 17,
+        height: 40,
+        width: "100%",
+    },
     left: {
-        // borderWidth: 1
+        // borderWidth: 1,
     },
     right: {
         alignItems: "flex-end",
-        zIndex: -1
+        zIndex: -1,
+    },
+    searchPanel: {
+        width: width / 1.4,
+        position: "absolute",
+        backgroundColor: "#f5f5f5",
+        // top: Platform.OS === "ios" ? -149 : -163,
+        top: Platform.OS === "ios" ? 79 : 83,
+        shadowColor: black,
+        shadowOffset: {
+            width: 2,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
+        paddingVertical: 8,
+        paddingHorizontal: 6,
+        borderRadius: 4,
+        height: Platform.OS === "ios" ? height / 2.3 : height / 2,
+        overflow: "hidden",
+        flex: 1,
     },
     btmBrdr: {
         backgroundColor: b3,
