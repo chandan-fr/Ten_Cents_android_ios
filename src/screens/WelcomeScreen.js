@@ -1,6 +1,7 @@
-import { Alert, Dimensions, Image, ImageBackground, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import { Alert, Dimensions, Image, ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { blueShade1, blueShade2, bs1, white } from '../config/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,9 +15,23 @@ const WelcomeScreen = ({ navigation }) => {
       setcurInd(curInd + 1);
       ref.current?.scrollTo({ animated: true, x: width * (Number(curInd) + 1) });
     } else {
+      setWelcomeScreenVisibleValue();
       navigation.replace("tab");
     }
   };
+
+  const setWelcomeScreenVisibleValue = () => AsyncStorage.setItem("@wlcmscrn", "true");
+
+  const getWelcomeScreenVisibleValue = async () => {
+    const isShow = await AsyncStorage.getItem("@wlcmscrn");
+    if (isShow === "true") navigation.replace("tab");
+  };
+
+  useEffect(() => {
+    const callAsync = async () => await getWelcomeScreenVisibleValue();
+
+    callAsync();
+  }, []);
 
   return (
     <View style={styles.parent}>
@@ -31,7 +46,7 @@ const WelcomeScreen = ({ navigation }) => {
           resizeMode='cover'
           style={styles.imgBkgrnd}
         >
-          <TouchableOpacity style={styles.skipWrap} onPress={() => navigation.replace("tab")}>
+          <TouchableOpacity style={styles.skipWrap} onPress={() => { setWelcomeScreenVisibleValue(); navigation.replace("tab") }}>
             <Text style={styles.skip}>Skip</Text>
           </TouchableOpacity>
 
@@ -99,7 +114,7 @@ const WelcomeScreen = ({ navigation }) => {
                   </TouchableOpacity>
 
                   <View style={{ marginHorizontal: 30, alignItems: "center", marginTop: 15, }}>
-                    <Text style={[styles.s2SigninText, {fontSize: Platform.OS === "ios" ? 16 : 14}]}>Already have an account?
+                    <Text style={[styles.s2SigninText, { fontSize: Platform.OS === "ios" ? 16 : 14 }]}>Already have an account?
                       <Text onPress={() => Alert.alert("hi")} style={{ color: blueShade1 }}> Sign In</Text>
                     </Text>
                   </View>

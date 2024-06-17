@@ -2,17 +2,20 @@ import { Dimensions, Image, Keyboard, StyleSheet, Text, TextInput, TouchableOpac
 import React, { useState } from 'react'
 import { b1, b3, black, blue, w1, white } from '../../../config/colors';
 import icon from '../../../config/IconAssets';
-import { airports } from '../../../config/StaticVars';
 import SearchPanel from './SearchPanel';
+import { useDispatch } from 'react-redux';
+import { getAirportCodes } from '../../../services/slices/FlightSlice';
 
 const { width, height } = Dimensions.get("window");
 
 const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFormValue, setOuterScrollEnabled }) => {
     const [isClass, setIsClass] = useState(dest === "opt2" ? "1 Room" : "Economy");
-    const airportLocationURL = "http://127.0.0.1/api/airports?keyword=del";
     const [origin, setOrigin] = useState("");
+    const [determiner, setDeterminer] = useState("");
     const [isShow, setIsShow] = useState(false);
     const [destination, setDestination] = useState("");
+
+    const dispatch = useDispatch();
 
     const [openClass, setOpenClass] = useState(false);
 
@@ -23,15 +26,15 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
     };
 
     const handleOrigin = (value) => {
-        console.log(value);
         setOrigin(value.toUpperCase());
         setFormValue({ ...formValue, originLocationCode: value.toUpperCase() });
+        searchAirportCodes(value);
     };
 
     const handleDestination = (value) => {
-        console.log(value);
         setDestination(value.toUpperCase());
         setFormValue({ ...formValue, destinationLocationCode: value.toUpperCase() });
+        searchAirportCodes(value);
     };
 
     const swapDestinationOrigin = () => {
@@ -39,6 +42,10 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
         setOrigin(formValue.destinationLocationCode);
         setDestination(formValue.originLocationCode);
         setFormValue({ ...formValue, originLocationCode: formValue.destinationLocationCode, destinationLocationCode: temp });
+    };
+
+    const searchAirportCodes = (searchKey) => {
+        dispatch(getAirportCodes({ searchKey }));
     };
 
     return (
@@ -55,7 +62,7 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
                             placeholderTextColor={b1}
                             value={origin}
                             onChangeText={handleOrigin}
-                            onFocus={() => setIsShow(true)}
+                            onFocus={() => { setIsShow(true); setDeterminer("origin") }}
                         // onBlur={()=> setIsShow(false)}
                         />
 
@@ -75,7 +82,7 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
                             placeholderTextColor={b1}
                             value={destination}
                             onChangeText={handleDestination}
-                            onFocus={() => setIsShow(true)}
+                            onFocus={() => { setIsShow(true); setDeterminer("destination") }}
                         // onBlur={()=> setIsShow(false)}
                         />
 
@@ -279,8 +286,8 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
                 </View>
 
                 {/* search panel */}
-                {isShow && <View style={origin ? styles.searchPanel : destination ? [styles.searchPanel, { alignSelf: "flex-end" }] : {display: "none"}}>
-                    <SearchPanel data={airports} setOuterScrollEnabled={setOuterScrollEnabled} />
+                {isShow && <View style={determiner === "origin" ? styles.searchPanel : [styles.searchPanel, { alignSelf: "flex-end" }]}>
+                    <SearchPanel setOuterScrollEnabled={setOuterScrollEnabled} />
                 </View>}
             </View>
         </TouchableWithoutFeedback>
@@ -343,7 +350,6 @@ const styles = StyleSheet.create({
         width: width / 1.4,
         position: "absolute",
         backgroundColor: "#f5f5f5",
-        // top: Platform.OS === "ios" ? -149 : -163,
         top: Platform.OS === "ios" ? 79 : 83,
         shadowColor: black,
         shadowOffset: {
@@ -357,8 +363,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 6,
         borderRadius: 4,
         height: Platform.OS === "ios" ? height / 2.3 : height / 2,
-        overflow: "hidden",
-        flex: 1,
     },
     btmBrdr: {
         backgroundColor: b3,

@@ -108,6 +108,8 @@ const airports = [
         "iataCode": "GLH",
         "country": "UNITED STATES OF AMERICA"
     }
-]
+];
 
-module.exports = { hpData, flightData, airports };
+const _Base_URL = "http://195.35.36.25:3000/api";
+
+module.exports = { hpData, flightData, airports, _Base_URL };
