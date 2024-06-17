@@ -53,7 +53,7 @@ const RoundTrip = ({ navigation, dest, src, openTravel, setOpenTravel }) => {
                     <View style={styles.left}>
                         <Text style={styles.tbTxt}>Depart</Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("traveldate")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("traveldate", { src: "roundtrip" })}>
                             <Text style={styles.midTxt}>Select Date</Text>
                         </TouchableOpacity>
 

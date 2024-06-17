@@ -4,16 +4,15 @@ import { b1, black, white } from '../../../config/colors';
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
-const SearchPanel = ({ setOuterScrollEnabled }) => {
+const SearchPanel = ({ setOuterScrollEnabled, setLocation }) => {
     const { airport_codes } = useSelector(state => state.flightSlice);
 
     return (
         <View style={{ flex: 1 }}>
             <GestureHandlerRootView style={{ flex: 1, justifyContent: "center" }}>
                 {airport_codes.length ? <FlatList
-                    // style={{ flex: 1 }}
                     data={airport_codes}
-                    nestedScrollEnabled={true}
+                    // nestedScrollEnabled={true}
                     onTouchStart={() => setOuterScrollEnabled(false)}
                     onMomentumScrollEnd={() => setOuterScrollEnabled(true)}
                     onScrollEndDrag={() => setOuterScrollEnabled(true)}
@@ -23,6 +22,7 @@ const SearchPanel = ({ setOuterScrollEnabled }) => {
                     renderItem={({ item, index }) => (
                         <TouchableOpacity
                             style={styles.airportNameWrap}
+                            onPress={()=> setLocation(item)}
                         >
                             <Text>Name: {item.name}</Text>
                             <Text>Code: {item.iataCode}</Text>

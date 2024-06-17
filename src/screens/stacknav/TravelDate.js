@@ -1,19 +1,19 @@
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { b1, b2, b3, black, blue, white } from '../../config/colors';
 import { genCurrentDate } from '../../config/CurrentDate';
 import CalendarPicker from "react-native-calendar-picker";
 
-const TravelDate = ({ navigation }) => {
+const TravelDate = ({ navigation, route }) => {
     const today = new Date();
-    const nxtMonth = new Date(2024, today.getMonth() + 1, 1).toString();
+    const nxtMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1).toString();
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     const startOfNxtMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
     const endOfNxtMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
 
     return (
-        <SafeAreaView style={styles.parent}>
+        <View style={styles.parent}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.wrap}>
                 {/* nav head */}
@@ -36,7 +36,7 @@ const TravelDate = ({ navigation }) => {
                     <View style={{ borderWidth: 0, flex: 1, marginHorizontal: 10 }}>
                         <CalendarPicker
                             weekdays={["S", "M", "T", "W", "T", "F", "S"]}
-                            allowRangeSelection={true}
+                            allowRangeSelection={route?.params.src === "oneway" ? false : true}
                             textStyle={styles.calTxtStl}
                             todayBackgroundColor={"transparent"}
                             restrictMonthNavigation={true}
@@ -48,23 +48,26 @@ const TravelDate = ({ navigation }) => {
                             selectedRangeEndStyle={{ backgroundColor: blue, borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                             selectedRangeStartTextStyle={{ color: white }}
                             selectedRangeEndTextStyle={{ color: white }}
+                            onDateChange={(e) => console.log(e)}
                         />
 
-                        <View style={{ marginVertical: 15, }} />
+                        <View style={{ marginVertical: 8 }} />
 
                         <CalendarPicker
                             initialDate={nxtMonth}
                             weekdays={["S", "M", "T", "W", "T", "F", "S"]}
-                            allowRangeSelection={true}
+                            allowRangeSelection={route?.params.src === "oneway" ? false : true}
                             textStyle={styles.calTxtStl}
                             minDate={startOfNxtMonth}
                             maxDate={endOfNxtMonth}
                             restrictMonthNavigation={true}
+                            dayShape={"square"}
                             selectedRangeStyle={{ backgroundColor: "rgba(33, 180, 226, 0.3)" }}
                             selectedRangeStartStyle={{ backgroundColor: blue, borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
                             selectedRangeEndStyle={{ backgroundColor: blue, borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                             selectedRangeStartTextStyle={{ color: white }}
                             selectedRangeEndTextStyle={{ color: white }}
+                            onDateChange={(e) => console.log(e)}
                         />
                     </View>
 
@@ -75,7 +78,7 @@ const TravelDate = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
     parent: { flex: 1, backgroundColor: white },
     wrap: { flex: 1 },
     nav: {
-        marginTop: 40,
+        marginTop: Platform.OS === "ios" ? 65 : 50,
         marginLeft: 15,
         flexDirection: "row",
         alignItems: 'center',
@@ -113,6 +116,13 @@ const styles = StyleSheet.create({
         marginTop: 15,
         borderRadius: 5,
         marginBottom: 5,
+        shadowColor: black,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
     },
     curDateTxt: {
         color: b1,

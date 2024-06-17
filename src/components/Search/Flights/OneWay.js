@@ -48,6 +48,18 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
         dispatch(getAirportCodes({ searchKey }));
     };
 
+    const setLocation = (data) => {
+        if (determiner === "origin") {
+            setFormValue({ ...formValue, originLocationCode: data?.iataCode });
+            setOrigin(data?.iataCode);
+        } else {
+            setDestination(data?.iataCode);
+            setFormValue({ ...formValue, destinationLocationCode: data?.iataCode });
+        }
+        setIsShow(false);
+        setOuterScrollEnabled(true);
+    };
+
     return (
         <TouchableWithoutFeedback onPress={() => { setOpenTravel(false); Keyboard.dismiss() }}>
             <View style={styles.main}>
@@ -97,7 +109,7 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
                     <View style={styles.left}>
                         <Text style={styles.tbTxt}>Depart</Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("traveldate")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("traveldate", { src: "oneway" })}>
                             <Text style={styles.midTxt}>Select Date</Text>
                         </TouchableOpacity>
 
@@ -287,7 +299,7 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
 
                 {/* search panel */}
                 {isShow && <View style={determiner === "origin" ? styles.searchPanel : [styles.searchPanel, { alignSelf: "flex-end" }]}>
-                    <SearchPanel setOuterScrollEnabled={setOuterScrollEnabled} />
+                    <SearchPanel setOuterScrollEnabled={setOuterScrollEnabled} setLocation={setLocation} />
                 </View>}
             </View>
         </TouchableWithoutFeedback>
