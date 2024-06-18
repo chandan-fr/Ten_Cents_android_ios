@@ -1,10 +1,10 @@
 import { FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { b1, b3, black, blue, w1, white } from '../../../config/colors';
+import { b1, b3, black, blue, red, w1, white } from '../../../config/colors';
 import icon from '../../../config/IconAssets';
 
 
-const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, setMultiFlightDataFlight }) => {
+const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, setMultiFlightData }) => {
     const [isClass, setIsClass] = useState("Economy");
     const [isTravel, setIsTravel] = useState({ adult: 1, children: 0, infants: 0 });
     const [openClass, setOpenClass] = useState(false);
@@ -13,6 +13,13 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
         setIsClass(name);
         setOpenClass(false);
     };
+
+    const removeFlight = (i) => {
+        if (i !== 0) {
+            const updatedData = multiFlightData.filter((_, index) => i !== index);
+            setMultiFlightData(updatedData);
+        }
+    }
 
     // useEffect(() => {
     //     setMultiFlightData()
@@ -27,7 +34,18 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item, index }) => (
                         <View style={[styles.main, { marginTop: index ? 0 : -25, zIndex: index === 0 ? 1 : -6 }]}>
-                            <Text style={styles.fHdTxt}>Flight {index + 1}</Text>
+                            {/* flight index */}
+                            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                                <Text style={styles.fHdTxt}>Flight {index + 1}</Text>
+
+                                <TouchableOpacity
+                                    style={{ alignSelf: "flex-end", marginBottom: 8, padding: 5, backgroundColor: w1, borderRadius: 4 }}
+                                    onPress={() => removeFlight(index)}
+                                >
+                                    <Image style={{ width: 15, height: 15, tintColor: red }} source={icon.cross} />
+                                </TouchableOpacity>
+                            </View>
+
                             {/* top selection row */}
                             <View style={styles.topWrap}>
                                 <View style={styles.left}>

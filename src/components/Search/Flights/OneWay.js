@@ -14,10 +14,9 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
     const [determiner, setDeterminer] = useState("");
     const [isShow, setIsShow] = useState(false);
     const [destination, setDestination] = useState("");
+    const [openClass, setOpenClass] = useState(false);
 
     const dispatch = useDispatch();
-
-    const [openClass, setOpenClass] = useState(false);
 
     const handleClass = (name) => {
         setIsClass(name);
@@ -109,8 +108,12 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
                     <View style={styles.left}>
                         <Text style={styles.tbTxt}>Depart</Text>
 
-                        <TouchableOpacity onPress={() => navigation.navigate("traveldate", { src: "oneway" })}>
-                            <Text style={styles.midTxt}>Select Date</Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("traveldate", { src: "depart", setFormValue: setFormValue, formValue: formValue });
+                            }}
+                        >
+                            <Text style={styles.midTxt}>{formValue.departureDate ? formValue.departureDate : "Select Date"}</Text>
                         </TouchableOpacity>
 
                         <Text style={styles.tbTxt}>Day</Text>
@@ -299,7 +302,7 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
 
                 {/* search panel */}
                 {isShow && <View style={determiner === "origin" ? styles.searchPanel : [styles.searchPanel, { alignSelf: "flex-end" }]}>
-                    <SearchPanel setOuterScrollEnabled={setOuterScrollEnabled} setLocation={setLocation} />
+                    <SearchPanel setOuterScrollEnabled={setOuterScrollEnabled} setLocation={setLocation} setIsShow={setIsShow} />
                 </View>}
             </View>
         </TouchableWithoutFeedback>

@@ -1,14 +1,22 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { b1, black, white } from '../../../config/colors';
+import { b1, black, red, white } from '../../../config/colors';
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import icon from '../../../config/IconAssets';
 
-const SearchPanel = ({ setOuterScrollEnabled, setLocation }) => {
+const SearchPanel = ({ setOuterScrollEnabled, setLocation, setIsShow }) => {
     const { airport_codes } = useSelector(state => state.flightSlice);
 
     return (
         <View style={{ flex: 1 }}>
+            <TouchableOpacity
+                style={{ alignSelf: "flex-end", marginBottom: 8, padding: 5, backgroundColor: white, borderRadius: 4 }}
+                onPress={() => setIsShow(false)}
+            >
+                <Image style={{ width: 15, height: 15, tintColor: red }} source={icon.cross} />
+            </TouchableOpacity>
+
             <GestureHandlerRootView style={{ flex: 1, justifyContent: "center" }}>
                 {airport_codes.length ? <FlatList
                     data={airport_codes}
@@ -22,7 +30,7 @@ const SearchPanel = ({ setOuterScrollEnabled, setLocation }) => {
                     renderItem={({ item, index }) => (
                         <TouchableOpacity
                             style={styles.airportNameWrap}
-                            onPress={()=> setLocation(item)}
+                            onPress={() => setLocation(item)}
                         >
                             <Text>Name: {item.name}</Text>
                             <Text>Code: {item.iataCode}</Text>
@@ -32,7 +40,7 @@ const SearchPanel = ({ setOuterScrollEnabled, setLocation }) => {
                 />
                     :
                     <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <Text style={{color: b1, fontFamily: 'NunitoSans_10pt-SemiBold', fontSize: 17}}>No Cities Found!</Text>
+                        <Text style={{ color: b1, fontFamily: 'NunitoSans_10pt-SemiBold', fontSize: 17 }}>No Cities Found!</Text>
                     </View>
                 }
             </GestureHandlerRootView>

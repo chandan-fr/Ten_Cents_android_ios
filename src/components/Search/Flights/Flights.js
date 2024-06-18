@@ -15,7 +15,17 @@ const Flights = ({ navigation, data, width, height }) => {
     const [selectedMidMenu, setSelectedMidMenu] = useState("o");
     const [openTravel, setOpenTravel] = useState(false);
     const [multiFlightData, setMultiFlightData] = useState([flightData]);
-    const [formValue, setFormValue] = useState({ originLocationCode: "DAC", destinationLocationCode: "DXC", departureDate: "", returnDate: "", adults: 1, children: 0, infants: 0, travelClass: "Economy" });
+    const [formValue, setFormValue] = useState({
+        originLocationCode: "",
+        destinationLocationCode: "",
+        departureDate: "",
+        returnDate: "",
+        adults: 1,
+        children: 0,
+        infants: 0,
+        travelClass: "Economy",
+
+    });
     const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
 
     const addFlight = () => {
@@ -45,7 +55,7 @@ const Flights = ({ navigation, data, width, height }) => {
                             <View style={styles.mmContWrap}>
                                 <TouchableOpacity
                                     style={selectedMidMenu == "o" ? styles.mmBtnActive : styles.mmBtn}
-                                    onPress={() => setSelectedMidMenu("o")}
+                                    onPress={() => {setSelectedMidMenu("o"); setFormValue({...formValue, returnDate: "" })}}
                                 >
                                     <Text style={selectedMidMenu == "o" ? styles.mmBtnTxtActive : styles.mmBtnTxt}>
                                         One-way
@@ -87,6 +97,7 @@ const Flights = ({ navigation, data, width, height }) => {
                                     setOpenTravel={setOpenTravel}
                                     formValue={formValue}
                                     setFormValue={setFormValue}
+                                    setOuterScrollEnabled={setOuterScrollEnabled}
                                 />}
                                 {/* {selectedMidMenu === "m" && <MultiCity />} */}
                             </View>

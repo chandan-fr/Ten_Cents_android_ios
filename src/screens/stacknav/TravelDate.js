@@ -1,16 +1,29 @@
 import { Image, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { b1, b2, b3, black, blue, white } from '../../config/colors';
+import { b1, b2, black, blue, white } from '../../config/colors';
 import { genCurrentDate } from '../../config/CurrentDate';
 import CalendarPicker from "react-native-calendar-picker";
 
 const TravelDate = ({ navigation, route }) => {
+    const { src, setFormValue, formValue } = route?.params;
     const today = new Date();
     const nxtMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1).toString();
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     const startOfNxtMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
     const endOfNxtMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+
+    const handleDateChange = (date) => {
+        if(src === "depart"){
+            setFormValue({...formValue, departureDate: date.toISOString().split("T")[0] });
+        }else{
+            setFormValue({...formValue, returnDate: date.toISOString().split("T")[0] });
+        }
+    };
+
+    // const onPressBack = ()=>{
+    //     navigation.navigate(route.)
+    // }
 
     return (
         <View style={styles.parent}>
@@ -36,7 +49,7 @@ const TravelDate = ({ navigation, route }) => {
                     <View style={{ borderWidth: 0, flex: 1, marginHorizontal: 10 }}>
                         <CalendarPicker
                             weekdays={["S", "M", "T", "W", "T", "F", "S"]}
-                            allowRangeSelection={route?.params.src === "oneway" ? false : true}
+                            // allowRangeSelection={src === "oneway" ? false : true}
                             textStyle={styles.calTxtStl}
                             todayBackgroundColor={"transparent"}
                             restrictMonthNavigation={true}
@@ -48,7 +61,7 @@ const TravelDate = ({ navigation, route }) => {
                             selectedRangeEndStyle={{ backgroundColor: blue, borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                             selectedRangeStartTextStyle={{ color: white }}
                             selectedRangeEndTextStyle={{ color: white }}
-                            onDateChange={(e) => console.log(e)}
+                            onDateChange={handleDateChange}
                         />
 
                         <View style={{ marginVertical: 8 }} />
@@ -56,7 +69,7 @@ const TravelDate = ({ navigation, route }) => {
                         <CalendarPicker
                             initialDate={nxtMonth}
                             weekdays={["S", "M", "T", "W", "T", "F", "S"]}
-                            allowRangeSelection={route?.params.src === "oneway" ? false : true}
+                            // allowRangeSelection={route?.params.src === "oneway" ? false : true}
                             textStyle={styles.calTxtStl}
                             minDate={startOfNxtMonth}
                             maxDate={endOfNxtMonth}
@@ -67,7 +80,7 @@ const TravelDate = ({ navigation, route }) => {
                             selectedRangeEndStyle={{ backgroundColor: blue, borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                             selectedRangeStartTextStyle={{ color: white }}
                             selectedRangeEndTextStyle={{ color: white }}
-                            onDateChange={(e) => console.log(e)}
+                            onDateChange={handleDateChange}
                         />
                     </View>
 
