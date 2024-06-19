@@ -14,10 +14,19 @@ const TravelDate = ({ navigation, route }) => {
     const endOfNxtMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
 
     const handleDateChange = (date) => {
-        if(src === "depart"){
-            setFormValue({...formValue, departureDate: date.toISOString().split("T")[0] });
-        }else{
-            setFormValue({...formValue, returnDate: date.toISOString().split("T")[0] });
+        if (src === "depart") {
+            setFormValue({ ...formValue, departureDate: date.toISOString().split("T")[0] });
+        } else if (src === "multi") {
+            setFormValue(prevState => {
+                const updatedData = [...prevState];
+                updatedData[route?.params?.index] = {
+                    ...updatedData[route?.params?.index],
+                    departureDate: date.toISOString().split("T")[0]
+                };
+                return updatedData;
+            })
+        } else {
+            setFormValue({ ...formValue, returnDate: date.toISOString().split("T")[0] });
         }
     };
 

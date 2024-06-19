@@ -35,7 +35,8 @@ const Flights = ({ navigation, data, width, height }) => {
     };
 
     const handleformValue = () => {
-        console.log(formValue);
+        // console.log(formValue);
+        console.log(multiFlightData);
     };
 
     return (
@@ -55,7 +56,7 @@ const Flights = ({ navigation, data, width, height }) => {
                             <View style={styles.mmContWrap}>
                                 <TouchableOpacity
                                     style={selectedMidMenu == "o" ? styles.mmBtnActive : styles.mmBtn}
-                                    onPress={() => {setSelectedMidMenu("o"); setFormValue({...formValue, returnDate: "" })}}
+                                    onPress={() => { setSelectedMidMenu("o"); setFormValue({ ...formValue, returnDate: "" }) }}
                                 >
                                     <Text style={selectedMidMenu == "o" ? styles.mmBtnTxtActive : styles.mmBtnTxt}>
                                         One-way
@@ -105,10 +106,9 @@ const Flights = ({ navigation, data, width, height }) => {
 
                         {selectedMidMenu === "m" && <MultiCity
                             navigation={navigation}
-                            openTravel={openTravel}
-                            setOpenTravel={setOpenTravel}
                             multiFlightData={multiFlightData}
                             setMultiFlightData={setMultiFlightData}
+                            setOuterScrollEnabled={setOuterScrollEnabled}
                         />
                         }
 

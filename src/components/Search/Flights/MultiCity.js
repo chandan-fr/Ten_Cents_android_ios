@@ -1,17 +1,51 @@
-import { FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Dimensions, FlatList, Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { b1, b3, black, blue, red, w1, white } from '../../../config/colors';
 import icon from '../../../config/IconAssets';
+import { useDispatch } from 'react-redux';
+import { getAirportCodes } from '../../../services/slices/FlightSlice';
+import SearchPanel from './SearchPanel';
 
+const { width, height } = Dimensions.get("window");
 
-const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, setMultiFlightData }) => {
-    const [isClass, setIsClass] = useState("Economy");
-    const [isTravel, setIsTravel] = useState({ adult: 1, children: 0, infants: 0 });
-    const [openClass, setOpenClass] = useState(false);
+const MultiCity = ({ navigation, multiFlightData, setMultiFlightData, setOuterScrollEnabled }) => {
+    const [curIndex, setCurIndex] = useState(null);
+    const [determiner, setDeterminer] = useState("");
 
-    const handleClass = (name) => {
-        setIsClass(name);
-        setOpenClass(false);
+    const dispatch = useDispatch();
+
+    const handleClass = (name, index) => {
+        setMultiFlightData(prevState => {
+            const updatedData = [...prevState];
+            updatedData[index] = {
+                ...updatedData[index],
+                travelClass: name,
+                openClass: false,
+            };
+            return updatedData;
+        });
+    };
+
+    const handleTravellers = () => {
+        setMultiFlightData(prevState => {
+            const updatedData = [...prevState];
+            updatedData[curIndex] = {
+                ...updatedData[curIndex],
+                openTravel: false,
+            };
+            return updatedData;
+        });
+    };
+
+    const handleSearchPanel = (index) => {
+        setMultiFlightData(prevState => {
+            const updatedData = [...prevState];
+            updatedData[index] = {
+                ...updatedData[index],
+                isShow: true,
+            };
+            return updatedData;
+        });
     };
 
     const removeFlight = (i) => {
@@ -19,55 +53,131 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
             const updatedData = multiFlightData.filter((_, index) => i !== index);
             setMultiFlightData(updatedData);
         }
-    }
+    };
+
+    const swapDestinationOrigin = (index) => {
+        setMultiFlightData(prevState => {
+            const updatedData = [...prevState];
+            let temp = updatedData[index].originLocationCode;
+            updatedData[index] = {
+                ...updatedData[index],
+                originLocationCode: updatedData[index].destinationLocationCode,
+                destinationLocationCode: temp,
+            };
+            return updatedData;
+        });
+    };
+
+    const searchAirportCodes = (searchKey) => {
+        dispatch(getAirportCodes({ searchKey }));
+    };
+
+    const setLocation = (data, index) => {
+        if (determiner === "origin") {
+            setMultiFlightData(prevState => {
+                const updatedData = [...prevState];
+                updatedData[index] = {
+                    ...updatedData[index],
+                    originLocationCode: data?.iataCode,
+                    isShow: false,
+                };
+                return updatedData;
+            });
+        } else {
+            setMultiFlightData(prevState => {
+                const updatedData = [...prevState];
+                updatedData[index] = {
+                    ...updatedData[index],
+                    destinationLocationCode: data?.iataCode,
+                    isShow: false,
+                };
+                return updatedData;
+            });
+        }
+        setOuterScrollEnabled(true);
+    };
 
     // useEffect(() => {
     //     setMultiFlightData()
     // }, []);
 
     return (
-        <TouchableWithoutFeedback onPress={() => setOpenTravel(false)}>
+        <TouchableWithoutFeedback
+            onPress={() => handleTravellers()}
+        >
             <View>
                 <FlatList
                     data={multiFlightData}
                     keyExtractor={(_, i) => i}
                     showsVerticalScrollIndicator={false}
                     renderItem={({ item, index }) => (
-                        <View style={[styles.main, { marginTop: index ? 0 : -25, zIndex: index === 0 ? 1 : -6 }]}>
+                        <View style={[styles.main, { marginTop: index ? 0 : -25, }]}>
                             {/* flight index */}
                             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                                 <Text style={styles.fHdTxt}>Flight {index + 1}</Text>
 
-                                <TouchableOpacity
+                                {index !== 0 && <TouchableOpacity
                                     style={{ alignSelf: "flex-end", marginBottom: 8, padding: 5, backgroundColor: w1, borderRadius: 4 }}
                                     onPress={() => removeFlight(index)}
                                 >
                                     <Image style={{ width: 15, height: 15, tintColor: red }} source={icon.cross} />
-                                </TouchableOpacity>
+                                </TouchableOpacity>}
                             </View>
 
                             {/* top selection row */}
                             <View style={styles.topWrap}>
-                                <View style={styles.left}>
+                                {/* origin */}
+                                <View style={[styles.left, { flex: 1 }]}>
                                     <Text style={styles.tbTxt}>From</Text>
 
-                                    <TouchableOpacity>
-                                        <Text style={styles.midTxt}>Enter Location</Text>
-                                    </TouchableOpacity>
+                                    <TextInput
+                                        style={[styles.inputSearch, { paddingLeft: 0 }]}
+                                        placeholder='Enter Location'
+                                        placeholderTextColor={b1}
+                                        value={item.originLocationCode}
+                                        onChangeText={value => {
+                                            setMultiFlightData(prevState => {
+                                                const updatedData = [...prevState];
+                                                updatedData[index] = {
+                                                    ...updatedData[index],
+                                                    originLocationCode: value,
+                                                };
+                                                return updatedData;
+                                            });
+                                            searchAirportCodes(value);
+                                        }}
+                                        onFocus={() => { handleSearchPanel(index); setDeterminer("origin") }}
+                                    />
 
                                     <Text style={styles.tbTxt}>Origin</Text>
                                 </View>
 
-                                <TouchableOpacity style={styles.imgWrap}>
+                                <TouchableOpacity style={styles.imgWrap} onPress={() => swapDestinationOrigin(index)}>
                                     <Image style={styles.img} source={icon.exchange} />
                                 </TouchableOpacity>
 
-                                <View style={styles.right}>
+                                {/* destination */}
+                                <View style={[styles.right, { flex: 1 }]}>
                                     <Text style={styles.tbTxt}>Destination</Text>
 
-                                    <TouchableOpacity>
-                                        <Text style={styles.midTxt}>Enter Location</Text>
-                                    </TouchableOpacity>
+                                    <TextInput
+                                        style={[styles.inputSearch, { textAlign: "right", paddingRight: 0 }]}
+                                        placeholder='Enter Location'
+                                        placeholderTextColor={b1}
+                                        value={item.destinationLocationCode}
+                                        onChangeText={value => {
+                                            setMultiFlightData(prevState => {
+                                                const updatedData = [...prevState];
+                                                updatedData[index] = {
+                                                    ...updatedData[index],
+                                                    destinationLocationCode: value,
+                                                };
+                                                return updatedData;
+                                            });
+                                            searchAirportCodes(value);
+                                        }}
+                                        onFocus={() => { handleSearchPanel(index); setDeterminer("destination") }}
+                                    />
 
                                     <Text style={styles.tbTxt}>Destination</Text>
                                 </View>
@@ -80,8 +190,12 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                                 <View style={styles.left}>
                                     <Text style={styles.tbTxt}>Depart</Text>
 
-                                    <TouchableOpacity onPress={() => navigation.navigate("traveldate")}>
-                                        <Text style={styles.midTxt}>Select Date</Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            navigation.navigate("traveldate", { src: "multi", index: index, setFormValue: setMultiFlightData, formValue: multiFlightData });
+                                        }}
+                                    >
+                                        <Text style={styles.midTxt}>{item?.departureDate ? item?.departureDate : "Select Date"}</Text>
                                     </TouchableOpacity>
 
                                     <Text style={styles.tbTxt}>Day</Text>
@@ -97,15 +211,24 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                                     <View style={styles.left}>
                                         <Text style={styles.tbTxt}>Travellers</Text>
 
-                                        <TouchableOpacity onPress={() => setOpenTravel(true)}>
+                                        <TouchableOpacity
+                                            onPress={() => setMultiFlightData(prevState => {
+                                                const updatedData = [...prevState];
+                                                updatedData[index] = {
+                                                    ...updatedData[index],
+                                                    openTravel: true,
+                                                };
+                                                return updatedData;
+                                            })}
+                                        >
                                             <Text style={styles.midTxt}>
-                                                {isTravel.adult + " Adult"}
-                                                {isTravel.children ? ("\n" + `${isTravel.children} Children`) : ""}
-                                                {isTravel.infants ? ("\n" + isTravel.infants + " Infants") : ""}
+                                                {item?.adults + " Adult"}
+                                                {item?.children ? ("\n" + `${item?.children} Children`) : ""}
+                                                {item?.infants ? ("\n" + item?.infants + " Infants") : ""}
                                             </Text>
                                         </TouchableOpacity>
 
-                                        {openTravel && <View style={styles.travlOptnsWrap}>
+                                        {item?.openTravel && <View style={styles.travlOptnsWrap}>
                                             {/* adults */}
                                             <View style={styles.travelContWrap}>
                                                 <View>
@@ -113,22 +236,52 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                                                     <Text style={styles.travelSubHdTxt}>Aged 12+ years</Text>
                                                 </View>
 
-                                                {isTravel.adult > 0 ?
+                                                {item?.adults > 0 ?
                                                     <View style={styles.btn}>
-                                                        <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, adult: prevState.adult - 1 }))}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingHorizontal: 8 }}
+                                                            onPress={() => setMultiFlightData(prevState => {
+                                                                const updatedData = [...prevState];
+                                                                updatedData[index] = {
+                                                                    ...updatedData[index],
+                                                                    adults: updatedData[index].adults > 1 ? updatedData[index].adults - 1 : updatedData[index].adults,
+                                                                };
+                                                                return updatedData;
+                                                            })}
+                                                        >
                                                             <Text style={styles.btnTxt}>-</Text>
                                                         </TouchableOpacity>
 
                                                         <View style={{ paddingHorizontal: 4 }}>
-                                                            <Text style={styles.btnTxt}>{isTravel.adult}</Text>
+                                                            <Text style={styles.btnTxt}>{item?.adults}</Text>
                                                         </View>
 
-                                                        <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, adult: prevState.adult + 1 }))}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingHorizontal: 8 }}
+                                                            onPress={() => setMultiFlightData(prevState => {
+                                                                const updatedData = [...prevState];
+                                                                updatedData[index] = {
+                                                                    ...updatedData[index],
+                                                                    adults: updatedData[index].adults + 1,
+                                                                };
+                                                                return updatedData;
+                                                            })}
+                                                        >
                                                             <Text style={styles.btnTxt}>+</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                     :
-                                                    <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(prevState => ({ ...prevState, adult: prevState.adult + 1 }))}>
+                                                    <TouchableOpacity
+                                                        style={styles.addBtn}
+                                                        onPress={() => setMultiFlightData(prevState => {
+                                                            const updatedData = [...prevState];
+                                                            updatedData[index] = {
+                                                                ...updatedData[index],
+                                                                adults: updatedData[index].adults + 1,
+                                                            };
+                                                            return updatedData;
+                                                        })}
+                                                    >
                                                         <Text style={styles.addBtnTxt}>Add</Text>
                                                     </TouchableOpacity>
                                                 }
@@ -141,22 +294,52 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                                                     <Text style={styles.travelSubHdTxt}>Aged 2-12 years</Text>
                                                 </View>
 
-                                                {isTravel.children ?
+                                                {item?.children ?
                                                     <View style={styles.btn}>
-                                                        <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, children: prevState.children - 1 }))}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingHorizontal: 8 }}
+                                                            onPress={() => setMultiFlightData(prevState => {
+                                                                const updatedData = [...prevState];
+                                                                updatedData[index] = {
+                                                                    ...updatedData[index],
+                                                                    children: updatedData[index].children - 1,
+                                                                };
+                                                                return updatedData;
+                                                            })}
+                                                        >
                                                             <Text style={styles.btnTxt}>-</Text>
                                                         </TouchableOpacity>
 
                                                         <View style={{ paddingHorizontal: 4 }}>
-                                                            <Text style={styles.btnTxt}>{isTravel.children}</Text>
+                                                            <Text style={styles.btnTxt}>{item?.children}</Text>
                                                         </View>
 
-                                                        <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, children: prevState.children + 1 }))}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingHorizontal: 8 }}
+                                                            onPress={() => setMultiFlightData(prevState => {
+                                                                const updatedData = [...prevState];
+                                                                updatedData[index] = {
+                                                                    ...updatedData[index],
+                                                                    children: updatedData[index].children + 1,
+                                                                };
+                                                                return updatedData;
+                                                            })}
+                                                        >
                                                             <Text style={styles.btnTxt}>+</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                     :
-                                                    <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(prevState => ({ ...prevState, children: prevState.children + 1 }))}>
+                                                    <TouchableOpacity
+                                                        style={styles.addBtn}
+                                                        onPress={() => setMultiFlightData(prevState => {
+                                                            const updatedData = [...prevState];
+                                                            updatedData[index] = {
+                                                                ...updatedData[index],
+                                                                children: updatedData[index].children + 1,
+                                                            };
+                                                            return updatedData;
+                                                        })}
+                                                    >
                                                         <Text style={styles.addBtnTxt}>Add</Text>
                                                     </TouchableOpacity>
                                                 }
@@ -169,22 +352,52 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                                                     <Text style={styles.travelSubHdTxt}>Bellow 2 years</Text>
                                                 </View>
 
-                                                {isTravel.infants ?
+                                                {item?.infants ?
                                                     <View style={styles.btn}>
-                                                        <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, infants: prevState.infants - 1 }))}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingHorizontal: 8 }}
+                                                            onPress={() => setMultiFlightData(prevState => {
+                                                                const updatedData = [...prevState];
+                                                                updatedData[index] = {
+                                                                    ...updatedData[index],
+                                                                    infants: updatedData[index].infants - 1,
+                                                                };
+                                                                return updatedData;
+                                                            })}
+                                                        >
                                                             <Text style={styles.btnTxt}>-</Text>
                                                         </TouchableOpacity>
 
                                                         <View style={{ paddingHorizontal: 4 }}>
-                                                            <Text style={styles.btnTxt}>{isTravel.infants}</Text>
+                                                            <Text style={styles.btnTxt}>{item?.infants}</Text>
                                                         </View>
 
-                                                        <TouchableOpacity style={{ paddingHorizontal: 8 }} onPress={() => setIsTravel(prevState => ({ ...prevState, infants: prevState.infants + 1 }))}>
+                                                        <TouchableOpacity
+                                                            style={{ paddingHorizontal: 8 }}
+                                                            onPress={() => setMultiFlightData(prevState => {
+                                                                const updatedData = [...prevState];
+                                                                updatedData[index] = {
+                                                                    ...updatedData[index],
+                                                                    infants: updatedData[index].infants + 1,
+                                                                };
+                                                                return updatedData;
+                                                            })}
+                                                        >
                                                             <Text style={styles.btnTxt}>+</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                     :
-                                                    <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(prevState => ({ ...prevState, infants: prevState.infants + 1 }))}>
+                                                    <TouchableOpacity
+                                                        style={styles.addBtn}
+                                                        onPress={() => setMultiFlightData(prevState => {
+                                                            const updatedData = [...prevState];
+                                                            updatedData[index] = {
+                                                                ...updatedData[index],
+                                                                infants: updatedData[index].infants + 1,
+                                                            };
+                                                            return updatedData;
+                                                        })}
+                                                    >
                                                         <Text style={styles.addBtnTxt}>Add</Text>
                                                     </TouchableOpacity>
                                                 }
@@ -199,42 +412,56 @@ const MultiCity = ({ navigation, openTravel, setOpenTravel, multiFlightData, set
                                             <Image style={styles.imgCls} source={icon.rightArrow} />
                                         </View>
 
-                                        <TouchableOpacity onPress={() => setOpenClass(true)}>
-                                            <Text style={[styles.midTxt, { zIndex: 9, }]}>{isClass}</Text>
+                                        <TouchableOpacity
+                                            onPress={() => setMultiFlightData(prevState => {
+                                                const updatedData = [...prevState];
+                                                updatedData[index] = {
+                                                    ...updatedData[index],
+                                                    openClass: true,
+                                                };
+                                                return updatedData;
+                                            })}
+                                        >
+                                            <Text style={[styles.midTxt, { zIndex: 9, }]}>{item?.travelClass}</Text>
                                         </TouchableOpacity>
 
-                                        {openClass && <View style={styles.classOptnsWrap}>
+                                        {item?.openClass && <View style={styles.classOptnsWrap}>
                                             <TouchableOpacity
-                                                style={isClass === "Economy" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
-                                                onPress={() => handleClass("Economy")}
+                                                style={item?.travelClass === "Economy" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
+                                                onPress={() => handleClass("Economy", index)}
                                             >
-                                                <Text style={isClass === "Economy" ? styles.classOptnTxtActive : styles.classOptnTxt}>Economy</Text>
+                                                <Text style={item?.travelClass === "Economy" ? styles.classOptnTxtActive : styles.classOptnTxt}>Economy</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={isClass === "Premium Economy" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
-                                                onPress={() => handleClass("Premium Economy")}
+                                                style={item?.travelClass === "Premium Economy" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
+                                                onPress={() => handleClass("Premium Economy", index)}
                                             >
-                                                <Text style={isClass === "Premium Economy" ? styles.classOptnTxtActive : styles.classOptnTxt}>Premium Economy</Text>
+                                                <Text style={item?.travelClass === "Premium Economy" ? styles.classOptnTxtActive : styles.classOptnTxt}>Premium Economy</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={isClass === "Business" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
-                                                onPress={() => handleClass("Business")}
+                                                style={item?.travelClass === "Business" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
+                                                onPress={() => handleClass("Business", index)}
                                             >
-                                                <Text style={isClass === "Business" ? styles.classOptnTxtActive : styles.classOptnTxt}>Business</Text>
+                                                <Text style={item?.travelClass === "Business" ? styles.classOptnTxtActive : styles.classOptnTxt}>Business</Text>
                                             </TouchableOpacity>
 
                                             <TouchableOpacity
-                                                style={isClass === "First Class" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
-                                                onPress={() => handleClass("First Class")}
+                                                style={item?.travelClass === "First Class" ? styles.classOptnTxtWrapActive : styles.classOptnTxtWrap}
+                                                onPress={() => handleClass("First Class", index)}
                                             >
-                                                <Text style={isClass === "First Class" ? styles.classOptnTxtActive : styles.classOptnTxt}>First Class</Text>
+                                                <Text style={item?.travelClass === "First Class" ? styles.classOptnTxtActive : styles.classOptnTxt}>First Class</Text>
                                             </TouchableOpacity>
                                         </View>}
                                     </View>
                                 </View>
                             </View>
+
+                            {/* search panel */}
+                            {item?.isShow && <View style={determiner === "origin" ? [styles.searchPanel, { left: 10 }] : [styles.searchPanel, { right: 10 }]}>
+                                <SearchPanel setOuterScrollEnabled={setOuterScrollEnabled} setLocation={setLocation} setMultiFlightData={setMultiFlightData} flightIndex={index} />
+                            </View>}
                         </View>
                     )}
                 />
@@ -289,6 +516,31 @@ const styles = StyleSheet.create({
     right: {
         alignItems: "flex-end",
         zIndex: -1,
+    },
+    inputSearch: {
+        color: b1,
+        fontFamily: 'NunitoSans_10pt-SemiBold',
+        fontSize: 17,
+        height: 40,
+        width: "100%",
+    },
+    searchPanel: {
+        width: width / 1.4,
+        position: "absolute",
+        backgroundColor: "#f5f5f5",
+        top: Platform.OS === "ios" ? 124 : 122,
+        shadowColor: black,
+        shadowOffset: {
+            width: 2,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
+        paddingVertical: 8,
+        paddingHorizontal: 6,
+        borderRadius: 4,
+        height: Platform.OS === "ios" ? height / 2.3 : height / 2,
     },
     btmBrdr: {
         backgroundColor: b3,

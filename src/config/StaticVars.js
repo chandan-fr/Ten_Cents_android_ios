@@ -45,7 +45,18 @@ const hpData = [
     },
 ];
 
-const flightData = { originLocation: "", destinationLocation: "", departDate: "", adults: 1, children: 0, infants: 0, class: "Economy" };
+const flightData = {
+    originLocationCode: "",
+    destinationLocationCode: "",
+    departureDate: "",
+    adults: 1,
+    children: 0,
+    infants: 0,
+    travelClass: "Economy",
+    isShow: false,
+    openClass: false,
+    openTravel: false,
+};
 
 const airports = [
     {

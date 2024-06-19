@@ -5,14 +5,28 @@ import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import icon from '../../../config/IconAssets';
 
-const SearchPanel = ({ setOuterScrollEnabled, setLocation, setIsShow }) => {
+const SearchPanel = ({ setOuterScrollEnabled, setLocation, setIsShow, setMultiFlightData, flightIndex }) => {
     const { airport_codes } = useSelector(state => state.flightSlice);
+
+    const handleClose = () => {
+        if (setMultiFlightData) {
+            setMultiFlightData(prevState => {
+                const updatedData = [...prevState];
+                updatedData[flightIndex] = {
+                    ...updatedData[flightIndex],
+                    isShow: false,
+                };
+                return updatedData;
+            });
+        } else setIsShow(false);
+        setOuterScrollEnabled(true);
+    };
 
     return (
         <View style={{ flex: 1 }}>
             <TouchableOpacity
                 style={{ alignSelf: "flex-end", marginBottom: 8, padding: 5, backgroundColor: white, borderRadius: 4 }}
-                onPress={() => setIsShow(false)}
+                onPress={() => handleClose()}
             >
                 <Image style={{ width: 15, height: 15, tintColor: red }} source={icon.cross} />
             </TouchableOpacity>
@@ -30,7 +44,7 @@ const SearchPanel = ({ setOuterScrollEnabled, setLocation, setIsShow }) => {
                     renderItem={({ item, index }) => (
                         <TouchableOpacity
                             style={styles.airportNameWrap}
-                            onPress={() => setLocation(item)}
+                            onPress={() => setLocation(item, flightIndex)}
                         >
                             <Text>Name: {item.name}</Text>
                             <Text>Code: {item.iataCode}</Text>
