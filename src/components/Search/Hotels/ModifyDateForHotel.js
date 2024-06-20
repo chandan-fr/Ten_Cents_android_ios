@@ -1,14 +1,22 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { b1, b3, blue, w1, white } from '../../../config/colors';
+import { b1, b3, blue, red, w1, white } from '../../../config/colors';
 import icon from '../../../config/IconAssets';
 
-const ModifyDateForHotel = ({ navigation }) => {
+const ModifyDateForHotel = ({ navigation, setIsModify }) => {
     const [isRoom, setIsRoom] = useState(false);
     const [isTravel, setIsTravel] = useState(false);
 
     return (
         <View style={styles.main}>
+            {/* cross button */}
+            <TouchableOpacity
+                style={{ alignSelf: "flex-end", marginBottom: 15, padding: 5, backgroundColor: w1, borderRadius: 4 }}
+                onPress={() => setIsModify(false)}
+            >
+                <Image style={{ width: 15, height: 15, tintColor: red }} source={icon.cross} />
+            </TouchableOpacity>
+
             {/* top selection row */}
             <View style={styles.topWrap}>
                 <View style={styles.left}>

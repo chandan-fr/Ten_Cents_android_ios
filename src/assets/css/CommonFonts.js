@@ -15,12 +15,12 @@ const commonStyles = StyleSheet.create({
     ns600: {
         fontFamily: "NunitoSans_10pt-SemiBold",
         color: b1,
-        fontSize: 16,
+        fontSize: 15,
     },
     ns400: {
         fontFamily: "NunitoSans_10pt-Regular",
         color: b1,
-        fontSize: 14,
+        fontSize: 13,
     },
 });
 

@@ -1,4 +1,4 @@
-import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import BgGradient from '../../../utility/BgGradient';
 import Header from '../../Header';
@@ -16,7 +16,7 @@ const HotelSearches = ({ navigation }) => {
     const [isModify, setIsModify] = useState(false);
 
     return (
-        <SafeAreaView style={styles.parent}>
+        <View style={styles.parent}>
             <BgGradient width={width} height={height * 0.62} />
             <Header />
 
@@ -24,10 +24,10 @@ const HotelSearches = ({ navigation }) => {
                 {/* Travel details */}
                 {isModify ?
                     <View style={[styles.tDetails, { zIndex: 1 }]}>
-                        <ModifyDateForHotel navigation={navigation} />
+                        <ModifyDateForHotel navigation={navigation} setIsModify={setIsModify} />
                     </View>
                     :
-                    <View style={styles.tDetails}>
+                    <View style={[styles.tDetails, { paddingTop: 10 }]}>
                         <Text style={[commonStyles.ns400, { color: b3, lineHeight: 20 }]}>Destination</Text>
 
                         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
@@ -51,7 +51,7 @@ const HotelSearches = ({ navigation }) => {
                 <View style={[styles.hotelItemWrap, isModify ? { marginTop: 10 } : { marginTop: -20, }]}>
                     {/* <View style={styles.bgWhite} /> */}
 
-                    <Text style={[commonStyles.ns700, { fontSize: 24, textAlign: "center" }]}>
+                    <Text style={[commonStyles.ns700, { fontSize: 23, textAlign: "center" }]}>
                         Hotels In Calgary
                     </Text>
 
@@ -103,7 +103,7 @@ const HotelSearches = ({ navigation }) => {
                                 <TouchableOpacity
                                     style={styles.viewall}
                                 >
-                                    <Text style={[commonStyles.lbB1, { fontSize: 22, color: blue }]}>
+                                    <Text style={[commonStyles.lbB1, { fontSize: 20, color: blue }]}>
                                         Show More
                                     </Text>
                                 </TouchableOpacity>
@@ -112,7 +112,7 @@ const HotelSearches = ({ navigation }) => {
                     </View>
 
                     {/* botttom filter */}
-                    <View style={{ backgroundColor: b1, alignItems: "flex-end", justifyContent: "center", paddingVertical: 8, paddingHorizontal: 10 }}>
+                    <View style={{ backgroundColor: b1, alignItems: "flex-end", justifyContent: "center", paddingTop: 8, paddingHorizontal: 10, paddingBottom: Platform.OS === "ios" ? 25 : 8 }}>
                         <TouchableOpacity
                             style={{ borderWidth: 2, borderRadius: 2, borderColor: blue, width: 120, alignItems: "center", justifyContent: "center", paddingVertical: 8, flexDirection: "row", columnGap: 10 }}
                             onPress={() => navigation.navigate("hotelfilter")}
@@ -128,7 +128,7 @@ const HotelSearches = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -137,6 +137,7 @@ export default HotelSearches;
 const styles = StyleSheet.create({
     parent: {
         flex: 1,
+        paddingTop: Platform.OS === "ios" ? 55 : 0,
     },
     body: {
         marginTop: 25,
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
         elevation: 4,
         marginHorizontal: 10,
         paddingHorizontal: 10,
-        paddingVertical: 10
+        paddingBottom: 10,
     },
     hotelItemWrap: {
         borderTopLeftRadius: 12,

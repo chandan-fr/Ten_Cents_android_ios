@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, StatusBar, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, TouchableOpacity, Image, ScrollView, Platform } from 'react-native'
 import React from 'react'
 import icon from '../../../config/IconAssets';
 import commonStyles from '../../../assets/css/CommonFonts';
@@ -7,9 +7,9 @@ import image from '../../../config/ImageAssets';
 
 const HotelFilter = ({ navigation }) => {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
-            <View style={{ flex: 1, marginTop: 45 }}>
+            <View style={{ flex: 1, marginTop: Platform.OS === "ios" ? 65 : 50 }}>
                 {/* nav */}
                 <TouchableOpacity
                     style={styles.nav}
@@ -56,7 +56,7 @@ const HotelFilter = ({ navigation }) => {
 
                             {/* Popular Filters */}
                             <View style={{ paddingHorizontal: 10, marginTop: 8 }}>
-                                <Text style={[commonStyles.ns700, { fontSize: 16 }]}>
+                                <Text style={[commonStyles.ns700, { fontSize: 15 }]}>
                                     Popular Filters
                                 </Text>
 
@@ -97,7 +97,7 @@ const HotelFilter = ({ navigation }) => {
                                     </View>
 
                                     {/* break / 2 lines */}
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: "space-between" }}>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TouchableOpacity style={styles.tick}>
                                                 <Image
@@ -110,7 +110,7 @@ const HotelFilter = ({ navigation }) => {
                                                 <Text style={commonStyles.ns600}>
                                                     Less than 1/2 mile
                                                 </Text>
-                                                <Text style={[commonStyles.ns600, { fontSize: 14 }]}>
+                                                <Text style={[commonStyles.ns600, { fontSize: 12 }]}>
                                                     Distance from center of Calgary
                                                 </Text>
                                             </View>
@@ -1863,11 +1863,11 @@ const HotelFilter = ({ navigation }) => {
                     </ScrollView>
 
                     {/* bottom */}
-                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 10 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 10, paddingBottom: Platform.OS === "ios" ? 25 : 10 }}>
                         <TouchableOpacity
                             style={styles.apply}
                         >
-                            <Text style={[commonStyles.lbB1, { color: white, textTransform: 'uppercase' }]}>
+                            <Text style={[commonStyles.lbB1, { color: white, textTransform: 'uppercase', fontSize: 18 }]}>
                                 Apply
                             </Text>
                         </TouchableOpacity>
@@ -1875,14 +1875,14 @@ const HotelFilter = ({ navigation }) => {
                         <TouchableOpacity
                             style={styles.clear}
                         >
-                            <Text style={[commonStyles.lbB1, { color: b2, textTransform: 'uppercase' }]}>
+                            <Text style={[commonStyles.lbB1, { color: b2, textTransform: 'uppercase', fontSize: 18 }]}>
                                 CLEAR ALL FILTERS
                             </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -1907,15 +1907,15 @@ const styles = StyleSheet.create({
     },
     tick: {
         backgroundColor: blue,
-        width: 25,
-        height: 25,
+        width: 23,
+        height: 23,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 25
     },
     tickImg: {
-        width: 12,
-        height: 12,
+        width: 11,
+        height: 11,
         tintColor: white,
     },
     apply: {
