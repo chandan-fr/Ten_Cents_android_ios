@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import CustomBottomSheet from '../../utility/CustomBtmSheet';
 import { b1, b3, violet, white } from '../../config/colors';
@@ -96,7 +96,7 @@ const Payments = ({ navigation }) => {
     )
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: white }}>
+        <View style={{ flex: 1, backgroundColor: white }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.Wrap}>
                 {/* nav */}
@@ -358,7 +358,7 @@ const Payments = ({ navigation }) => {
                     containerStyle={{ height: 290 }}
                 />
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -367,7 +367,7 @@ export default Payments;
 const styles = StyleSheet.create({
     Wrap: {
         flex: 1,
-        marginTop: 30,
+        marginTop: Platform.OS === "ios" ? 65 : 50,
     },
     lbB1: {
         fontFamily: "LondonBetween",

@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Image, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Dimensions, FlatList, Image, Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { b1, b3, black, blue, red, w1, white } from '../../../config/colors';
 import icon from '../../../config/IconAssets';
@@ -103,7 +103,7 @@ const MultiCity = ({ navigation, multiFlightData, setMultiFlightData, setOuterSc
 
     return (
         <TouchableWithoutFeedback
-            onPress={() => handleTravellers()}
+            onPress={() => { handleTravellers(); Keyboard.dismiss() }}
         >
             <View>
                 <FlatList
@@ -212,14 +212,17 @@ const MultiCity = ({ navigation, multiFlightData, setMultiFlightData, setOuterSc
                                         <Text style={styles.tbTxt}>Travellers</Text>
 
                                         <TouchableOpacity
-                                            onPress={() => setMultiFlightData(prevState => {
-                                                const updatedData = [...prevState];
-                                                updatedData[index] = {
-                                                    ...updatedData[index],
-                                                    openTravel: true,
-                                                };
-                                                return updatedData;
-                                            })}
+                                            onPress={() => {
+                                                setMultiFlightData(prevState => {
+                                                    const updatedData = [...prevState];
+                                                    updatedData[index] = {
+                                                        ...updatedData[index],
+                                                        openTravel: true,
+                                                    };
+                                                    return updatedData;
+                                                });
+                                                setCurIndex(index);
+                                            }}
                                         >
                                             <Text style={styles.midTxt}>
                                                 {item?.adults + " Adult"}

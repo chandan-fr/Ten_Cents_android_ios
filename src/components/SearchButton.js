@@ -7,9 +7,8 @@ const SearchButton = ({ onBtnPress, navigation, screenName, refName }) => {
     return (
         <View style={styles.main}>
             <TouchableOpacity
-            style={styles.btnWrap}
-            // onPress={() => navigation.navigate(screenName, {refName: refName})}
-            onPress={onBtnPress}
+                style={styles.btnWrap}
+                onPress={() => { navigation.navigate(screenName, { refName: refName }); onBtnPress() }}
             >
                 <Text style={styles.btnText}>Search</Text>
             </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { b1, b3, blue, violet, white } from '../../config/colors';
 
@@ -8,7 +8,7 @@ const Success = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#EFF2F7" }}>
+        <View style={{ flex: 1, backgroundColor: "#EFF2F7" }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
             <View style={styles.Wrap}>
                 <View style={{ alignItems: 'center' }}>
@@ -23,10 +23,10 @@ const Success = ({ navigation }) => {
                     />
                 </View>
 
-                <View style={{ marginHorizontal: 25 }}>
-                    <Text style={[styles.ns400, { fontSize: 20, textAlign: "center", color: b3, lineHeight: 27 }]}>
+                <View style={{ marginHorizontal: Platform.OS === "ios" ? 20 : 4 }}>
+                    <Text style={[styles.ns400, { fontSize: Platform.OS === "ios" ? 20 : 19, textAlign: "center", color: b3, lineHeight: 27 }]}>
                         Your flight has been confirmed for 08 Feb'24. Check details at
-                        <Text onPress={mytrips} style={{ color: violet }}>  My Trips </Text> section.
+                        <Text onPress={mytrips} style={{ color: violet }}> {"\n"} My Trips </Text> section.
                     </Text>
                 </View>
 
@@ -41,7 +41,7 @@ const Success = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 

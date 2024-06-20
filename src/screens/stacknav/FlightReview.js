@@ -887,9 +887,10 @@ const styles = StyleSheet.create({
     viewAll: {
         backgroundColor: blue,
         borderRadius: 4,
-        paddingHorizontal: 25,
+        paddingHorizontal: 22,
         alignItems: "center",
         justifyContent: 'center',
+        paddingVertical: Platform.OS === "ios" ? 10 : 8,
     },
     offers: {
         marginTop: 30,

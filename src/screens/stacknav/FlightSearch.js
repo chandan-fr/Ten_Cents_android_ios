@@ -161,7 +161,7 @@ const FlightSearch = ({ navigation }) => {
                                 style={[styles.filterBtnComn, { backgroundColor: "#848484" }]}
                                 onPress={() => sortRef.current.open()}
                             >
-                                <Text style={[styles.ns600, { color: white }]}>Prices</Text>
+                                <Text style={[styles.ns600, { color: white, fontSize: Platform.OS === "ios" ? 12 : 10 }]}>Prices</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
         paddingLeft: 8,
     },
     filterBtnComn: {
-        paddingHorizontal: 6,
+        paddingHorizontal: 10,
         borderWidth: 1,
         alignItems: "center",
         justifyContent: 'center',
