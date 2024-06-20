@@ -4,6 +4,7 @@ import { b1, b2, black, blue, white } from '../../config/colors';
 import { genCurrentDate } from '../../config/CurrentDate';
 import CalendarPicker from "react-native-calendar-picker";
 
+
 const TravelDate = ({ navigation, route }) => {
     const { src, setFormValue, formValue } = route?.params;
     const today = new Date();

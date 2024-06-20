@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
         borderColor: blue,
         borderWidth: 0.7,
         borderRadius: 5,
-        columnGap: 2
+        columnGap: 2,
     },
     addBtnTxt: {
         color: blue,

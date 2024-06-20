@@ -14,7 +14,7 @@ const HotelPromoOffers = ({ origin, screenName }) => {
 
             <View style={{ marginTop: 5 }}>
                 <View style={{ rowGap: 8 }}>
-                    <Text style={[commonStyles.ns600, { fontSize: 18 }]}>
+                    <Text style={[commonStyles.ns600, { fontSize: 17 }]}>
                         DoubleTree by Hilton Hotel & Suites
                     </Text>
 
@@ -80,16 +80,16 @@ const HotelPromoOffers = ({ origin, screenName }) => {
                             source={icon.location}
                         />
 
-                        <Text style={[commonStyles.ns600, { color: b1, fontSize: 14 }]}>
+                        <Text style={[commonStyles.ns600, { color: b1, fontSize: 13 }]}>
                             New York
                         </Text>
                     </View>
                 </View>
 
-                <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "space-between", marginTop: 10 }}>
                     <View>
                         <View style={{ flexDirection: "row" }}>
-                            <Text style={[commonStyles.ns600, { fontSize: 18 }]}>
+                            <Text style={[commonStyles.ns600, { fontSize: 17 }]}>
                                 $ 631
                             </Text>
                             <Text style={{ color: b1, fontSize: 12, alignSelf: "flex-start", fontFamily: "Arial", top: 3 }}>
@@ -97,7 +97,7 @@ const HotelPromoOffers = ({ origin, screenName }) => {
                             </Text>
                         </View>
 
-                        <Text style={[commonStyles.ns400, { color: b3, fontSize: 14, marginTop: 5 }]}>
+                        <Text style={[commonStyles.ns400, { color: b3, fontSize: 12, marginTop: 5 }]}>
                             Hotel (incl. taxes & fees)
                         </Text>
                     </View>
@@ -105,7 +105,7 @@ const HotelPromoOffers = ({ origin, screenName }) => {
                     <TouchableOpacity
                         style={styles.btn}
                     >
-                        <Text style={[commonStyles.lbB1, { color: white }]}>
+                        <Text style={[commonStyles.lbB1, { color: white, fontSize: 18 }]}>
                             Book
                         </Text>
                     </TouchableOpacity>

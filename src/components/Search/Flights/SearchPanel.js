@@ -46,8 +46,8 @@ const SearchPanel = ({ setOuterScrollEnabled, setLocation, setIsShow, setMultiFl
                             style={styles.airportNameWrap}
                             onPress={() => setLocation(item, flightIndex)}
                         >
-                            <Text>Name: {item.name}</Text>
-                            <Text>Code: {item.iataCode}</Text>
+                            <Text>Airport: {item.name}</Text>
+                            <Text>IATACode: {item.iataCode}</Text>
                             <Text>Country: {item.country}</Text>
                         </TouchableOpacity>
                     )}

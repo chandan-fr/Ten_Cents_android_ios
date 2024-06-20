@@ -1,4 +1,4 @@
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useState } from 'react'
 import SearchButton from '../../SearchButton';
 import { b1, b3, black, blue, white } from '../../../config/colors';
@@ -9,87 +9,115 @@ import commonStyles from '../../../assets/css/CommonFonts';
 
 const Hotels = ({ navigation, data, width, height }) => {
     const [openTravel, setOpenTravel] = useState(false);
+    const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
+    const [hotelData, setHotelData] = useState({
+        destinationLocationCode: "",
+        departureDate: "",
+        returnDate: "",
+        adults: 1,
+        children: 0,
+        infants: 0,
+        travelClass: "1 Room",
+    });
+
+    const handleHotelData = () => {
+        console.log(hotelData);
+    };
 
     return (
-        <TouchableWithoutFeedback style={{flex: 1}} onPress={()=> setOpenTravel(false)}>
-            <View style={{ flex: 1 }}>
-                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
-                    {/* trip option nav bar */}
-                    <View style={styles.mainMenuWrap}>
-                        {/* trip option content */}
-                        <View style={{ marginHorizontal: 10 }}>
-                            <HotelSearchOptn navigation={navigation} openTravel={openTravel} setOpenTravel={setOpenTravel} />
-                        </View>
-                    </View>
-
-                    {/* search button */}
-                    <SearchButton navigation={navigation} screenName={"hotelsearches"} />
-
-                    {/* profile option */}
-                    <View style={{ marginHorizontal: 15, marginTop: 18, zIndex: -1 }}>
-                        <View style={styles.pBarWrap}>
-                            <View style={styles.proLogoWrap}>
-                                <Image style={{ marginHorizontal: 10 }} source={icon.prologo} />
-                                <Text style={styles.proLogoTxt}>Welcome Back, Kevin!</Text>
+        <View style={{ flex: 1 }}>
+            <FlatList
+                data={[1]}
+                scrollEnabled={outerScrollEnabled}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(_, i) => i}
+                renderItem={({ item, index }) => (
+                    <View style={{ flex: 1 }} >
+                        {/* trip option nav bar */}
+                        <View style={styles.mainMenuWrap}>
+                            {/* trip option content */}
+                            <View style={{ marginHorizontal: 10 }}>
+                                <HotelSearchOptn
+                                    navigation={navigation}
+                                    openTravel={openTravel}
+                                    setOpenTravel={setOpenTravel}
+                                    hotelData={hotelData}
+                                    setHotelData={setHotelData}
+                                    width={width}
+                                    setOuterScrollEnabled={setOuterScrollEnabled}
+                                />
                             </View>
-
-                            <Image style={styles.arwImg} source={icon.rightArrow} />
                         </View>
-                    </View>
 
-                    {/* calling option */}
-                    <View style={{ marginHorizontal: 15, marginTop: 18, marginBottom: 10 }}>
-                        <View style={styles.addBarWrap}>
-                            <Image style={{ marginLeft: 7 }} source={icon.proimg} />
+                        {/* search button */}
+                        <SearchButton onBtnPress={handleHotelData} navigation={navigation} screenName={"hotelsearches"} />
 
-                            <View style={{ flex: 1 }}>
-                                <Text style={styles.addTxtB}>Looking for last-minute deals?</Text>
-                                <Text style={styles.addTxt}>Speak to a travel expert and a get assistance 24/7</Text>
-                            </View>
-
-                            <TouchableOpacity style={styles.callImgWrap}>
-                                <Image style={styles.callImg} source={icon.mobile} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {/* deals option */}
-                    <View style={styles.dealWrap}>
-                        <Text style={styles.dealHeadTxt}>Deals of the day</Text>
-
-                        <View style={styles.dealContWrap}>
-                            {data.map((_, i) => (
-                                <View key={i}>
-                                    <HotelPromoOffers />
-                                    {i == data.length - 1 ? <View style={{ marginBottom: 30 }} /> : null}
+                        {/* profile option */}
+                        <View style={{ marginHorizontal: 15, marginTop: 18, zIndex: -1 }}>
+                            <View style={styles.pBarWrap}>
+                                <View style={styles.proLogoWrap}>
+                                    <Image style={{ marginHorizontal: 10 }} source={icon.prologo} />
+                                    <Text style={styles.proLogoTxt}>Welcome Back, Kevin!</Text>
                                 </View>
-                            ))}
+
+                                <Image style={styles.arwImg} source={icon.rightArrow} />
+                            </View>
                         </View>
 
-                        <View style={{ marginHorizontal: 10 }}>
-                            <Text style={[commonStyles.ns400, { color: b3, lineHeight: 19 }]}>
-                                *All fares above were last found on: <Text style={{ color: "#CB3926", fontFamily: "Arial" }}>Oct 02, 2023 at 12:10:59 AM</Text>.
-                                These are based on average nightly rates and airfare includes all fuel surcharges,
-                                taxes & fees and our service fees. Hotels, rental cars and activities may have
-                                additional taxes and fees. Displayed rates are based on historical data,
-                                are subject to change, and cannot be guaranteed at the time of booking.
-                                See all booking <Text onPress={() => Alert.alert("t&c")} style={{ color: blue, fontFamily: "Arial", textDecorationLine: "underline" }}>terms and conditions</Text>
-                            </Text>
+                        {/* calling option */}
+                        <View style={{ marginHorizontal: 15, marginTop: 18, marginBottom: 10 }}>
+                            <View style={styles.addBarWrap}>
+                                <Image style={{ marginLeft: 7 }} source={icon.proimg} />
 
-                            <View style={{ marginVertical: 20, marginHorizontal: 15 }}>
-                                <TouchableOpacity
-                                    style={styles.viewall}
-                                >
-                                    <Text style={[commonStyles.lbB1, { fontSize: 22, color: blue }]}>
-                                        View All
-                                    </Text>
+                                <View style={{ flex: 1 }}>
+                                    <Text style={styles.addTxtB}>Looking for last-minute deals?</Text>
+                                    <Text style={styles.addTxt}>Speak to a travel expert and a get assistance 24/7</Text>
+                                </View>
+
+                                <TouchableOpacity style={styles.callImgWrap}>
+                                    <Image style={styles.callImg} source={icon.mobile} />
                                 </TouchableOpacity>
                             </View>
                         </View>
+
+                        {/* deals option */}
+                        <View style={styles.dealWrap}>
+                            <Text style={styles.dealHeadTxt}>Deals of the day</Text>
+
+                            <View style={styles.dealContWrap}>
+                                {data.map((_, i) => (
+                                    <View key={i}>
+                                        <HotelPromoOffers />
+                                        {i == data.length - 1 ? <View style={{ marginBottom: 30 }} /> : null}
+                                    </View>
+                                ))}
+                            </View>
+
+                            <View style={{ marginHorizontal: 10 }}>
+                                <Text style={[commonStyles.ns400, { color: b3, lineHeight: 19, fontSize: 13 }]}>
+                                    *All fares above were last found on: <Text style={{ color: "#CB3926", fontFamily: "Arial" }}>Oct 02, 2023 at 12:10:59 AM</Text>.
+                                    These are based on average nightly rates and airfare includes all fuel surcharges,
+                                    taxes & fees and our service fees. Hotels, rental cars and activities may have
+                                    additional taxes and fees. Displayed rates are based on historical data,
+                                    are subject to change, and cannot be guaranteed at the time of booking.
+                                    See all booking <Text onPress={() => Alert.alert("t&c")} style={{ color: blue, fontFamily: "Arial", textDecorationLine: "underline" }}>terms and conditions</Text>
+                                </Text>
+
+                                <View style={{ marginVertical: 20, marginHorizontal: 15 }}>
+                                    <TouchableOpacity
+                                        style={styles.viewall}
+                                    >
+                                        <Text style={[commonStyles.lbB1, { fontSize: 20, color: blue }]}>
+                                            View All
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
                     </View>
-                </ScrollView>
-            </View>
-        </TouchableWithoutFeedback>
+                )}
+            />
+        </View>
     )
 };
 

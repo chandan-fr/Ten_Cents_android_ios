@@ -24,7 +24,6 @@ const Flights = ({ navigation, data, width, height }) => {
         children: 0,
         infants: 0,
         travelClass: "Economy",
-
     });
     const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
 
