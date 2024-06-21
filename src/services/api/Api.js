@@ -5,3 +5,6 @@ const Api = axios.create({baseURL: _Base_URL});
 
 // get apis
 export const GETAIRPORTCODES = (keyword) => Api.get(`/airports?keyword=${keyword}`);
+
+// post apis
+export const FLIGHTSEARCH = (flightData) => Api.post("/flights", flightData);

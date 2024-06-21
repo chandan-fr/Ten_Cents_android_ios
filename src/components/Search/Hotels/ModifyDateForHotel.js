@@ -43,7 +43,7 @@ const ModifyDateForHotel = ({ navigation, setIsModify }) => {
                 <View style={styles.left}>
                     <Text style={styles.tbTxt}>Check- In</Text>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("traveldate")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("traveldate", { src: "depart", setFormValue: {}, formValue: {} })}>
                         <Text style={styles.midTxt}>Select Date</Text>
                     </TouchableOpacity>
 
@@ -53,7 +53,7 @@ const ModifyDateForHotel = ({ navigation, setIsModify }) => {
                 <View style={styles.right}>
                     <Text style={styles.tbTxt}>Check- Out</Text>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("traveldate")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("traveldate", { src: "return", setFormValue: {}, formValue: {} })}>
                         <Text style={styles.midTxt}>Select Date</Text>
                     </TouchableOpacity>
 
@@ -72,73 +72,6 @@ const ModifyDateForHotel = ({ navigation, setIsModify }) => {
                         <TouchableOpacity onPress={() => setIsTravel(true)}>
                             <Text style={styles.midTxt}>1 Adult</Text>
                         </TouchableOpacity>
-
-                        {isTravel && <View style={styles.travlOptnsWrap}>
-                            <View style={styles.travelContWrap}>
-                                <View style={styles.travelTxtWrap}>
-                                    <Text style={styles.travelHdTxt}>Adults</Text>
-                                    <Text style={styles.travelSubHdTxt}>Aged 12+ years</Text>
-                                </View>
-
-                                <View style={styles.btn}>
-                                    <TouchableOpacity onPress={() => setIsTravel(false)}>
-                                        <Text style={styles.btnTxt}>-</Text>
-                                    </TouchableOpacity>
-
-                                    <Text style={styles.btnTxt}>1</Text>
-
-                                    <TouchableOpacity onPress={() => setIsTravel(false)}>
-                                        <Text style={styles.btnTxt}>+</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            <View style={styles.travelContWrap}>
-                                <View style={styles.travelTxtWrap}>
-                                    <Text style={styles.travelHdTxt}>Children</Text>
-                                    <Text style={styles.travelSubHdTxt}>Aged 2-12 years</Text>
-                                </View>
-
-                                {/* <View style={styles.btn}>
-                                    <TouchableOpacity>
-                                        <Text style={styles.btnTxt}>-</Text>
-                                    </TouchableOpacity>
-
-                                    <Text style={styles.btnTxt}>1</Text>
-
-                                    <TouchableOpacity>
-                                        <Text style={styles.btnTxt}>+</Text>
-                                    </TouchableOpacity>
-                                </View> */}
-
-                                <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(false)}>
-                                    <Text style={styles.addBtnTxt}>Add</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                            <View style={styles.travelContWrap}>
-                                <View style={styles.travelTxtWrap}>
-                                    <Text style={styles.travelHdTxt}>Infants</Text>
-                                    <Text style={styles.travelSubHdTxt}>Bellow 2 years</Text>
-                                </View>
-
-                                {/* <View style={styles.btn}>
-                                    <TouchableOpacity>
-                                        <Text style={styles.btnTxt}>-</Text>
-                                    </TouchableOpacity>
-
-                                    <Text style={styles.btnTxt}>1</Text>
-
-                                    <TouchableOpacity>
-                                        <Text style={styles.btnTxt}>+</Text>
-                                    </TouchableOpacity>
-                                </View> */}
-
-                                <TouchableOpacity style={styles.addBtn} onPress={() => setIsTravel(false)}>
-                                    <Text style={styles.addBtnTxt}>Add</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>}
                     </View>
 
                     <View style={styles.right}>
@@ -150,36 +83,6 @@ const ModifyDateForHotel = ({ navigation, setIsModify }) => {
                         <TouchableOpacity onPress={() => setIsRoom(true)}>
                             <Text style={styles.midTxt}>1 Room</Text>
                         </TouchableOpacity>
-
-                        {isRoom && <View style={styles.classOptnsWrap}>
-                            <TouchableOpacity
-                                style={styles.classOptnTxtWrapActive}
-                                onPress={() => setIsRoom(false)}
-                            >
-                                <Text style={styles.classOptnTxtActive}>1 Room</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={styles.classOptnTxtWrap}
-                                onPress={() => setIsRoom(false)}
-                            >
-                                <Text style={styles.classOptnTxt}>2 Room</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={styles.classOptnTxtWrap}
-                                onPress={() => setIsRoom(false)}
-                            >
-                                <Text style={styles.classOptnTxt}>3 Room</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                style={styles.classOptnTxtWrap}
-                                onPress={() => setIsRoom(false)}
-                            >
-                                <Text style={styles.classOptnTxt}>4 Room</Text>
-                            </TouchableOpacity>
-                        </View>}
                     </View>
                 </View>
             </View>

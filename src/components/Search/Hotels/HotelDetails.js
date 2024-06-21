@@ -1,4 +1,4 @@
-import { Alert, Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import BgGradient from '../../../utility/BgGradient';
 import Header from '../../Header';
@@ -11,8 +11,8 @@ const { width, height } = Dimensions.get("window");
 
 const HotelDetails = ({ navigation }) => {
     return (
-        <SafeAreaView style={styles.parent}>
-            <BgGradient width={width} height={height * 0.1} />
+        <View style={styles.parent}>
+            <BgGradient width={width} height={height * 0.15} />
             <Header />
 
             <View style={styles.body}>
@@ -22,7 +22,7 @@ const HotelDetails = ({ navigation }) => {
                 >
                     <View style={{ paddingVertical: 5, rowGap: 10 }}>
                         {/* hotel name */}
-                        <Text style={[commonStyles.ns600, { fontSize: 18 }]}>
+                        <Text style={[commonStyles.ns600, { fontSize: Platform.OS === "ios" ? 18 : 17 }]}>
                             Ramada Plaza by Wyndham Calgary Downtown
                         </Text>
 
@@ -47,15 +47,15 @@ const HotelDetails = ({ navigation }) => {
                             {/* leaf */}
                             <View style={{ flexDirection: 'row', alignItems: "center", backgroundColor: "#F1FEF6", borderRadius: 4, alignSelf: "flex-start", paddingHorizontal: 10, paddingVertical: 2 }}>
                                 <Image
-                                    style={{ width: 20, height: 20, marginRight: 3, tintColor: "#1D8842" }}
+                                    style={{ width: 18, height: 18, marginRight: 3, tintColor: "#1D8842" }}
                                     source={icon.leafSolid}
                                 />
                                 <Image
-                                    style={{ width: 20, height: 20, marginRight: 3, tintColor: "#1D8842" }}
+                                    style={{ width: 18, height: 18, marginRight: 3, tintColor: "#1D8842" }}
                                     source={icon.leaf}
                                 />
                                 <Image
-                                    style={{ width: 20, height: 20, marginRight: 3, tintColor: "#1D8842" }}
+                                    style={{ width: 18, height: 18, marginRight: 3, tintColor: "#1D8842" }}
                                     source={icon.leaf}
                                 />
 
@@ -66,30 +66,33 @@ const HotelDetails = ({ navigation }) => {
                         </View>
 
                         {/* hotel Address */}
-                        <Text style={[commonStyles.ns600, { fontSize: 14 }]}>
-                            708 8th Avenue Southwest, T2P 1H2 Calgary, Canada - Great location - show map
+                        <Text style={[commonStyles.ns600, { fontSize: 13 }]}>
+                            708 8th Avenue Southwest, T2P 1H2 Calgary, Canada - { }
+                            <Text style={{ textDecorationLine: "underline" }} onPress={() => Alert.alert("show map")}>
+                                Great location - show map
+                            </Text>
                         </Text>
 
                         {/* gallery */}
                         <View style={{ rowGap: 10 }}>
-                            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", columnGap: 6 }}>
                                 <View style={{ rowGap: 8 }}>
-                                    <Image style={styles.galImg} source={image.image1} />
-                                    <Image style={styles.galImg} source={image.image2} />
-                                    <Image style={styles.galImg} source={image.image3} />
+                                    <Image resizeMode='stretch' style={styles.galImg} source={image.image1} />
+                                    <Image resizeMode='stretch' style={styles.galImg} source={image.image2} />
+                                    <Image resizeMode='stretch' style={styles.galImg} source={image.image3} />
                                 </View>
 
-                                <Image style={styles.galImgBig} source={image.image5} />
+                                <Image resizeMode='stretch' style={styles.galImgBig} source={image.image5} />
                             </View>
 
                             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                                <Image style={styles.galImg} source={image.image4} />
-                                <Image style={styles.galImg} source={image.image6} />
+                                <Image resizeMode='stretch' style={styles.galImg} source={image.image4} />
+                                <Image resizeMode='stretch' style={styles.galImg} source={image.image6} />
                                 <TouchableOpacity
                                     style={styles.showMorePics}
                                     onPress={() => navigation.navigate("hotelgallery")}
                                 >
-                                    <Image style={styles.galImg} source={image.image7} />
+                                    <Image resizeMode='stretch' style={styles.galImg} source={image.image7} />
                                     <Text style={[commonStyles.ns700, { fontSize: 14, position: "absolute", color: white }]}>
                                         +46 photos
                                     </Text>
@@ -100,57 +103,57 @@ const HotelDetails = ({ navigation }) => {
                         {/* perks */}
                         <View style={styles.perksWrap}>
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.view} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.view} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     View
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.pawprint} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.pawprint} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     Pets allowed
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.wifi} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.wifi} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     Free WiFi
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.swimming} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.swimming} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     Outdoor swimming pool
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.hours} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.hours} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     24-hour front desk
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.coffeeShop} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.coffeeShop} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     Balcony
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.airConditioner} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.airConditioner} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     Air Conditioner
                                 </Text>
                             </View>
 
                             <View style={styles.perks}>
-                                <Image style={{ width: 15, height: 15 }} source={icon.bathTub} />
-                                <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                                <Image style={styles.perkImg} source={icon.bathTub} />
+                                <Text style={[commonStyles.ns400, styles.perkTxt]}>
                                     Bath
                                 </Text>
                             </View>
@@ -158,7 +161,7 @@ const HotelDetails = ({ navigation }) => {
 
                         {/* about hotel */}
                         <View style={{ rowGap: 10 }}>
-                            <Text style={[commonStyles.ns400, { fontSize: 12 }]}>
+                            <Text style={[commonStyles.ns400, { fontSize: 11 }]}>
                                 Featuring on-site restaurant, Ramada Plaza by Wyndham Calgary Downtown offers convenient accommodation near entertainment, shopping, and city businesses. Free Wi-Fi is offered throughout the property. A 32" flat-screen TV features in each air-conditioned room at the Ramada Plaza by Wyndham Calgary Downtown. A work desk, coffee maker, and ironing facilities provide additional convenience. Free access to the fitness centre is provided to all guests . Valet parking only, and restrictions apply. Cheers Restaurant is family friendly, offering à la carte options for breakfast. The Fox on 6th Pub is open but has limited hours and features a full food and beverage menu. Just a block from Calgary transit, the property is a quick drive or train ride from all Calgary attractions.
                             </Text>
 
@@ -174,7 +177,7 @@ const HotelDetails = ({ navigation }) => {
                         {/* facilities */}
                         <View style={{ flexDirection: "row", columnGap: 25, marginTop: 5, alignItems: "flex-start" }}>
                             <View style={{ flex: 1 }}>
-                                <Text style={[commonStyles.ns700, { fontSize: 16 }]}>
+                                <Text style={[commonStyles.ns700, { fontSize: 15, fontWeight: Platform.OS === "ios" ? "bold" : "none" }]}>
                                     Most popular facilities
                                 </Text>
 
@@ -260,12 +263,12 @@ const HotelDetails = ({ navigation }) => {
 
                         {/* Property highlights */}
                         <View style={styles.pHigh}>
-                            <Text style={commonStyles.ns700}>
+                            <Text style={[commonStyles.ns700, { fontWeight: Platform.OS === "ios" ? "bold" : "none" }]}>
                                 Property highlights
                             </Text>
 
                             <View style={{ rowGap: 8 }}>
-                                <Text style={commonStyles.ns600}>
+                                <Text style={[commonStyles.ns600, { fontWeight: Platform.OS === "ios" ? "500" : "none" }]}>
                                     Perfect for a 2-week stay!
                                 </Text>
 
@@ -274,14 +277,14 @@ const HotelDetails = ({ navigation }) => {
                                         style={{ tintColor: b2, width: 18, height: 18 }}
                                         source={icon.location}
                                     />
-                                    <Text style={[commonStyles.ns400, { fontSize: 15, flex: 1 }]}>
+                                    <Text style={[commonStyles.ns400, { fontSize: 14, flex: 1 }]}>
                                         Top location: Highly rated by recent guests (8.8)
                                     </Text>
                                 </View>
                             </View>
 
                             <View style={{ rowGap: 8, marginTop: 6 }}>
-                                <Text style={commonStyles.ns600}>
+                                <Text style={[commonStyles.ns600, { fontWeight: Platform.OS === "ios" ? "500" : "none" }]}>
                                     Breakfast info
                                 </Text>
 
@@ -294,7 +297,7 @@ const HotelDetails = ({ navigation }) => {
                                         style={{ tintColor: b2, width: 18, height: 18 }}
                                         source={icon.parkingArea}
                                     />
-                                    <Text style={[commonStyles.ns400, { fontSize: 15, flex: 1 }]}>
+                                    <Text style={[commonStyles.ns400, { fontSize: 13, flex: 1 }]}>
                                         Private parking at the hotel
                                     </Text>
                                 </View>
@@ -305,7 +308,7 @@ const HotelDetails = ({ navigation }) => {
                                 <TouchableOpacity
                                     style={[styles.btn, { marginHorizontal: 50 }]}
                                 >
-                                    <Text style={[commonStyles.lbB1, { color: white }]}>
+                                    <Text style={[commonStyles.lbB1, { color: white, fontSize: 19 }]}>
                                         Reserve
                                     </Text>
                                 </TouchableOpacity>
@@ -327,29 +330,41 @@ const HotelDetails = ({ navigation }) => {
                             </View>
 
                             <View style={{ backgroundColor: "#FFC355", paddingVertical: 7, paddingHorizontal: 10, borderRadius: 4 }}>
-                                <View style={{ alignItems: "center", justifyContent: "space-between", rowGap: 10 }}>
-                                    <TouchableOpacity style={{ backgroundColor: white, borderRadius: 2, flexDirection: 'row', alignItems: "center", paddingVertical: 10, paddingHorizontal: 20 }}>
+                                <View style={{ alignItems: "center", justifyContent: "space-between", flexDirection: "row" }}>
+                                    <TouchableOpacity
+                                        style={{
+                                            backgroundColor: white, borderRadius: 2, flexDirection: 'row',
+                                            alignItems: "center", paddingVertical: 10,
+                                            paddingHorizontal: Platform.OS === "ios" ? 10 : 6,
+                                        }}
+                                    >
                                         <Image
-                                            style={{ width: 15, height: 15, tintColor: b1 }}
+                                            style={{ width: 12, height: 12, tintColor: b1 }}
                                             source={icon.calendar}
                                         />
-                                        <Text style={[commonStyles.ns600, { fontSize: 12, marginLeft: 6 }]}>
+                                        <Text style={[commonStyles.ns600, { fontSize: 10, marginLeft: 6 }]}>
                                             Thu, Dec 21 - Thu, Jan 04
                                         </Text>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity style={{ backgroundColor: white, borderRadius: 2, paddingVertical: 10, paddingHorizontal: 20 }}>
-                                        <Text style={[commonStyles.ns600, { fontSize: 12 }]}>
+                                    <TouchableOpacity
+                                        style={{
+                                            backgroundColor: white, borderRadius: 2, paddingVertical: 10,
+                                            paddingHorizontal: Platform.OS === "ios" ? 10 : 6,
+                                        }}
+                                    >
+                                        <Text style={[commonStyles.ns600, { fontSize: 10 }]}>
                                             2 adults · 0 children · 1 room
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
 
+                                {/* modify */}
                                 <View style={{ alignItems: "center", marginTop: 10 }}>
                                     <TouchableOpacity
                                         style={[styles.btn, { marginHorizontal: 50 }]}
                                     >
-                                        <Text style={[commonStyles.lbB1, { color: white }]}>
+                                        <Text style={[commonStyles.lbB1, { color: white, fontSize: 15 }]}>
                                             Modify
                                         </Text>
                                     </TouchableOpacity>
@@ -359,7 +374,7 @@ const HotelDetails = ({ navigation }) => {
 
                         {/* Filter by */}
                         <View style={{ marginTop: 5 }}>
-                            <Text style={[commonStyles.ns600, { fontSize: 18 }]}>
+                            <Text style={[commonStyles.ns600, { fontSize: 17 }]}>
                                 Filter by:
                             </Text>
 
@@ -1303,12 +1318,22 @@ const HotelDetails = ({ navigation }) => {
                 </ScrollView>
 
                 {/* Reserve */}
-                <View style={{ backgroundColor: b1, alignItems: "center", justifyContent: "space-between", paddingVertical: 8, paddingHorizontal: 10, flexDirection: "row" }}>
+                <View
+                    style={{
+                        backgroundColor: b1,
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        paddingTop: 8,
+                        paddingHorizontal: 15,
+                        flexDirection: "row",
+                        paddingBottom: Platform.OS === "ios" ? 25 : 8,
+                    }}
+                >
                     <View style={{ rowGap: 3 }}>
-                        <Text style={[commonStyles.ns600, { fontSize: 14, color: white }]}>
+                        <Text style={[commonStyles.ns600, { fontSize: 13, color: white }]}>
                             Price
                         </Text>
-                        <Text style={[commonStyles.ns600, { fontSize: 14, color: white }]}>
+                        <Text style={[commonStyles.ns600, { fontSize: 13, color: white }]}>
                             $1320 + Taxes
                         </Text>
                     </View>
@@ -1317,13 +1342,13 @@ const HotelDetails = ({ navigation }) => {
                         style={{ borderWidth: 2, borderRadius: 2, borderColor: blue, width: 150, alignItems: "center", justifyContent: "center", paddingVertical: 8 }}
                         onPress={() => navigation.navigate("hotelud")}
                     >
-                        <Text style={[commonStyles.ns600, { fontSize: 14, color: blue, textTransform: "uppercase" }]}>
+                        <Text style={[commonStyles.ns600, { fontSize: 13, color: blue, textTransform: "uppercase" }]}>
                             Reserve
                         </Text>
                     </TouchableOpacity>
                 </View>
             </View >
-        </SafeAreaView >
+        </View >
     )
 };
 
@@ -1332,6 +1357,7 @@ export default HotelDetails;
 const styles = StyleSheet.create({
     parent: {
         flex: 1,
+        paddingTop: Platform.OS === "ios" ? 55 : 0,
     },
     body: {
         marginTop: 18,
@@ -1339,11 +1365,11 @@ const styles = StyleSheet.create({
         backgroundColor: white,
     },
     galImg: {
-        width: 122,
+        width: (width - 36) / 3.1,
         height: 82,
     },
     galImgBig: {
-        width: 253,
+        width: ((width - 30) / 3) * 2,
         height: 258,
     },
     showMorePics: {
@@ -1358,9 +1384,16 @@ const styles = StyleSheet.create({
         borderColor: '#D8D8D8',
         backgroundColor: white,
         columnGap: 10,
-        paddingVertical: 8,
-        paddingHorizontal: 20,
+        paddingVertical: 6,
+        paddingHorizontal: 16,
         borderRadius: 4,
+    },
+    perkImg: {
+        width: Platform.OS === "ios" ? 13 : 12,
+        height: Platform.OS === "ios" ? 13 : 12
+    },
+    perkTxt: {
+        fontSize: Platform.OS === "ios" ? 11 : 10,
     },
     perksWrap: {
         flexWrap: "wrap",
@@ -1438,7 +1471,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: 'space-between',
-        width: 150,
+        width: (width - 90) / 2.2,
         paddingVertical: 8,
         paddingHorizontal: 6,
     },

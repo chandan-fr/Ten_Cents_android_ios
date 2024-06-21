@@ -9,6 +9,8 @@ import MultiCity from './MultiCity';
 import DealItem from './DealItem';
 import icon from '../../../config/IconAssets';
 import { flightData } from '../../../config/StaticVars';
+import { useDispatch } from 'react-redux';
+import { flightSearch } from '../../../services/slices/FlightSlice';
 
 
 const Flights = ({ navigation, data, width, height }) => {
@@ -27,6 +29,8 @@ const Flights = ({ navigation, data, width, height }) => {
     });
     const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
 
+    const dispatch = useDispatch();
+
     const addFlight = () => {
         const data = [...multiFlightData];
         data.push(flightData);
@@ -35,7 +39,16 @@ const Flights = ({ navigation, data, width, height }) => {
 
     const handleformValue = () => {
         // console.log(formValue);
-        console.log(multiFlightData);
+        // console.log(multiFlightData);
+        const flightData = {
+            departure: formValue.originLocationCode,
+            arrival: formValue.destinationLocationCode,
+            date: formValue.departureDate,
+            passengers: formValue.adults.toString(),
+            travelClass: formValue.travelClass.toUpperCase(),
+        };
+
+        dispatch(flightSearch({flightData, navigation}));
     };
 
     return (

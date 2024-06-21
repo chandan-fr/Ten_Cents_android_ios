@@ -3,10 +3,12 @@ import React, { useRef, useState } from 'react'
 import { b1, b3, black, blue, gs1, white } from '../../config/colors';
 import { genCurrentDate } from '../../config/CurrentDate';
 import SortBottomSheet from '../../utility/SortBottomSheet';
+import { useSelector } from 'react-redux';
 
 const { width } = Dimensions.get("window");
 
 const FlightSearch = ({ navigation }) => {
+    const { flight_data } = useSelector(state => state.flightSlice);
     const data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     const [sortBy, setSortBy] = useState("lth");
     const sortRef = useRef();
@@ -73,7 +75,7 @@ const FlightSearch = ({ navigation }) => {
                 {/* flight option scroll */}
                 <View style={styles.flightOptnWrap}>
                     <FlatList
-                        data={data}
+                        data={flight_data}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(_, i) => i}
                         renderItem={({ item, index }) => (

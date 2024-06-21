@@ -211,12 +211,12 @@ const HotelFilter = ({ navigation }) => {
 
                             {/* Sustainability */}
                             <View style={{ paddingHorizontal: 10, marginTop: 8 }}>
-                                <Text style={[commonStyles.ns700, { fontSize: 16 }]}>
+                                <Text style={[commonStyles.ns700, { fontSize: 15 }]}>
                                     Sustainability
                                 </Text>
 
                                 <View style={{ paddingVertical: 10 }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: "space-between" }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: "space-between" }}>
                                         <View style={{ flexDirection: 'row', flex: 1 }}>
                                             <TouchableOpacity style={styles.tick}>
                                                 <Image
@@ -226,17 +226,16 @@ const HotelFilter = ({ navigation }) => {
                                             </TouchableOpacity>
 
                                             <View style={{ marginLeft: 15, flex: 1, rowGap: 5 }}>
-                                                <Text style={commonStyles.ns600}>
+                                                <Text style={[commonStyles.ns600, { fontSize: 15 }]}>
                                                     Travel Sustainable properties
                                                 </Text>
-                                                <Text style={[commonStyles.ns600, { fontSize: 14 }]}>
+                                                <Text style={[commonStyles.ns600, { fontSize: 13 }]}>
                                                     Properties taking steps to make your stay more sustainable
                                                 </Text>
                                             </View>
-
                                         </View>
 
-                                        <Text style={[commonStyles.ns600, { marginLeft: 10 }]}>9000</Text>
+                                        <Text style={[commonStyles.ns600, { marginLeft: 10 }]}>90</Text>
                                     </View>
                                 </View>
                             </View>
