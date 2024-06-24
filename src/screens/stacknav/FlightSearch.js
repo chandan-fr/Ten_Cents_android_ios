@@ -1,21 +1,41 @@
-import { Dimensions, FlatList, Image, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, FlatList, Image, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { b1, b3, black, blue, gs1, white } from '../../config/colors';
-import { genCurrentDate } from '../../config/CurrentDate';
 import SortBottomSheet from '../../utility/SortBottomSheet';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { _Height, _Width } from '../../config/StaticVars';
+import { calculateStopTime, formatDuration, getAirlinesName, getCurrentLocalTime, getFormatedDate } from '../../utility/UtilityFunctions';
+import commonStyles from '../../assets/css/CommonFonts';
+import { getFlightDetails } from '../../services/slices/FlightSlice';
+import icon from '../../config/IconAssets';
 
 const { width } = Dimensions.get("window");
 
 const FlightSearch = ({ navigation }) => {
-    const { flight_data } = useSelector(state => state.flightSlice);
+    const { flight_data, flight_loading, flight_search_data } = useSelector(state => state.flightSlice);
     const data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     const [sortBy, setSortBy] = useState("lth");
     const sortRef = useRef();
+    const dispatch = useDispatch();
+
+    const showFlightDetails = (flightId) => {
+        const flightDetailsData = {
+            flightId: flightId,
+            departure: flight_search_data.departure,
+            arrival: flight_search_data.arrival,
+            date: flight_search_data.date,
+            passengers: flight_search_data.passengers,
+            travelClass: flight_search_data.travelClass,
+        };
+
+        dispatch(getFlightDetails({ flightDetailsData, navigation }))
+    };
 
     return (
         <View style={styles.parent}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
+            {flight_loading && <ActivityIndicator animating={flight_loading} size={"large"} style={{ width: _Width, height: _Height, zIndex: 9, position: "absolute" }} />}
+
             <View style={styles.wrap}>
                 {/* nav head */}
                 <View style={{ alignItems: "flex-start" }}>
@@ -26,11 +46,11 @@ const FlightSearch = ({ navigation }) => {
                         />
                         <View style={{ marginLeft: 30 }}>
                             <View style={styles.right}>
-                                <Text style={styles.navHeadTxt}>Dhaka</Text>
+                                <Text style={styles.navHeadTxt}>{flight_search_data.departure}</Text>
                                 <Image style={styles.rightImg} source={require("../../assets/icons/next.png")} />
-                                <Text style={styles.navHeadTxt}>Dubai</Text>
+                                <Text style={styles.navHeadTxt}>{flight_search_data.arrival}</Text>
                             </View>
-                            <Text style={styles.navSubHeadTxt}>{genCurrentDate()} | 1 Adult</Text>
+                            <Text style={styles.navSubHeadTxt}>{getFormatedDate(flight_search_data.date)} | {flight_search_data.passengers} Adult</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -74,85 +94,100 @@ const FlightSearch = ({ navigation }) => {
 
                 {/* flight option scroll */}
                 <View style={styles.flightOptnWrap}>
-                    <FlatList
-                        data={flight_data}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={(_, i) => i}
-                        renderItem={({ item, index }) => (
-                            <>
-                                {index === 0 ? <View style={{ marginVertical: 5 }} /> : null}
-                                <TouchableOpacity
-                                    style={styles.flightOptnCont}
-                                    onPress={() => navigation.navigate("flightreview")}
-                                >
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                            justifyContent: "space-between"
-                                        }}
+                    {flight_data.length ?
+                        <FlatList
+                            data={flight_data}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={(_, i) => i}
+                            renderItem={({ item, index }) => (
+                                <>
+                                    {index === 0 ? <View style={{ marginVertical: 5 }} /> : null}
+                                    <TouchableOpacity
+                                        style={styles.flightOptnCont}
+                                        onPress={() => showFlightDetails(item?.id)}
                                     >
-                                        <View style={{ flex: 1, rowGap: 4 }}>
-                                            <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                                <Image
-                                                    style={{ width: 25, height: 25 }}
-                                                    source={require("../../assets/icons/indigo.png")}
-                                                />
-                                                <Text style={styles.indigo}>Indigo</Text>
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                                justifyContent: "space-between"
+                                            }}
+                                        >
+                                            <View style={{ flex: 1, rowGap: 4 }}>
+                                                {item?.itineraries[0]?.segments?.map((flightItem, i) => (
+                                                    <View key={i.toString()}>
+                                                        {/* name */}
+                                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                                            <Image
+                                                                style={{ width: 25, height: 25 }}
+                                                                resizeMode='stretch'
+                                                                source={getAirlinesName(flightItem?.carrierCode)?.logo}
+                                                            />
+                                                            <Text style={styles.indigo}>{getAirlinesName(flightItem?.carrierCode)?.name}</Text>
+                                                        </View>
+
+                                                        {/* body */}
+                                                        <View style={[styles.midRow, { marginBottom: 10 }]}>
+                                                            {/* departure/ origin */}
+                                                            <View>
+                                                                <Text style={[styles.ns600, { fontSize: 15, color: b3 }]}>
+                                                                    {flightItem?.departure?.iataCode}
+                                                                </Text>
+                                                                <Text style={[styles.ns600, { fontSize: 15, color: b1, marginTop: 8 }]}>
+                                                                    {getCurrentLocalTime(flightItem?.departure?.at)}
+                                                                </Text>
+                                                            </View>
+
+                                                            <View>
+                                                                <Text style={[styles.ns600, { fontSize: 15, color: b3 }]}>
+                                                                    {/* -{item?.itineraries[0]?.segments[1]?.departure?.iataCode}- */}
+                                                                </Text>
+                                                                <Text style={[styles.ns600, { fontSize: 13, color: b1, marginTop: 8 }]}>
+                                                                    {formatDuration(flightItem?.duration)}
+                                                                </Text>
+                                                            </View>
+
+                                                            {/* arrival/destination */}
+                                                            <View>
+                                                                <Text style={[styles.ns600, { fontSize: 15, color: b3 }]}>
+                                                                    {flightItem?.arrival?.iataCode}
+                                                                </Text>
+                                                                <Text style={[styles.ns600, { fontSize: 15, color: b1, marginTop: 8 }]}>
+                                                                    {getCurrentLocalTime(flightItem?.arrival?.at)}
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                    </View>
+                                                ))}
+
+                                                <Text style={[styles.ns400, { color: b3 }]}>Layover- {calculateStopTime(item?.itineraries[0]?.segments)}</Text>
                                             </View>
 
-                                            <View style={styles.midRow}>
-                                                <View>
-                                                    <Text style={[styles.ns600, { fontSize: 15, color: b3 }]}>
-                                                        DAC
-                                                    </Text>
-                                                    <Text style={[styles.ns600, { fontSize: 15, color: b1, marginTop: 8 }]}>
-                                                        14:10
-                                                    </Text>
-                                                </View>
-
-                                                <View>
-                                                    <Text style={[styles.ns600, { fontSize: 15, color: b3 }]}>
-                                                        -BOM-
-                                                    </Text>
-                                                    <Text style={[styles.ns600, { fontSize: 13, color: b1, marginTop: 8 }]}>
-                                                        10h 20m
-                                                    </Text>
-                                                </View>
-
-                                                <View>
-                                                    <Text style={[styles.ns600, { fontSize: 15, color: b3 }]}>
-                                                        DXC
-                                                    </Text>
-                                                    <Text style={[styles.ns600, { fontSize: 15, color: b1, marginTop: 8 }]}>
-                                                        22:30
-                                                    </Text>
-                                                </View>
+                                            <View style={{ flex: 0.5, alignItems: "flex-end", marginTop: 50 }}>
+                                                <Text style={[styles.ns600, { color: b1, fontSize: 16 }]}>
+                                                    {`${item?.price?.currency === "USD" && "$"} ${item?.price?.grandTotal}`}
+                                                </Text>
                                             </View>
-
-                                            <Text style={[styles.ns400, { color: b3 }]}>Layover- 04h 30m</Text>
                                         </View>
 
-                                        <View style={{ flex: 0.5, alignItems: "flex-end", marginTop: 50 }}>
-                                            <Text style={[styles.ns600, { color: b1, fontSize: 16 }]}>
-                                                $ 430
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                                            <Image
+                                                style={{ width: 18, height: 18, tintColor: gs1 }}
+                                                source={require("../../assets/icons/discount-solid.png")}
+                                            />
+                                            <Text style={[styles.ns400, { color: gs1, marginLeft: 6 }]}>
+                                                Use CASUPER code to get special $50 OFF
                                             </Text>
                                         </View>
-                                    </View>
-
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                                        <Image
-                                            style={{ width: 18, height: 18, tintColor: gs1 }}
-                                            source={require("../../assets/icons/discount-solid.png")}
-                                        />
-                                        <Text style={[styles.ns400, { color: gs1, marginLeft: 6 }]}>
-                                            Use CASUPER code to get special $50 OFF
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </>
-                        )}
-                    />
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                        />
+                        :
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: "center" }}>
+                            <Text style={[commonStyles.ns700, { fontSize: 24 }]}>No Flights Found!</Text>
+                        </View>
+                    }
                 </View>
 
                 {/* sticky bottom */}

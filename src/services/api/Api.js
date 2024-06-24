@@ -8,3 +8,4 @@ export const GETAIRPORTCODES = (keyword) => Api.get(`/airports?keyword=${keyword
 
 // post apis
 export const FLIGHTSEARCH = (flightData) => Api.post("/flights", flightData);
+export const FLIGHTDETAILS = (flightData) => Api.post("/flights/details", flightData);

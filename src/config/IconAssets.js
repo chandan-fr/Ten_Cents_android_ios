@@ -130,6 +130,8 @@ const icon = {
     entLogo: require("../assets/icons/entLogo.png"),
     hiking: require("../assets/icons/hiking.png"),
     transfer: require("../assets/icons/transfer.png"),
+    spicejet: require("../assets/icons/spicejet.jpg"),
+    airindia: require("../assets/icons/airindia.jpg"),
 };
 
 module.exports = icon;

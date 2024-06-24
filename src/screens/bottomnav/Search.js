@@ -1,25 +1,29 @@
-import { Dimensions, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import BgGradient from '../../utility/BgGradient';
 import Header from '../../components/Header';
-import { white } from '../../config/colors';
+import { blueShade1, white } from '../../config/colors';
 import Flights from '../../components/Search/Flights/Flights';
 import Hotels from '../../components/Search/Hotels/Hotels';
 import Cars from '../../components/Search/Cars/Cars';
 import GroupTickets from '../../components/Search/GroupTickets/GroupTickets';
 import FlightAndHotels from '../../components/Search/FlightHotels/FlightAndHotels';
 import HolidayPackages from '../../components/Search/HolidayPackages/HolidayPackages';
+import { useSelector } from 'react-redux';
 
 const { width, height } = Dimensions.get("window");
 
 const Search = ({ navigation }) => {
+    const { flight_loading } = useSelector(state => state.flightSlice);
     const [selectedHMenu, setSelectedHMenu] = useState("f");
     const data = [1, 1, 1, 1, 1, 1];
 
     return (
-        <SafeAreaView style={styles.parent}>
+        <View style={styles.parent}>
             <BgGradient width={width} height={Platform.OS === "ios" ? height * 0.7 : height * 0.79} />
             <Header />
+
+            {flight_loading && <ActivityIndicator color={blueShade1} animating={flight_loading} size={"large"} style={{ width: width, height: height, zIndex: 9, position: "absolute" }} />}
 
             <View style={styles.body}>
                 {/* booking nav bar */}
@@ -92,7 +96,7 @@ const Search = ({ navigation }) => {
                 {/* group tickets */}
                 {selectedHMenu === "gt" && <GroupTickets navigation={navigation} data={data} width={width} height={height} />}
             </View>
-        </SafeAreaView>
+        </View>
     )
 };
 
@@ -101,6 +105,7 @@ export default Search;
 const styles = StyleSheet.create({
     parent: {
         flex: 1,
+        paddingTop: Platform.OS === "ios" ? 55 : 0,
     },
     body: {
         marginTop: 25,

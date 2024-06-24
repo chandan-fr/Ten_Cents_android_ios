@@ -1,4 +1,6 @@
+const { Dimensions } = require("react-native");
 const image = require("./ImageAssets");
+const icon = require("./IconAssets");
 
 const hpData = [
     {
@@ -123,4 +125,35 @@ const airports = [
 
 const _Base_URL = "http://13.127.45.236:3000/api";
 
-module.exports = { hpData, flightData, airports, _Base_URL };
+const _Width = Dimensions.get("window").width;
+const _Height = Dimensions.get("window").height;
+
+const airlineIATA = [
+    {
+        carrierCode: "UK",
+        name: "VISTARA",
+        logo: icon.vistara
+    },
+    {
+        carrierCode: "6E",
+        name: "IndiGo",
+        logo: icon.indigo
+    },
+    {
+        carrierCode: "AI",
+        name: "Air India",
+        logo: icon.airindia
+    },
+    {
+        carrierCode: "SG",
+        name: "SpiceJet",
+        logo: icon.spicejet
+    },
+    {
+        carrierCode: "H1",
+        name: "Hahn Air Systems",
+        logo: icon.airindia
+    },
+];
+
+module.exports = { hpData, flightData, airports, _Base_URL, _Width, _Height, airlineIATA };
