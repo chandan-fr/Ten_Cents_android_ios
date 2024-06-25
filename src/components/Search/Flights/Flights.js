@@ -20,6 +20,8 @@ const Flights = ({ navigation, data, width, height }) => {
     const [formValue, setFormValue] = useState({
         originLocationCode: "",
         destinationLocationCode: "",
+        originLocation: {},
+        destinationLocation: {},
         departureDate: "",
         returnDate: "",
         adults: 1,
@@ -48,7 +50,7 @@ const Flights = ({ navigation, data, width, height }) => {
             travelClass: formValue.travelClass.toUpperCase(),
         };
 
-        dispatch(flightSearch({flightData, navigation}));
+        dispatch(flightSearch({flightData, formValue, navigation}));
     };
 
     return (

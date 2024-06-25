@@ -152,7 +152,32 @@ const airlineIATA = [
     {
         carrierCode: "H1",
         name: "Hahn Air Systems",
-        logo: icon.airindia
+        logo: icon.hahn
+    },
+    {
+        carrierCode: "AC",
+        name: "Air Canada",
+        logo: icon.aircanada
+    },
+    {
+        carrierCode: "LH",
+        name: "Lufthansa AG",
+        logo: icon.lufthansa
+    },
+    {
+        carrierCode: "UA",
+        name: "United Airlines",
+        logo: icon.united
+    },
+    {
+        carrierCode: "EY",
+        name: "Etihad Airways",
+        logo: icon.etihad
+    },
+    {
+        carrierCode: "EK",
+        name: "Emirates",
+        logo: icon.emiarates
     },
 ];
 

@@ -37,10 +37,17 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
     };
 
     const swapDestinationOrigin = () => {
-        let temp = formValue.originLocationCode;
+        let tempCode = formValue.originLocationCode;
+        let tempData = formValue.originLocation;
         setOrigin(formValue.destinationLocationCode);
         setDestination(formValue.originLocationCode);
-        setFormValue({ ...formValue, originLocationCode: formValue.destinationLocationCode, destinationLocationCode: temp });
+        setFormValue({
+            ...formValue,
+            originLocationCode: formValue.destinationLocationCode,
+            destinationLocationCode: tempCode,
+            originLocation: formValue.destinationLocation,
+            destinationLocation: tempData,
+        });
     };
 
     const searchAirportCodes = (searchKey) => {
@@ -49,11 +56,11 @@ const OneWay = ({ navigation, dest, openTravel, setOpenTravel, formValue, setFor
 
     const setLocation = (data) => {
         if (determiner === "origin") {
-            setFormValue({ ...formValue, originLocationCode: data?.iataCode });
+            setFormValue({ ...formValue, originLocationCode: data?.iataCode, originLocation: data });
             setOrigin(data?.iataCode);
         } else {
             setDestination(data?.iataCode);
-            setFormValue({ ...formValue, destinationLocationCode: data?.iataCode });
+            setFormValue({ ...formValue, destinationLocationCode: data?.iataCode, destinationLocation: data });
         }
         setIsShow(false);
         setOuterScrollEnabled(true);

@@ -10,15 +10,15 @@ export const getAirportCodes = createAsyncThunk("/airports", async ({ searchKey 
     }
 });
 
-export const flightSearch = createAsyncThunk("/flights", async ({ flightData, navigation }, { rejectWithValue }) => {
+export const flightSearch = createAsyncThunk("/flights", async ({ flightData, formValue, navigation }, { rejectWithValue }) => {
     try {
         const res = await FLIGHTSEARCH(flightData);
         if (res?.data?.length) {
             navigation.navigate("flightsearch");
-            return { flights: res.data, fsData: flightData };
+            return { flights: res.data, fsData: formValue };
         } else {
             navigation.navigate("flightsearch");
-            return { flights: [], fsData: flightData };
+            return { flights: [], fsData: formValue };
         }
     } catch (exc) {
         Alert.alert(exc.response.data?.error);
@@ -30,11 +30,10 @@ export const flightSearch = createAsyncThunk("/flights", async ({ flightData, na
 export const getFlightDetails = createAsyncThunk("/flights/details", async ({ flightDetailsData, navigation }, { rejectWithValue }) => {
     try {
         const res = await FLIGHTDETAILS(flightDetailsData);
-        // console.log("res", res);
-        // if (res?.data?.length) {
-        navigation.navigate("flightreview");
-        return res.data;
-        // }
+        if (Object.keys(res?.data).length > 0) {
+            // navigation?.navigate("flightreview");
+            return res.data;
+        }
     } catch (exc) {
         Alert.alert(exc.response.data?.error);
         console.log("Error", exc.response.data);

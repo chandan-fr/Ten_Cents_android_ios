@@ -22,21 +22,23 @@ const getCurrentLocalTime = (inputDate) => {
 const formatDuration = (input) => {
     // Regular expression to match hours and minutes
     const regex = /PT(\d+H)?(\d+M)?/;
-    const match = input.match(regex);
-
-    if (!match) {
-        throw new Error("Invalid input format");
+    if(input){
+        const match = input.match(regex);
+        
+        if (!match) {
+            throw new Error("Invalid input format");
+        }
+        
+        // Extract hours and minutes, defaulting to 0 if not present
+        let hours = match[1] ? parseInt(match[1].replace('H', '')) : 0;
+        let minutes = match[2] ? parseInt(match[2].replace('M', '')) : 0;
+        
+        // Format hours and minutes with leading zero if needed
+        let formattedHours = hours.toString().padStart(2, '0');
+        let formattedMinutes = minutes.toString().padStart(2, '0');
+        
+        return `${formattedHours}h ${formattedMinutes}m`;
     }
-
-    // Extract hours and minutes, defaulting to 0 if not present
-    let hours = match[1] ? parseInt(match[1].replace('H', '')) : 0;
-    let minutes = match[2] ? parseInt(match[2].replace('M', '')) : 0;
-
-    // Format hours and minutes with leading zero if needed
-    let formattedHours = hours.toString().padStart(2, '0');
-    let formattedMinutes = minutes.toString().padStart(2, '0');
-
-    return `${formattedHours}h ${formattedMinutes}m`;
 };
 
 const getFormatedDate = (inputDate) => {
@@ -109,4 +111,17 @@ const getAirlinesName = (iata) => {
     return data[0];
 };
 
-module.exports = { getCurrentLocalTime, formatDuration, getFormatedDate, calculateStopTime, getAirlinesName };
+const getCurrentLocalDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const weekday = weekdays[date.getDay()];
+
+    return `${day} ${month}, ${weekday}`;
+};
+
+module.exports = { getCurrentLocalTime, formatDuration, getFormatedDate, calculateStopTime, getAirlinesName, getCurrentLocalDate };

@@ -3,11 +3,16 @@ import React, { useRef } from 'react'
 import { b1, b2, b3, blue, gs1, gs2, white } from '../../config/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import FareBreakSheet from '../../utility/FareBreakSheet';
+import { useSelector } from 'react-redux';
+import { formatDuration, getAirlinesName, getCurrentLocalDate, getCurrentLocalTime } from '../../utility/UtilityFunctions';
 
-const {width, height} = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const FlightReview = ({ navigation }) => {
+    const { flight_search_data, flight_details } = useSelector(state => state.flightSlice);
     const fareRef = useRef();
+
+    console.log("details", flight_details.itineraries[0]?.segments);
 
     return (
         <View style={{ flex: 1 }}>
@@ -25,168 +30,102 @@ const FlightReview = ({ navigation }) => {
                 <View style={{ flex: 1 }}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {/* ticket 1 */}
-                        <View style={[styles.ticketWrap, { marginTop: 10, }]}>
-                            {/* head */}
-                            <View style={styles.ticketHead}>
-                                <Text style={[styles.lbB1, { fontSize: 18, marginRight: 15, color: white }]}>
-                                    Dhaka
-                                </Text>
-                                <Image
-                                    style={{ width: 16, height: 16, tintColor: white, transform: [{ rotate: "180deg" }] }}
-                                    source={require("../../assets/icons/next.png")}
-                                />
-                                <Text style={[styles.lbB1, { fontSize: 18, color: white, marginLeft: 15 }]}>
-                                    Dubai
-                                </Text>
+                        {flight_details?.itineraries[0]?.segments?.map((flightItem, i) => (
+                            <View key={i.toString()}>
+                                <View style={[styles.ticketWrap, { marginTop: 10, }]}>
+                                    {/* head */}
+                                    <View style={styles.ticketHead}>
+                                        <Text style={[styles.lbB1, { fontSize: 18, marginRight: 15, color: white }]}>
+                                            {flightItem?.departure?.iataCode}
+                                        </Text>
+                                        <Image
+                                            style={{ width: 16, height: 16, tintColor: white, transform: [{ rotate: "180deg" }] }}
+                                            source={require("../../assets/icons/next.png")}
+                                        />
+                                        <Text style={[styles.lbB1, { fontSize: 18, color: white, marginLeft: 15 }]}>
+                                            {flightItem?.arrival?.iataCode}
+                                        </Text>
+                                    </View>
+
+                                    <View style={{ marginHorizontal: 10, }}>
+                                        {/* flight name & number */}
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15, }}>
+                                            <Image
+                                                style={{ width: 35, height: 35 }}
+                                                resizeMode='stretch'
+                                                source={getAirlinesName(flightItem?.carrierCode)?.logo}
+                                            />
+                                            <Text style={[styles.ns600, { marginLeft: 10 }]}>
+                                                {getAirlinesName(flightItem?.carrierCode)?.name}
+                                                <Text style={[styles.ns600, { color: b3 }]}>  {`${flightItem?.carrierCode}-${flightItem?.number}`}</Text>
+                                            </Text>
+                                        </View>
+
+                                        {/* ticket details */}
+                                        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
+                                            {/* origin */}
+                                            <View style={{ alignItems: "flex-start", flex: 1, rowGap: 6 }}>
+                                                <Text style={[styles.ns600, { fontSize: 14 }]}>{getCurrentLocalDate(flightItem?.departure?.at)}</Text>
+                                                <Text style={[styles.ns700, {}]}>{getCurrentLocalTime(flightItem?.departure?.at)}</Text>
+                                                <Text style={[styles.ns700, { fontSize: 16 }]}>Dhaka</Text>
+                                                <Text numberOfLines={2} style={[styles.ns600, { fontSize: 13, color: b3 }]}>
+                                                    {flight_search_data?.originLocation?.name}
+                                                </Text>
+                                            </View>
+
+                                            {/* duration */}
+                                            <View>
+                                                <Text style={[styles.ns700, { marginBottom: 45 }]}>
+                                                    {formatDuration(flightItem?.duration)}
+                                                </Text>
+                                            </View>
+
+                                            {/* destination */}
+                                            <View style={{ alignItems: "flex-end", flex: 1, rowGap: 6 }}>
+                                                <Text style={[styles.ns600, { fontSize: 14 }]}>{getCurrentLocalDate(flightItem?.arrival?.at)}</Text>
+                                                <Text style={[styles.ns700, {}]}>{getCurrentLocalTime(flightItem?.arrival?.at)}</Text>
+                                                <Text style={[styles.ns700, { fontSize: 16 }]}>Bombay</Text>
+                                                <Text numberOfLines={2} style={[styles.ns600, { fontSize: 13, color: b3, textAlign: "right" }]}>
+                                                    {flight_search_data?.destinationLocation?.name}
+                                                </Text>
+                                            </View>
+                                        </View>
+
+                                        {/* baggage */}
+                                        <View
+                                            style={{
+                                                marginTop: 40,
+                                                flexDirection: "row", alignItems: "center", justifyContent: "space-evenly",
+                                                marginBottom: 70,
+                                            }}
+                                        >
+                                            <View style={{ alignItems: "center", rowGap: 7 }}>
+                                                <Image
+                                                    style={{ width: 35, height: 35, tintColor: blue }}
+                                                    source={require("../../assets/icons/backpack.png")}
+                                                />
+                                                <Text style={[styles.ns700, { color: b3, fontSize: 16 }]}>7 Kgs</Text>
+                                                <Text style={[styles.ns400, { color: b3 }]}>Cabin Baggage</Text>
+                                            </View>
+
+                                            <View style={{ alignItems: "center", rowGap: 7 }}>
+                                                <Image
+                                                    style={{ width: 40, height: 40, tintColor: blue }}
+                                                    source={require("../../assets/icons/baggage.png")}
+                                                />
+                                                <Text style={[styles.ns700, { color: b3, fontSize: 16 }]}>15 Kgs</Text>
+                                                <Text style={[styles.ns400, { color: b3 }]}>Check-In Baggage</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+
+                                {/* layover */}
+                                {flightItem?.hasOwnProperty("stops") && <Text style={[styles.ns600, { textAlign: "center", fontSize: 16, marginVertical: 15 }]}>
+                                    Layover - {formatDuration(flightItem?.hasOwnProperty("stops") ? flightItem?.stops[0]?.duration : null)}
+                                </Text>}
                             </View>
-
-                            <View style={{ marginHorizontal: 10, }}>
-                                {/* flight name & number */}
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15, }}>
-                                    <Image
-                                        style={{ width: 35, height: 35 }}
-                                        source={require("../../assets/icons/indigo.png")}
-                                    />
-                                    <Text style={[styles.ns600, { marginLeft: 10 }]}>
-                                        IndiGo
-                                        <Text style={[styles.ns600, { color: b3 }]}>  6E-1118</Text>
-                                    </Text>
-                                </View>
-
-                                {/* ticket details */}
-                                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
-                                    <View style={{ alignItems: "flex-start", flex: 1, rowGap: 6 }}>
-                                        <Text style={[styles.ns600, { fontSize: 14 }]}>08 Nov, Sat</Text>
-                                        <Text style={[styles.ns700, {}]}>14:15</Text>
-                                        <Text style={[styles.ns700, { fontSize: 16 }]}>Dhaka</Text>
-                                        <Text numberOfLines={2} style={[styles.ns600, { fontSize: 13, color: b3 }]}>
-                                            Indira Gandhi
-                                            International Airport
-                                        </Text>
-                                    </View>
-
-                                    <View>
-                                        <Text style={[styles.ns700, { marginBottom: 45 }]}>
-                                            02h 30m
-                                        </Text>
-                                    </View>
-
-                                    <View style={{ alignItems: "flex-end", flex: 1, rowGap: 6 }}>
-                                        <Text style={[styles.ns600, { fontSize: 14 }]}>08 Nov, Sat</Text>
-                                        <Text style={[styles.ns700, {}]}>16:15</Text>
-                                        <Text style={[styles.ns700, { fontSize: 16 }]}>Bombay</Text>
-                                        <Text numberOfLines={2} style={[styles.ns600, { fontSize: 13, color: b3, textAlign: "right" }]}>
-                                            Chhatrapati Shivaji
-                                            International Airport
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                {/* baggage */}
-                                <View
-                                    style={{
-                                        marginTop: 40,
-                                        flexDirection: "row", alignItems: "center", justifyContent: "space-evenly",
-                                        marginBottom: 70,
-                                    }}
-                                >
-                                    <View style={{ alignItems: "center", rowGap: 7 }}>
-                                        <Image
-                                            style={{ width: 35, height: 35, tintColor: blue }}
-                                            source={require("../../assets/icons/backpack.png")}
-                                        />
-                                        <Text style={[styles.ns700, { color: b3, fontSize: 16 }]}>7 Kgs</Text>
-                                        <Text style={[styles.ns400, { color: b3 }]}>Cabin Baggage</Text>
-                                    </View>
-
-                                    <View style={{ alignItems: "center", rowGap: 7 }}>
-                                        <Image
-                                            style={{ width: 40, height: 40, tintColor: blue }}
-                                            source={require("../../assets/icons/baggage.png")}
-                                        />
-                                        <Text style={[styles.ns700, { color: b3, fontSize: 16 }]}>15 Kgs</Text>
-                                        <Text style={[styles.ns400, { color: b3 }]}>Check-In Baggage</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-
-                        <Text style={[styles.ns600, { textAlign: "center", fontSize: 16, marginVertical: 15 }]}>
-                            Layover - 03h 45m
-                        </Text>
-
-                        {/* ticket 2 */}
-                        <View style={styles.ticketWrap}>
-                            <View style={{ marginHorizontal: 10, }}>
-                                {/* flight name & number */}
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15, }}>
-                                    <Image
-                                        style={{ width: 35, height: 35 }}
-                                        source={require("../../assets/icons/indigo.png")}
-                                    />
-                                    <Text style={[styles.ns600, { marginLeft: 10 }]}>
-                                        IndiGo
-                                        <Text style={[styles.ns600, { color: b3 }]}>  6E-1407</Text>
-                                    </Text>
-                                </View>
-
-                                {/* ticket details */}
-                                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
-                                    <View style={{ alignItems: "flex-start", flex: 1, rowGap: 6 }}>
-                                        <Text style={[styles.ns600, { fontSize: 14 }]}>08 Nov, Sat</Text>
-                                        <Text style={[styles.ns700, {}]}>20:55</Text>
-                                        <Text style={[styles.ns700, { fontSize: 16 }]}>Bombay</Text>
-                                        <Text numberOfLines={2} style={[styles.ns600, { fontSize: 13, color: b3 }]}>
-                                            Chhatrapati Shivaji
-                                            International Airport
-                                        </Text>
-                                    </View>
-
-                                    <View>
-                                        <Text style={[styles.ns700, { marginBottom: 45 }]}>
-                                            03h 55m
-                                        </Text>
-                                    </View>
-
-                                    <View style={{ alignItems: "flex-end", flex: 1, rowGap: 6 }}>
-                                        <Text style={[styles.ns600, { fontSize: 14 }]}>08 Nov, Sat</Text>
-                                        <Text style={[styles.ns700, {}]}>22:30</Text>
-                                        <Text style={[styles.ns700, { fontSize: 16 }]}>Dubai</Text>
-                                        <Text numberOfLines={2} style={[styles.ns600, { fontSize: 13, color: b3, textAlign: "right" }]}>
-                                            Dubai International
-                                            Airport
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                {/* baggage */}
-                                <View
-                                    style={{
-                                        marginTop: 40,
-                                        flexDirection: "row", alignItems: "center", justifyContent: "space-evenly",
-                                        marginBottom: 70,
-                                    }}
-                                >
-                                    <View style={{ alignItems: "center", rowGap: 7 }}>
-                                        <Image
-                                            style={{ width: 35, height: 35, tintColor: blue }}
-                                            source={require("../../assets/icons/backpack.png")}
-                                        />
-                                        <Text style={[styles.ns700, { color: b3, fontSize: 16 }]}>7 Kgs</Text>
-                                        <Text style={[styles.ns400, { color: b3 }]}>Cabin Baggage</Text>
-                                    </View>
-
-                                    <View style={{ alignItems: "center", rowGap: 7 }}>
-                                        <Image
-                                            style={{ width: 40, height: 40, tintColor: blue }}
-                                            source={require("../../assets/icons/baggage.png")}
-                                        />
-                                        <Text style={[styles.ns700, { color: b3, fontSize: 16 }]}>15 Kgs</Text>
-                                        <Text style={[styles.ns400, { color: b3 }]}>Check-In Baggage</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
+                        ))}
 
                         {/* class */}
                         <View
@@ -196,7 +135,7 @@ const FlightReview = ({ navigation }) => {
                             }}
                         >
                             <Text style={[styles.ns400, { color: b3 }]}>Class</Text>
-                            <Text style={[styles.ns600, { fontSize: 16 }]}>Economy</Text>
+                            <Text style={[styles.ns600, { fontSize: 16 }]}>{flight_search_data?.travelClass}</Text>
                             <Text style={[styles.ns600, { fontSize: 14, textTransform: "uppercase", color: b3 }]}>
                                 saver
                             </Text>
@@ -285,7 +224,7 @@ const FlightReview = ({ navigation }) => {
 
                                         <View style={{ marginRight: 6, marginLeft: 25, flex: 1 }}>
                                             <Text style={[styles.ns700, { fontSize: 15 }]}>CAYESINT</Text>
-                                            <Text style={[styles.ns400, { color: b3, width: width/1.8 }]}>
+                                            <Text style={[styles.ns400, { color: b3, width: width / 1.8 }]}>
                                                 Get $50 OFF using YES Bank Credit & Debit Card Interest- Free EMI.
                                             </Text>
                                         </View>
@@ -723,7 +662,7 @@ const FlightReview = ({ navigation }) => {
                                 style={{ marginBottom: 30, flexDirection: "row", alignItems: 'center', marginHorizontal: 30, marginTop: 20 }}
                             >
                                 <View style={styles.circle} />
-                                <Text style={[styles.ns400, { marginLeft: 12, fontSize: Platform.OS === "ios" ? 14: 12 }]}>
+                                <Text style={[styles.ns400, { marginLeft: 12, fontSize: Platform.OS === "ios" ? 14 : 12 }]}>
                                     Yes, I want travel assistance for my trip.
                                 </Text>
                             </TouchableOpacity>
@@ -782,7 +721,7 @@ const FlightReview = ({ navigation }) => {
                             style={{ flexDirection: 'row', alignItems: "center", marginLeft: 15 }}
                             onPress={() => fareRef.current.open()}
                         >
-                            <Text style={[styles.ns700, { fontSize: 20, marginRight: 10 }]}>$ 495</Text>
+                            <Text style={[styles.ns700, { fontSize: 20, marginRight: 10 }]}>$ {flight_details?.price?.grandTotal}</Text>
                             <Image
                                 style={{ width: 15, height: 15, transform: [{ rotate: "-90deg" }] }}
                                 source={require("../../assets/icons/right-arrow.png")}
@@ -798,7 +737,7 @@ const FlightReview = ({ navigation }) => {
                 </View>
 
                 {/* bottom sheet */}
-                <FareBreakSheet fareRef={fareRef} />
+                <FareBreakSheet fareDetails={flight_details?.price} fareRef={fareRef} />
             </View>
         </View>
     )

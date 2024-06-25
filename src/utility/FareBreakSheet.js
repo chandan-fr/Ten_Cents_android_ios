@@ -3,8 +3,14 @@ import React from 'react'
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { b1, b2, b3, white } from '../config/colors';
 import { genCurrentDate } from '../config/CurrentDate';
+import { useSelector } from 'react-redux';
+import { getFormatedDate } from './UtilityFunctions';
 
-const FareBreakSheet = ({ fareRef }) => {
+const FareBreakSheet = ({ fareDetails, fareRef }) => {
+    const { flight_search_data } = useSelector(state => state.flightSlice);
+
+    const { currency, total, base, fees, grandTotal } = fareDetails;
+
     return (
         <RBSheet
             ref={fareRef}
@@ -41,11 +47,11 @@ const FareBreakSheet = ({ fareRef }) => {
                 {/* destination */}
                 <View style={{ alignItems: "flex-start" }}>
                     <View style={styles.right}>
-                        <Text style={styles.navHeadTxt}>Dhaka</Text>
+                        <Text style={styles.navHeadTxt}>{flight_search_data.originLocationCode}</Text>
                         <Image style={styles.rightImg} source={require("../assets/icons/next.png")} />
-                        <Text style={styles.navHeadTxt}>Dubai</Text>
+                        <Text style={styles.navHeadTxt}>{flight_search_data.destinationLocationCode}</Text>
                     </View>
-                    <Text style={styles.navSubHeadTxt}>{genCurrentDate()} | 1 Adult</Text>
+                    <Text style={styles.navSubHeadTxt}>{getFormatedDate(flight_search_data.departureDate)} | {flight_search_data.adults} Adult</Text>
                 </View>
 
                 {/* fares */}
@@ -58,7 +64,7 @@ const FareBreakSheet = ({ fareRef }) => {
                             />
                             <Text style={[styles.ns400, { fontSize: 16, marginLeft: 10 }]}>Base Fare</Text>
                         </View>
-                        <Text style={[styles.ns400, { fontSize: 16 }]}>$ 215</Text>
+                        <Text style={[styles.ns400, { fontSize: 16 }]}>$ {base}</Text>
                     </View>
 
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
@@ -67,9 +73,9 @@ const FareBreakSheet = ({ fareRef }) => {
                                 style={{ width: 20, height: 20, tintColor: b1 }}
                                 source={require("../assets/icons/users.png")}
                             />
-                            <Text style={[styles.ns400, { fontSize: 16, marginLeft: 10 }]}>1 Adult</Text>
+                            <Text style={[styles.ns400, { fontSize: 16, marginLeft: 10 }]}>{flight_search_data.adults} Adult</Text>
                         </View>
-                        <Text style={[styles.ns400, { fontSize: 16 }]}>$ 215</Text>
+                        <Text style={[styles.ns400, { fontSize: 16 }]}>$ 0</Text>
                     </View>
                 </View>
 
@@ -85,7 +91,7 @@ const FareBreakSheet = ({ fareRef }) => {
                     <Text style={[styles.ns400, { fontSize: 16 }]}>
                         Taxes & Surcharges
                     </Text>
-                    <Text style={[styles.ns400, { fontSize: 16 }]}>$ 215</Text>
+                    <Text style={[styles.ns400, { fontSize: 16 }]}>$ {(grandTotal - base).toFixed(2)}</Text>
                 </View>
 
                 {/* divider */}
@@ -100,12 +106,12 @@ const FareBreakSheet = ({ fareRef }) => {
                     <Text style={[styles.ns400, { fontSize: 14, color: b3 }]}>
                         Donate $15 towards flood relief efforts
                     </Text>
-                    <View style={styles.check}>
+                    <TouchableOpacity style={styles.check}>
                         <Image
                             style={{ width: 10, height: 10, tintColor: white }}
                             source={require("../assets/icons/check.png")}
                         />
-                    </View>
+                    </TouchableOpacity>
                 </View>
 
                 <View
@@ -117,7 +123,7 @@ const FareBreakSheet = ({ fareRef }) => {
                     <Text style={[styles.ns400, { fontSize: 16 }]}>
                         Grand Total
                     </Text>
-                    <Text style={[styles.ns400, { fontSize: 16 }]}>$ 495</Text>
+                    <Text style={[styles.ns400, { fontSize: 16 }]}>$ {grandTotal}</Text>
                 </View>
             </View>
         </RBSheet>

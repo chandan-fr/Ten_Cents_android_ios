@@ -130,7 +130,12 @@ const icon = {
     entLogo: require("../assets/icons/entLogo.png"),
     hiking: require("../assets/icons/hiking.png"),
     transfer: require("../assets/icons/transfer.png"),
-    spicejet: require("../assets/icons/spicejet.jpg"),
+    hahn: require("../assets/icons/hahn.png"),
+    united: require("../assets/icons/united.png"),
+    aircanada: require("../assets/icons/aircanada.jpg"),
+    lufthansa: require("../assets/icons/lufthansa.jpg"),
+    emiarates: require("../assets/icons/emirates.png"),
+    etihad: require("../assets/icons/etihad.png"),
     airindia: require("../assets/icons/airindia.jpg"),
 };
 

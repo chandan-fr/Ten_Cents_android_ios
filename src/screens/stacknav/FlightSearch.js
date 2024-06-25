@@ -7,7 +7,6 @@ import { _Height, _Width } from '../../config/StaticVars';
 import { calculateStopTime, formatDuration, getAirlinesName, getCurrentLocalTime, getFormatedDate } from '../../utility/UtilityFunctions';
 import commonStyles from '../../assets/css/CommonFonts';
 import { getFlightDetails } from '../../services/slices/FlightSlice';
-import icon from '../../config/IconAssets';
 
 const { width } = Dimensions.get("window");
 
@@ -21,14 +20,15 @@ const FlightSearch = ({ navigation }) => {
     const showFlightDetails = (flightId) => {
         const flightDetailsData = {
             flightId: flightId,
-            departure: flight_search_data.departure,
-            arrival: flight_search_data.arrival,
-            date: flight_search_data.date,
-            passengers: flight_search_data.passengers,
-            travelClass: flight_search_data.travelClass,
+            departure: flight_search_data.originLocationCode,
+            arrival: flight_search_data.destinationLocationCode,
+            date: flight_search_data.departureDate,
+            passengers: flight_search_data.adults.toString(),
+            travelClass: flight_search_data.travelClass.toUpperCase(),
         };
 
-        dispatch(getFlightDetails({ flightDetailsData, navigation }))
+        dispatch(getFlightDetails({ flightDetailsData, navigation }));
+        navigation?.navigate("flightreview");
     };
 
     return (
@@ -46,11 +46,11 @@ const FlightSearch = ({ navigation }) => {
                         />
                         <View style={{ marginLeft: 30 }}>
                             <View style={styles.right}>
-                                <Text style={styles.navHeadTxt}>{flight_search_data.departure}</Text>
+                                <Text style={styles.navHeadTxt}>{flight_search_data.originLocationCode}</Text>
                                 <Image style={styles.rightImg} source={require("../../assets/icons/next.png")} />
-                                <Text style={styles.navHeadTxt}>{flight_search_data.arrival}</Text>
+                                <Text style={styles.navHeadTxt}>{flight_search_data.destinationLocationCode}</Text>
                             </View>
-                            <Text style={styles.navSubHeadTxt}>{getFormatedDate(flight_search_data.date)} | {flight_search_data.passengers} Adult</Text>
+                            <Text style={styles.navSubHeadTxt}>{getFormatedDate(flight_search_data.departureDate)} | {flight_search_data.adults} Adult</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
