@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, FlatList, Image, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { b1, b3, black, blue, gs1, white } from '../../config/colors';
 import SortBottomSheet from '../../utility/SortBottomSheet';
@@ -8,13 +8,11 @@ import { calculateStopTime, formatDuration, getAirlinesName, getCurrentLocalTime
 import commonStyles from '../../assets/css/CommonFonts';
 import { getFlightDetails } from '../../services/slices/FlightSlice';
 
-const { width } = Dimensions.get("window");
-
 const FlightSearch = ({ navigation }) => {
     const { flight_data, flight_loading, flight_search_data } = useSelector(state => state.flightSlice);
     const data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     const [sortBy, setSortBy] = useState("lth");
-    const sortRef = useRef();
+    const sortRef = useRef(null);
     const dispatch = useDispatch();
 
     const showFlightDetails = (flightId) => {
@@ -28,7 +26,6 @@ const FlightSearch = ({ navigation }) => {
         };
 
         dispatch(getFlightDetails({ flightDetailsData, navigation }));
-        navigation?.navigate("flightreview");
     };
 
     return (
@@ -361,7 +358,7 @@ const styles = StyleSheet.create({
         backgroundColor: b1,
         opacity: 0.8,
         position: "absolute",
-        width: width - 20,
+        width: _Width - 20,
         bottom: Platform.OS === "ios" ? 30 : 10,
         marginHorizontal: 10,
         borderRadius: 8,

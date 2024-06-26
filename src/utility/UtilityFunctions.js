@@ -106,7 +106,6 @@ const convertMintesToHourDuration = (input) => {
 };
 
 const getAirlinesName = (iata) => {
-    console.log(iata);
     const data = airlineIATA?.filter(item => item.carrierCode === iata);
     return data[0];
 };

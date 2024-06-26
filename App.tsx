@@ -47,6 +47,7 @@ import HpSummary from './src/components/Search/HolidayPackages/HpSummary';
 import HpUserDetails from './src/components/Search/HolidayPackages/HpUserDetails';
 import HpPriceSum from './src/components/Search/HolidayPackages/HpPriceSum';
 import HpPayment from './src/components/Search/HolidayPackages/HpPayment';
+import AddTraveller from './src/screens/stacknav/AddTraveller';
 
 const RootStack = createNativeStackNavigator();
 
@@ -56,14 +57,15 @@ const App = () => {
     <NavigationContainer>
       <StatusBar translucent={true} backgroundColor={"transparent"} />
       <RootStack.Navigator initialRouteName='wlscrn' screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name='wlscrn' component={WelcomeScreen} />
+        {/* <RootStack.Screen name='wlscrn' component={WelcomeScreen} />
         <RootStack.Screen name='tab' component={TabNavigation} />
-        <RootStack.Screen name='traveldate' component={TravelDate} />
+        <RootStack.Screen name='traveldate' component={TravelDate} /> */}
         {/* flights */}
-        <RootStack.Screen name='flightsearch' component={FlightSearch} />
+        {/* <RootStack.Screen name='flightsearch' component={FlightSearch} />
         <RootStack.Screen name='filters' component={Filters} />
         <RootStack.Screen name='selectfair' component={SelectFair} />
-        <RootStack.Screen name='flightreview' component={FlightReview} />
+        <RootStack.Screen name='flightreview' component={FlightReview} /> */}
+        <RootStack.Screen name='addtraveller' component={AddTraveller} />
         <RootStack.Screen name='addons' component={AddOns} />
         <RootStack.Screen name='payments' component={Payments} />
         <RootStack.Screen name='success' component={Success} />

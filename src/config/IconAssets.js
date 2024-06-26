@@ -137,6 +137,7 @@ const icon = {
     emiarates: require("../assets/icons/emirates.png"),
     etihad: require("../assets/icons/etihad.png"),
     airindia: require("../assets/icons/airindia.jpg"),
+    spicejet: require("../assets/icons/spicejet.jpg"),
 };
 
 module.exports = icon;

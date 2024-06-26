@@ -1,22 +1,23 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, ScrollView, TextInput, Platform, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, ScrollView, TextInput, Platform, Dimensions, ActivityIndicator } from 'react-native'
 import React, { useRef } from 'react'
 import { b1, b2, b3, blue, gs1, gs2, white } from '../../config/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import FareBreakSheet from '../../utility/FareBreakSheet';
 import { useSelector } from 'react-redux';
 import { formatDuration, getAirlinesName, getCurrentLocalDate, getCurrentLocalTime } from '../../utility/UtilityFunctions';
+import { _Height, _Width } from '../../config/StaticVars';
 
 const { width, height } = Dimensions.get("window");
 
 const FlightReview = ({ navigation }) => {
-    const { flight_search_data, flight_details } = useSelector(state => state.flightSlice);
-    const fareRef = useRef();
-
-    console.log("details", flight_details.itineraries[0]?.segments);
+    const { flight_search_data, flight_details, flight_loading } = useSelector(state => state.flightSlice);
+    const fareRef = useRef(null);
 
     return (
         <View style={{ flex: 1 }}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
+            {flight_loading && <ActivityIndicator animating={flight_loading} size={"large"} style={{ width: _Width, height: _Height, zIndex: 9, position: "absolute" }} />}
+
             <View style={styles.Wrap}>
                 {/* nav */}
                 <TouchableOpacity style={styles.nav} onPress={() => navigation.goBack()}>
@@ -343,7 +344,10 @@ const FlightReview = ({ navigation }) => {
                                     <Text style={[styles.lbB1, { fontSize: 14, color: b3 }]}>0/1 Selected</Text>
                                 </View>
 
-                                <TouchableOpacity style={styles.viewAll}>
+                                <TouchableOpacity
+                                style={styles.viewAll}
+                                onPress={()=> navigation.navigate("addtraveller")}
+                                >
                                     <Text style={{ fontFamily: "LondonTwo", fontSize: 13, color: white }}>
                                         Add new +
                                     </Text>

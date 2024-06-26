@@ -15,10 +15,10 @@ export const flightSearch = createAsyncThunk("/flights", async ({ flightData, fo
         const res = await FLIGHTSEARCH(flightData);
         if (res?.data?.length) {
             navigation.navigate("flightsearch");
-            return { flights: res.data, fsData: formValue };
+            return { flights: res.data, formValue };
         } else {
             navigation.navigate("flightsearch");
-            return { flights: [], fsData: formValue };
+            return { flights: [], formValue };
         }
     } catch (exc) {
         Alert.alert(exc.response.data?.error);
@@ -31,7 +31,7 @@ export const getFlightDetails = createAsyncThunk("/flights/details", async ({ fl
     try {
         const res = await FLIGHTDETAILS(flightDetailsData);
         if (Object.keys(res?.data).length > 0) {
-            // navigation?.navigate("flightreview");
+            setTimeout(() => navigation.navigate("flightreview"), 300);
             return res.data;
         }
     } catch (exc) {
@@ -72,7 +72,7 @@ const FlightSlice = createSlice({
         })
         builder.addCase(flightSearch.fulfilled, (state, { payload }) => {
             state.flight_data = payload.flights;
-            state.flight_search_data = payload.fsData;
+            state.flight_search_data = payload.formValue;
             state.flight_loading = false;
         })
         builder.addCase(flightSearch.rejected, (state, { payload }) => {
