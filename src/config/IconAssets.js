@@ -87,6 +87,7 @@ const icon = {
     door: require("../assets/icons/door.png"),
     ledTv: require("../assets/icons/led-tv.png"),
     user: require("../assets/icons/user.png"),
+    usercheck: require("../assets/icons/usercheck.png"),
     chat: require("../assets/icons/chat.png"),
     checkin: require("../assets/icons/check-in.png"),
     checkout: require("../assets/icons/check-out.png"),
@@ -138,6 +139,7 @@ const icon = {
     etihad: require("../assets/icons/etihad.png"),
     airindia: require("../assets/icons/airindia.jpg"),
     spicejet: require("../assets/icons/spicejet.jpg"),
+    bin: require("../assets/icons/bin.png"),
 };
 
 module.exports = icon;

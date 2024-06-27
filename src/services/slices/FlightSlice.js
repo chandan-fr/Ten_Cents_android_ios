@@ -6,6 +6,13 @@ export const getAirportCodes = createAsyncThunk("/airports", async ({ searchKey 
         const res = await GETAIRPORTCODES(searchKey.toUpperCase());
         return res.data;
     } catch (exc) {
+        // if (exc.response) {
+        //     console.log('Problem with response:', exc.response.status);
+        // } else if (exc.request) {
+        //     console.log('Problem with request:', exc.request);
+        // } else {
+        //     console.log('Error:', exc.message);
+        // }
         return rejectWithValue(exc.response.data);
     }
 });
@@ -50,8 +57,34 @@ const FlightSlice = createSlice({
         flight_details: {},
         flight_loading: false,
         error: null,
+        travellers: [],
     },
-    reducers: {},
+    reducers: {
+        addUserAddress(state, { payload }) {
+            const users = state.travellers;
+            users.push(payload.userAddress);
+            state.travellers = users;
+            payload.navigation.navigate("flightreview");
+        },
+        selectUser(state, { payload }) {
+            if (payload >= 0 && payload < state.travellers.length) {
+                const data = state.travellers;
+                data[payload].isSelected = !data[payload].isSelected;
+                state.travellers = data;
+            } else {
+                console.log("Invalid index");
+            }
+        },
+        deleteUser(state, { payload }) {
+            if (payload >= 0 && payload < state.travellers.length) {
+                const data = state.travellers;
+                data.splice(payload, 1);
+                state.travellers = data;
+            } else {
+                console.log("Invalid index");
+            }
+        },
+    },
     extraReducers: builder => {
         // airport codes
         builder.addCase(getAirportCodes.pending, (state, { payload }) => {
@@ -95,5 +128,5 @@ const FlightSlice = createSlice({
     }
 });
 
-export const { } = FlightSlice.actions;
+export const { addUserAddress, selectUser, deleteUser } = FlightSlice.actions;
 export default FlightSlice.reducer;

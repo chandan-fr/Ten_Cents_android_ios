@@ -124,9 +124,12 @@ const airports = [
 ];
 
 const _Base_URL = "http://13.127.45.236:3000/api";
-
 const _Width = Dimensions.get("window").width;
 const _Height = Dimensions.get("window").height;
+const _EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const _PassRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
+const _NameRegex = /^[a-zA-Z ]+$/;
+const _NumericRegex = /^[0-9]+$/;
 
 const airlineIATA = [
     {
@@ -181,4 +184,16 @@ const airlineIATA = [
     },
 ];
 
-module.exports = { hpData, flightData, airports, _Base_URL, _Width, _Height, airlineIATA };
+module.exports = {
+    hpData,
+    flightData,
+    airports,
+    _Base_URL,
+    _Width,
+    _Height,
+    airlineIATA,
+    _EmailRegex,
+    _PassRegex,
+    _NameRegex,
+    _NumericRegex,
+};

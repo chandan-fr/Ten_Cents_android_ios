@@ -1,6 +1,6 @@
 import { ActivityIndicator, FlatList, Image, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef, useState } from 'react'
-import { b1, b3, black, blue, gs1, white } from '../../config/colors';
+import { b1, b3, black, blue, blueShade1, gs1, white } from '../../config/colors';
 import SortBottomSheet from '../../utility/SortBottomSheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { _Height, _Width } from '../../config/StaticVars';
@@ -31,7 +31,12 @@ const FlightSearch = ({ navigation }) => {
     return (
         <View style={styles.parent}>
             <StatusBar translucent={true} barStyle={"dark-content"} />
-            {flight_loading && <ActivityIndicator animating={flight_loading} size={"large"} style={{ width: _Width, height: _Height, zIndex: 9, position: "absolute" }} />}
+            {flight_loading && <ActivityIndicator
+                animating={flight_loading}
+                color={blueShade1}
+                size={"large"}
+                style={{ width: _Width, height: _Height, zIndex: 9, position: "absolute" }}
+            />}
 
             <View style={styles.wrap}>
                 {/* nav head */}
@@ -41,10 +46,10 @@ const FlightSearch = ({ navigation }) => {
                             style={{ width: 25, height: 25, marginLeft: 10 }}
                             source={require("../../assets/icons/next.png")}
                         />
-                        <View style={{ marginLeft: 30 }}>
+                        <View style={{ marginLeft: 30, rowGap: Platform.OS === "ios" ? 3 : 0 }}>
                             <View style={styles.right}>
                                 <Text style={styles.navHeadTxt}>{flight_search_data.originLocationCode}</Text>
-                                <Image style={styles.rightImg} source={require("../../assets/icons/next.png")} />
+                                <Image style={[styles.rightImg, {marginBottom: Platform.OS === "ios" ? 4 : 0}]} source={require("../../assets/icons/next.png")} />
                                 <Text style={styles.navHeadTxt}>{flight_search_data.destinationLocationCode}</Text>
                             </View>
                             <Text style={styles.navSubHeadTxt}>{getFormatedDate(flight_search_data.departureDate)} | {flight_search_data.adults} Adult</Text>

@@ -1,7 +1,13 @@
 import axios from "axios";
 import { _Base_URL } from "../../config/StaticVars";
 
-const Api = axios.create({baseURL: _Base_URL});
+const Api = axios.create({
+    baseURL: _Base_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+});
 
 // get apis
 export const GETAIRPORTCODES = (keyword) => Api.get(`/airports?keyword=${keyword}`);

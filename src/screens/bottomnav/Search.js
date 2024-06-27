@@ -23,7 +23,12 @@ const Search = ({ navigation }) => {
             <BgGradient width={width} height={Platform.OS === "ios" ? height * 0.7 : height * 0.79} />
             <Header />
 
-            {flight_loading && <ActivityIndicator color={blueShade1} animating={flight_loading} size={"large"} style={{ width: width, height: height, zIndex: 9, position: "absolute" }} />}
+            {flight_loading && <ActivityIndicator
+                color={blueShade1}
+                animating={flight_loading}
+                size={"large"}
+                style={{ width: width, height: height, zIndex: 9, position: "absolute" }}
+            />}
 
             <View style={styles.body}>
                 {/* booking nav bar */}
