@@ -1,6 +1,6 @@
-import { Alert, Dimensions, Image, ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, ImageBackground, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { blueShade1, blueShade2, bs1, white } from '../config/colors';
+import { b1, blueShade1, blueShade2, bs1, white } from '../config/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get("window");
@@ -30,18 +30,25 @@ const WelcomeScreen = ({ navigation }) => {
   useEffect(() => {
     const callAsync = async () => await getWelcomeScreenVisibleValue();
 
-    callAsync();
+    // callAsync();
   }, []);
 
   return (
     <View style={styles.parent}>
+      <StatusBar translucent={true} backgroundColor={"transparent"} barStyle={"dark-content"} />
       <View style={styles.body}>
         <ImageBackground
           source={
-            curInd < 1 ?
-              require("../assets/images/1stscrn.png")
+            Number(curInd) === 0 ?
+              require("../assets/images/6.jpg")
               :
-              require("../assets/images/2ndscrn.png")
+              Number(curInd) === 1 ?
+                require("../assets/images/7.jpg")
+                :
+                Number(curInd) === 2 ?
+                  require("../assets/images/8.jpg")
+                  :
+                  require("../assets/images/9.jpg")
           }
           resizeMode='cover'
           style={styles.imgBkgrnd}
@@ -77,51 +84,6 @@ const WelcomeScreen = ({ navigation }) => {
               </View>
 
               {/* second slide */}
-              <View style={styles.slideWrap}>
-                <View style={{ alignItems: "center", marginTop: 30, marginBottom: 30 }}>
-                  <Text style={styles.s2HeadingText}>Register or Sign In</Text>
-
-                  <View style={{ width: 195, alignItems: "center", marginTop: 15 }}>
-                    <Text style={styles.s2SubHeadingText}>
-                      Earn <Text style={{ fontWeight: 600 }}> 2x  points </Text> when  you're  signed  in.
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={{ marginTop: 80, marginHorizontal: 20, }}>
-                  <TouchableOpacity style={styles.s2BtnWrap}>
-                    <View style={styles.s2btnContWrap}>
-                      <Image style={styles.s2Img} source={require("../assets/icons/google.png")} />
-
-                      <Text style={styles.s2btnText}>Continue with Google</Text>
-                    </View>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.s2BtnWrap}>
-                    <View style={styles.s2btnContWrap}>
-                      <Image style={styles.s2Img} source={require("../assets/icons/facebook.png")} />
-
-                      <Text style={styles.s2btnText}>Continue with Facebook</Text>
-                    </View>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.s2BtnWrap}>
-                    <View style={styles.s2btnContWrap}>
-                      <Image style={styles.s2Img} source={require("../assets/icons/gmail.png")} />
-
-                      <Text style={styles.s2btnText}>Continue with E-mail</Text>
-                    </View>
-                  </TouchableOpacity>
-
-                  <View style={{ marginHorizontal: 30, alignItems: "center", marginTop: 15, }}>
-                    <Text style={[styles.s2SigninText, { fontSize: Platform.OS === "ios" ? 16 : 14 }]}>Already have an account?
-                      <Text onPress={() => Alert.alert("hi")} style={{ color: blueShade1 }}> Sign In</Text>
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              {/* third slide */}
               <View style={[styles.slideWrap, { alignItems: "center" }]}>
                 <View style={styles.s3Wrap}>
                   <Text style={[styles.s2HeadingText, { textAlign: 'center' }]}>Book with Confidence!</Text>
@@ -157,16 +119,16 @@ const WelcomeScreen = ({ navigation }) => {
                 </View>
               </View>
 
-              {/* fourth slide */}
+              {/* third slide */}
               <View style={styles.slideWrap}>
                 <View style={styles.s4Wrap}>
-                  <Text style={[styles.s2HeadingText, { textAlign: "center" }]}>Enable Location</Text>
-                  <Text style={[styles.s2SubHeadingText, { textAlign: "center", marginTop: 10, width: width / 1.8 }]}>
+                  <Text style={[styles.s2HeadingText, { textAlign: "center", color: white }]}>Enable Location</Text>
+                  <Text style={[styles.s2SubHeadingText, { textAlign: "center", marginTop: 10, width: width / 1.51 }]}>
                     You can turn on location to improve
                     your search experience.
                   </Text>
 
-                  <View style={{ flex: 1, justifyContent: 'center' }}>
+                  <View style={{ flex: 1, justifyContent: 'center', marginBottom: 50 }}>
                     <View style={[styles.outer, styles.centerAlign]}>
                       <View style={[styles.middle, styles.centerAlign]}>
                         <View style={[styles.inner, styles.centerAlign]}>
@@ -185,27 +147,73 @@ const WelcomeScreen = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </View>
+
+              {/* fourth slide */}
+              <View style={styles.slideWrap}>
+                <View style={{ alignItems: "center", marginTop: 30, marginBottom: 30 }}>
+                  <Text style={[styles.s2HeadingText, { color: white }]}>Register</Text>
+
+                  <View style={{ width: 195, alignItems: "center", marginTop: 15 }}>
+                    <Text style={styles.s2SubHeadingText}>
+                      Earn <Text style={{ fontWeight: 600 }}> 2x  points </Text> when  you're  signed  in.
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={{ marginTop: 80, marginHorizontal: 20, }}>
+                  <TouchableOpacity style={styles.s2BtnWrap}>
+                    <View style={styles.s2btnContWrap}>
+                      <Image style={styles.s2Img} source={require("../assets/icons/google.png")} />
+
+                      <Text style={styles.s2btnText}>Continue with Google</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.s2BtnWrap}>
+                    <View style={styles.s2btnContWrap}>
+                      <Image style={styles.s2Img} source={require("../assets/icons/facebook.png")} />
+
+                      <Text style={styles.s2btnText}>Continue with Facebook</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.s2BtnWrap}>
+                    <View style={styles.s2btnContWrap}>
+                      <Image style={styles.s2Img} source={require("../assets/icons/gmail.png")} />
+
+                      <Text style={styles.s2btnText}>Continue with E-mail</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <View style={{ marginHorizontal: 30, alignItems: "center", marginTop: 15, }}>
+                    <Text style={[styles.s2SigninText, { fontSize: Platform.OS === "ios" ? 16 : 14 }]}>Already have an account?
+                      <Text onPress={() => navigation.replace("signin")} style={{ color: b1, fontFamily: "Poppins-SemiBold" }}> Sign In</Text>
+                    </Text>
+                  </View>
+                </View>
+              </View>
             </ScrollView>
           </View>
 
           {/* footer */}
-          <View style={styles.bottomWrap} >
-            <View style={styles.dotWrap}>
-              {data.map((_, i) => (
-                <View key={i} style={curInd == i ? styles.dotActive : styles.dot} />
-              ))}
-            </View>
+          {Number(curInd) !== 3 &&
+            <View style={styles.bottomWrap} >
+              <View style={styles.dotWrap}>
+                {data.map((_, i) => (
+                  <View key={i} style={curInd == i ? styles.dotActive : styles.dot} />
+                ))}
+              </View>
 
-            <View style={styles.nextWrap}>
-              <TouchableOpacity style={styles.nextBtn} onPress={() => handleNext()} >
-                <Text style={styles.next}>Next </Text>
-                <Image
-                  style={{ tintColor: white, width: 13, height: 13 }}
-                  source={require("../assets/icons/right-arrow.png")}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
+              <View style={styles.nextWrap}>
+                <TouchableOpacity style={styles.nextBtn} onPress={() => handleNext()} >
+                  <Text style={styles.next}>Next </Text>
+                  <Image
+                    style={{ tintColor: white, width: 13, height: 13 }}
+                    source={require("../assets/icons/right-arrow.png")}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>}
         </ImageBackground>
       </View>
     </View>
@@ -228,7 +236,7 @@ const styles = StyleSheet.create({
   skip: {
     fontFamily: "Rubik-Regular",
     fontSize: 16,
-    color: white,
+    color: b1,
   },
   skipWrap: {
     marginLeft: 10,
@@ -249,11 +257,11 @@ const styles = StyleSheet.create({
     width: width,
   },
   logoText: {
-    fontSize: 48,
+    fontSize: 45,
     fontFamily: "LondonBetween",
     width: width / 1.4,
     textAlign: "center",
-    color: white,
+    color: b1,
     textTransform: "uppercase",
     ...Platform.select({
       ios: { marginBottom: 70 },
@@ -324,12 +332,12 @@ const styles = StyleSheet.create({
   },
   s2HeadingText: {
     fontFamily: 'LondonBetween',
-    fontSize: 25,
-    color: white,
+    fontSize: 23,
+    color: b1,
   },
   s2SubHeadingText: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 13,
+    fontSize: Platform.OS === "ios" ? 13 : 12,
     color: white,
     textAlign: "center",
   },
@@ -339,13 +347,12 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     borderColor: bs1,
-    paddingVertical: 13,
+    paddingVertical: 10,
     marginVertical: 10
   },
   s2btnText: {
     color: bs1,
-    fontSize: 15,
-    fontFamily: "Assistant-SemiBold",
+    fontFamily: "Assistant-Regular",
     ...Platform.select({
       ios: { fontSize: 16 },
       android: { fontSize: 14 },
@@ -362,7 +369,7 @@ const styles = StyleSheet.create({
     columnGap: 20,
   },
   s2SigninText: {
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "Poppins-Medium",
     color: white,
   },
   s3Wrap: {
@@ -377,14 +384,15 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     marginTop: 10,
+    tintColor: b1,
   },
   s3ContHText: {
-    color: white,
+    color: b1,
     fontFamily: "LondonBetween",
     fontSize: 19,
   },
   s3ContSubHText: {
-    color: white,
+    color: b1,
     fontFamily: "Assistant-SemiBold",
     fontSize: 14,
     marginTop: 8,
