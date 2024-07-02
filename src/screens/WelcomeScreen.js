@@ -179,7 +179,7 @@ const WelcomeScreen = ({ navigation }) => {
 
                   <TouchableOpacity style={styles.s2BtnWrap}>
                     <View style={styles.s2btnContWrap}>
-                      <Image style={styles.s2Img} source={require("../assets/icons/gmail.png")} />
+                      <Image style={styles.s2Img} source={require("../assets/icons/email.png")} />
 
                       <Text style={styles.s2btnText}>Continue with E-mail</Text>
                     </View>

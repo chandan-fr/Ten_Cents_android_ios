@@ -140,6 +140,9 @@ const icon = {
     airindia: require("../assets/icons/airindia.jpg"),
     spicejet: require("../assets/icons/spicejet.jpg"),
     bin: require("../assets/icons/bin.png"),
+    eye: require("../assets/icons/eye.png"),
+    hidden: require("../assets/icons/hidden.png"),
+    email: require("../assets/icons/email.png"),
 };
 
 module.exports = icon;
