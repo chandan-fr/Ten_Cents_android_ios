@@ -49,6 +49,7 @@ import HpPriceSum from './src/components/Search/HolidayPackages/HpPriceSum';
 import HpPayment from './src/components/Search/HolidayPackages/HpPayment';
 import AddTraveller from './src/screens/stacknav/AddTraveller';
 import SignIn from './src/screens/SignIn';
+import ValidateOTP from './src/screens/stacknav/ValidateOTP';
 
 const RootStack = createNativeStackNavigator();
 
@@ -62,6 +63,7 @@ const App = () => {
         <RootStack.Screen name='tab' component={TabNavigation} />
         <RootStack.Screen name='traveldate' component={TravelDate} />
         <RootStack.Screen name='signin' component={SignIn} />
+        <RootStack.Screen name='validateotp' component={ValidateOTP} />
         {/* flights */}
         <RootStack.Screen name='flightsearch' component={FlightSearch} />
         <RootStack.Screen name='filters' component={Filters} />

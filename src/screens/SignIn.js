@@ -58,6 +58,7 @@ const SignIn = ({ navigation }) => {
         const validationErrors = validateEventData();
         setFormError(validationErrors);
 
+        navigation.navigate("validateotp");
         if (Object.keys(validationErrors).length === 0) {
             if (loginOption === "phone") {
                 console.log('phone', formValue);
