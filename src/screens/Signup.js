@@ -1,4 +1,4 @@
-import { ImageBackground, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { _EmailRegex, _NameRegex, _NumericRegex, _Width } from '../config/StaticVars';
 import { b1, red, white } from '../config/colors';

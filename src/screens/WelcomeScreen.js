@@ -187,7 +187,7 @@ const WelcomeScreen = ({ navigation }) => {
 
                   <View style={{ marginHorizontal: 30, alignItems: "center", marginTop: 15, }}>
                     <Text style={[styles.s2SigninText, { fontSize: Platform.OS === "ios" ? 16 : 14 }]}>Already have an account?
-                      <Text onPress={() => navigation.replace("signup")} style={{ color: b1, fontFamily: "Poppins-SemiBold" }}> Sign In</Text>
+                      <Text onPress={() => navigation.replace("signin")} style={{ color: b1, fontFamily: "Poppins-SemiBold" }}> Sign In</Text>
                     </Text>
                   </View>
                 </View>
