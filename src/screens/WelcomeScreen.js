@@ -1,9 +1,9 @@
-import { Alert, Dimensions, Image, ImageBackground, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, Platform, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { b1, blueShade1, blueShade2, bs1, white } from '../config/colors';
+import { b1, blueShade2, bs1, white } from '../config/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const WelcomeScreen = ({ navigation }) => {
   const [curInd, setcurInd] = useState(0);
@@ -30,7 +30,7 @@ const WelcomeScreen = ({ navigation }) => {
   useEffect(() => {
     const callAsync = async () => await getWelcomeScreenVisibleValue();
 
-    // callAsync();
+    callAsync();
   }, []);
 
   return (
@@ -69,7 +69,7 @@ const WelcomeScreen = ({ navigation }) => {
                 const x = e.nativeEvent.contentOffset.x;
                 setcurInd((x / width).toFixed(0));
               }}
-              style={{ flex: 1, }}
+              style={{ flex: 1 }}
             >
               {/* first slide */}
               <View style={styles.logoName}>
@@ -160,7 +160,9 @@ const WelcomeScreen = ({ navigation }) => {
                   </View>
                 </View>
 
+                {/* sign in option */}
                 <View style={{ marginTop: 80, marginHorizontal: 20, }}>
+                  {/* gmail */}
                   <TouchableOpacity style={styles.s2BtnWrap}>
                     <View style={styles.s2btnContWrap}>
                       <Image style={styles.s2Img} source={require("../assets/icons/google.png")} />
@@ -169,6 +171,7 @@ const WelcomeScreen = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
 
+                  {/* facebook */}
                   <TouchableOpacity style={styles.s2BtnWrap}>
                     <View style={styles.s2btnContWrap}>
                       <Image style={styles.s2Img} source={require("../assets/icons/facebook.png")} />
@@ -177,7 +180,11 @@ const WelcomeScreen = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
 
-                  <TouchableOpacity style={styles.s2BtnWrap}>
+                  {/* email */}
+                  <TouchableOpacity
+                    style={styles.s2BtnWrap}
+                    onPress={() => navigation.navigate("signup")}
+                  >
                     <View style={styles.s2btnContWrap}>
                       <Image style={styles.s2Img} source={require("../assets/icons/email.png")} />
 
